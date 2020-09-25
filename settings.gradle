@@ -1,2 +1,7 @@
+include ':picker'
+include ':mvvm'
+include ':http'
+include ':utils'
+include ':core'
 rootProject.name = "ChooonggBox"
 include ':app'
