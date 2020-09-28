@@ -11,9 +11,9 @@ import androidx.annotation.IntDef
 import androidx.appcompat.widget.AppCompatImageView
 import chooongg.box.ext.APP
 import chooongg.box.ext.gone
+import chooongg.box.ext.toastCancel
 import chooongg.box.ext.visible
 import chooongg.box.utils.R
-import chooongg.box.utils.ToastUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -77,15 +77,15 @@ class ChooonggToast private constructor(
         this.contentColor = color
     }
 
-    fun show() {
+    fun show(listener: (Toast) -> Unit) {
         GlobalScope.launch(Dispatchers.Main) {
-            ToastUtils.cancel()
+            toastCancel()
             val layoutResId = when (type) {
                 TYPE_EMPHASIZE -> R.layout.toast_emphasize
                 else -> R.layout.toast_universal
             }
             if (message.isNullOrEmpty() && icon == -1) return@launch
-            ToastUtils.chooonggToast = Toast.makeText(APP, message, duration).apply {
+            val chooonggToast = Toast.makeText(APP, message, duration).apply {
                 val contentView = LayoutInflater.from(APP).inflate(layoutResId, null)
                 contentView.findViewById<TextView>(R.id.tv_text).apply {
                     if (message.isNullOrEmpty()) {
@@ -114,8 +114,9 @@ class ChooonggToast private constructor(
                 view = contentView
 
             }
-            if (gravity != Gravity.NO_GRAVITY) ToastUtils.chooonggToast!!.setGravity(gravity, xOffset, yOffset)
-            ToastUtils.chooonggToast!!.show()
+            if (gravity != Gravity.NO_GRAVITY) chooonggToast.setGravity(gravity, xOffset, yOffset)
+            chooonggToast.show()
+            listener.invoke(chooonggToast)
         }
     }
 }
