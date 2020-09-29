@@ -1,4 +1,4 @@
-package chooongg.manager
+package chooongg.box.manager
 
 import android.app.Application
 import chooongg.box.ChooonggBoxException

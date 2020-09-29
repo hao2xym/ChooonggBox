@@ -9,13 +9,17 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
 import android.os.Build
+import android.provider.Settings
 import android.util.TypedValue
-import android.view.*
+import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
+import android.view.Window
+import android.view.WindowManager
 import androidx.annotation.ColorInt
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
+import chooongg.box.utils.RomUtils
 import java.lang.reflect.Method
 
 
@@ -49,12 +53,12 @@ fun Fragment.setStatusBarVisibility(isVisible: Boolean) =
 fun Window.setStatusBarVisibility(isVisible: Boolean) {
     if (isVisible) {
         clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        showStatusBarView(window)
-        addMarginTopEqualStatusBarHeight(window)
+        showStatusBarView(this)
+        addMarginTopEqualStatusBarHeight()
     } else {
         addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        hideStatusBarView(window)
-        subtractMarginTopEqualStatusBarHeight(window)
+        hideStatusBarView(this)
+        subtractMarginTopEqualStatusBarHeight()
     }
 }
 
@@ -70,18 +74,18 @@ fun Activity.isStatusBarVisible() =
     window.attributes.flags and WindowManager.LayoutParams.FLAG_FULLSCREEN == 0
 
 /**
- * 设置状态栏深色模式
+ * 设置状态栏亮色模式
  */
 fun Activity.setStatusBarLightMode(isLightMode: Boolean) = window.setStatusBarLightMode(isLightMode)
 
 /**
- * 设置状态栏深色模式
+ * 设置状态栏亮色模式
  */
 fun Fragment.setStatusBarLightModel(isLightMode: Boolean) =
     activity?.setStatusBarLightMode(isLightMode)
 
 /**
- * 设置状态栏深色模式
+ * 设置状态栏亮色模式
  */
 fun Window.setStatusBarLightMode(isLightMode: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -93,17 +97,17 @@ fun Window.setStatusBarLightMode(isLightMode: Boolean) {
 }
 
 /**
- * 状态栏是否是深色模式
+ * 状态栏是否是亮色模式
  */
 fun Fragment.isStatusBarLightMode() = requireActivity().isStatusBarLightMode()
 
 /**
- * 状态栏是否是深色模式
+ * 状态栏是否是亮色模式
  */
 fun Activity.isStatusBarLightMode() = window.isStatusBarLightMode()
 
 /**
- * 状态栏是否是深色模式
+ * 状态栏是否是亮色模式
  */
 fun Window.isStatusBarLightMode(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -166,27 +170,30 @@ fun View.subtractMarginTopEqualStatusBarHeight() {
  * 设置状态栏颜色
  */
 fun Activity.setStatusBarColor(@ColorInt color: Int, isDecor: Boolean): View? {
-    transparentStatusBar(activity)
-    return applyStatusBarColor(activity, color, isDecor)
+    transparentStatusBar()
+    return applyStatusBarColor(this, color, isDecor)
 }
 
 /**
  * 设置状态栏颜色
  */
+fun Fragment.setStatusBarColor(@ColorInt color: Int, isDecor: Boolean) =
+    activity?.setStatusBarColor(color, isDecor)
+
+/**
+ * 设置状态栏颜色
+ */
 fun Window.setStatusBarColor(@ColorInt color: Int, isDecor: Boolean = false): View? {
-    transparentStatusBar(window)
-    return applyStatusBarColor(window, color, isDecor)
+    transparentStatusBar()
+    return applyStatusBarColor(this, color, isDecor)
 }
 
 /**
- * Set the status bar's color.
- *
- * @param fakeStatusBar The fake status bar view.
- * @param color         The status bar's color.
+ * 设置状态栏颜色
  */
 fun setStatusBarColor(fakeStatusBar: View, @ColorInt color: Int) {
     val activity: Activity = fakeStatusBar.context.getActivity() ?: return
-    transparentStatusBar(activity)
+    activity.transparentStatusBar()
     fakeStatusBar.visibility = View.VISIBLE
     val layoutParams = fakeStatusBar.layoutParams
     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -195,20 +202,16 @@ fun setStatusBarColor(fakeStatusBar: View, @ColorInt color: Int) {
 }
 
 /**
- * Set the custom status bar.
- *
- * @param fakeStatusBar The fake status bar view.
+ * 设置自定义状态栏
  */
 fun setStatusBarCustom(fakeStatusBar: View) {
     val activity: Activity = fakeStatusBar.context.getActivity() ?: return
-    transparentStatusBar(activity)
+    activity.transparentStatusBar()
     fakeStatusBar.visibility = View.VISIBLE
     var layoutParams = fakeStatusBar.layoutParams
     if (layoutParams == null) {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            getStatusBarHeight()
-        )
+        layoutParams =
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStatusBarHeight())
         fakeStatusBar.layoutParams = layoutParams
     } else {
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -265,22 +268,19 @@ private fun createStatusBarView(
     return statusBarView
 }
 
-fun transparentStatusBar(activity: Activity) {
-    transparentStatusBar(activity.window)
+fun Activity.transparentStatusBar() {
+    window.transparentStatusBar()
 }
 
-fun transparentStatusBar(window: Window) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
+fun Window.transparentStatusBar() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         val option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        val vis = window.decorView.systemUiVisibility
-        window.decorView.systemUiVisibility = option or vis
-        window.statusBarColor = Color.TRANSPARENT
-    } else {
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-    }
+        val vis = decorView.systemUiVisibility
+        decorView.systemUiVisibility = option or vis
+        statusBarColor = Color.TRANSPARENT
+    } else addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -291,16 +291,12 @@ fun transparentStatusBar(window: Window) {
 // action bar
 ///////////////////////////////////////////////////////////////////////////
 /**
- * Return the action bar's height.
- *
- * @return the action bar's height
+ * 获取标题栏高度
  */
 fun getActionBarHeight(): Int {
     val tv = TypedValue()
-    return if (Utils.getApp().getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
-        TypedValue.complexToDimensionPixelSize(
-            tv.data, Resources.getSystem().displayMetrics
-        )
+    return if (APP.theme.resolveAttribute(R.attr.actionBarSize, tv, true)) {
+        TypedValue.complexToDimensionPixelSize(tv.data, Resources.getSystem().displayMetrics)
     } else 0
 }
 
@@ -312,27 +308,18 @@ fun getActionBarHeight(): Int {
 // notification bar
 ///////////////////////////////////////////////////////////////////////////
 /**
- * Set the notification bar's visibility.
- *
- * Must hold `<uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />`
- *
- * @param isVisible True to set notification bar visible, false otherwise.
+ * 设置通知栏可见
  */
 @RequiresPermission(EXPAND_STATUS_BAR)
 fun setNotificationBarVisibility(isVisible: Boolean) {
-    val methodName: String
-    methodName = if (isVisible) {
-        if (Build.VERSION.SDK_INT <= 16) "expand" else "expandNotificationsPanel"
-    } else {
-        if (Build.VERSION.SDK_INT <= 16) "collapse" else "collapsePanels"
-    }
+    val methodName = if (isVisible) "expandNotificationsPanel" else "collapsePanels"
     invokePanels(methodName)
 }
 
 private fun invokePanels(methodName: String) {
     try {
         @SuppressLint("WrongConstant") val service: Any =
-            Utils.getApp().getSystemService("statusbar")
+            APP.getSystemService("statusbar")
         @SuppressLint("PrivateApi") val statusBarManager =
             Class.forName("android.app.StatusBarManager")
         val expand: Method = statusBarManager.getMethod(methodName)
@@ -350,11 +337,9 @@ private fun invokePanels(methodName: String) {
 // navigation bar
 ///////////////////////////////////////////////////////////////////////////
 /**
- * Return the navigation bar's height.
- *
- * @return the navigation bar's height
+ * 获取导航栏高度
  */
-fun getNavBarHeight(): Int {
+fun getNavigationBarHeight(): Int {
     val res = Resources.getSystem()
     val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android")
     return if (resourceId != 0) {
@@ -365,25 +350,16 @@ fun getNavBarHeight(): Int {
 }
 
 /**
- * Set the navigation bar's visibility.
- *
- * @param activity  The activity.
- * @param isVisible True to set navigation bar visible, false otherwise.
+ * 设置导航栏可见
  */
-fun setNavBarVisibility(activity: Activity, isVisible: Boolean) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
-    setNavBarVisibility(activity.window, isVisible)
-}
+fun Activity.setNavigationBarVisibility(isVisible: Boolean) =
+    window.setNavigationBarVisibility(isVisible)
 
 /**
- * Set the navigation bar's visibility.
- *
- * @param window    The window.
- * @param isVisible True to set navigation bar visible, false otherwise.
+ * 设置导航栏可见
  */
-fun setNavBarVisibility(window: Window, isVisible: Boolean) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
-    val decorView = window.decorView as ViewGroup
+fun Window.setNavigationBarVisibility(isVisible: Boolean) {
+    val decorView = decorView as ViewGroup
     var i = 0
     val count = decorView.childCount
     while (i < count) {
@@ -408,28 +384,16 @@ fun setNavBarVisibility(window: Window, isVisible: Boolean) {
 }
 
 /**
- * Return whether the navigation bar visible.
- *
- * Call it in onWindowFocusChanged will get right result.
- *
- * @param activity The activity.
- * @return `true`: yes<br></br>`false`: no
+ * 导航栏是否可见
  */
-fun isNavBarVisible(activity: Activity): Boolean {
-    return isNavBarVisible(activity.window)
-}
+fun Activity.isNavgationBarVisible() = window.isNavgationBarVisible()
 
 /**
- * Return whether the navigation bar visible.
- *
- * Call it in onWindowFocusChanged will get right result.
- *
- * @param window The window.
- * @return `true`: yes<br></br>`false`: no
+ * 导航栏是否可见
  */
-fun isNavBarVisible(window: Window): Boolean {
+fun Window.isNavgationBarVisible(): Boolean {
     var isVisible = false
-    val decorView = window.decorView as ViewGroup
+    val decorView = decorView as ViewGroup
     var i = 0
     val count = decorView.childCount
     while (i < count) {
@@ -448,14 +412,12 @@ fun isNavBarVisible(window: Window): Boolean {
         // 对于三星手机，android10以下非OneUI2的版本，比如 s8，note8 等设备上，
         // 导航栏显示存在bug："当用户隐藏导航栏时显示输入法的时候导航栏会跟随显示"，会导致隐藏输入法之后判断错误
         // 这个问题在 OneUI 2 & android 10 版本已修复
-        if (UtilsBridge.isSamsung()
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-        ) {
+        if (RomUtils.isSamsung() && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             try {
                 return Settings.Global.getInt(
-                    Utils.getApp().getContentResolver(),
+                    APP.contentResolver,
                     "navigationbar_hide_bar_enabled"
-                ) === 0
+                ) == 0
             } catch (ignore: Exception) {
             }
         }
@@ -467,103 +429,53 @@ fun isNavBarVisible(window: Window): Boolean {
 
 private fun getResNameById(id: Int): String {
     return try {
-        Utils.getApp().getResources().getResourceEntryName(id)
+        APP.resources.getResourceEntryName(id)
     } catch (ignore: Exception) {
         ""
     }
 }
 
 /**
- * Set the navigation bar's color.
- *
- * @param activity The activity.
- * @param color    The navigation bar's color.
+ * 设置导航栏颜色
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun setNavBarColor(activity: Activity, @ColorInt color: Int) {
-    setNavBarColor(activity.window, color)
+fun Activity.setNavigationBarColor(@ColorInt color: Int) = window.setNavigationBarColor(color)
+
+/**
+ * 设置导航栏颜色
+ */
+fun Window.setNavigationBarColor(@ColorInt color: Int) {
+    addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+    navigationBarColor = color
 }
 
 /**
- * Set the navigation bar's color.
- *
- * @param window The window.
- * @param color  The navigation bar's color.
+ * 获取导航栏颜色
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun setNavBarColor(window: Window, @ColorInt color: Int) {
-    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-    window.navigationBarColor = color
+fun Activity.getNavgationBarColor() = window.navigationBarColor
+
+/**
+ * 是否支持导航栏
+ */
+fun isSupportNavigationBar(): Boolean {
+    val display = APP.windowManager.defaultDisplay
+    val size = Point()
+    val realSize = Point()
+    display.getSize(size)
+    display.getRealSize(realSize)
+    return realSize.y != size.y || realSize.x != size.x
 }
 
 /**
- * Return the color of navigation bar.
- *
- * @param activity The activity.
- * @return the color of navigation bar
+ * 设置导航栏深色模式
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun getNavBarColor(activity: Activity): Int {
-    return getNavBarColor(activity.window)
-}
+fun Activity.setNavigationBarLightMode(isLightMode: Boolean) =
+    window.setNavigationBarLightMode(isLightMode)
 
 /**
- * Return the color of navigation bar.
- *
- * @param window The window.
- * @return the color of navigation bar
+ * 设置导航栏深色模式
  */
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-fun getNavBarColor(window: Window): Int {
-    return window.navigationBarColor
-}
-
-/**
- * Return whether the navigation bar visible.
- *
- * @return `true`: yes<br></br>`false`: no
- */
-fun isSupportNavBar(): Boolean {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        val wm = Utils.getApp().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            ?: return false
-        val display = wm.defaultDisplay
-        val size = Point()
-        val realSize = Point()
-        display.getSize(size)
-        display.getRealSize(realSize)
-        return realSize.y !== size.y || realSize.x !== size.x
-    }
-    val menu = ViewConfiguration.get(Utils.getApp()).hasPermanentMenuKey()
-    val back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-    return !menu && !back
-}
-
-/**
- * Set the nav bar's light mode.
- *
- * @param activity    The activity.
- * @param isLightMode True to set nav bar light mode, false otherwise.
- */
-fun setNavBarLightMode(
-    activity: Activity,
-    isLightMode: Boolean
-) {
-    setNavBarLightMode(activity.window, isLightMode)
-}
-
-/**
- * Set the nav bar's light mode.
- *
- * @param window      The window.
- * @param isLightMode True to set nav bar light mode, false otherwise.
- */
-fun setNavBarLightMode(
-    window: Window,
-    isLightMode: Boolean
-) {
+fun Window.setNavigationBarLightMode(isLightMode: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val decorView = window.decorView
         var vis = decorView.systemUiVisibility
         vis = if (isLightMode) {
             vis or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
@@ -575,24 +487,15 @@ fun setNavBarLightMode(
 }
 
 /**
- * Is the nav bar light mode.
- *
- * @param activity The activity.
- * @return `true`: yes<br></br>`false`: no
+ * 导航栏是否为深色模式
  */
-fun isNavBarLightMode(activity: Activity): Boolean {
-    return isNavBarLightMode(activity.window)
-}
+fun Activity.isNavigationBarLightMode() = window.isNavigationBarLightMode()
 
 /**
- * Is the nav bar light mode.
- *
- * @param window The window.
- * @return `true`: yes<br></br>`false`: no
+ * 导航栏是否为深色模式
  */
-fun isNavBarLightMode(window: Window): Boolean {
+fun Window.isNavigationBarLightMode(): Boolean {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val decorView = window.decorView
         val vis = decorView.systemUiVisibility
         return vis and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR != 0
     }

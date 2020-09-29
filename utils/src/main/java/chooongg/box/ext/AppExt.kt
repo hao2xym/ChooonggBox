@@ -1,5 +1,5 @@
 package chooongg.box.ext
 
-import chooongg.manager.AppManager
+import chooongg.box.manager.AppManager
 
 inline val APP get() = AppManager.getApplication()

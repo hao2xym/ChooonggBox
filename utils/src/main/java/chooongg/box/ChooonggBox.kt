@@ -1,7 +1,7 @@
 package chooongg.box
 
 import android.app.Application
-import chooongg.manager.AppManager
+import chooongg.box.manager.AppManager
 
 object ChooonggBox : IChooonggBoxInitialize {
     override fun initialize(application: Application) {
