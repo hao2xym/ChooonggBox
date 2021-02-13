@@ -1,7 +1,8 @@
 rootProject.name = "ChooonggBox"
 include ':app'
-include ':picker'
-include ':mvvm'
-include ':http'
-include ':utils'
+include ':box'
 include ':core'
+include ':http'
+include ':mvvm'
+include ':picker'
+include ':popup'
