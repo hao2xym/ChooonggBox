@@ -6,6 +6,7 @@ package chooongg.box.logger.formatter
 abstract class Formatter {
 
     companion object {
+
         const val LINE_MAX_LENGTH = 120
 
         val BR = System.getProperty("line.separator")!! // 换行符
