@@ -1,10 +1,10 @@
-package chooongg.box.http
+package chooongg.box.core
 
 import android.app.Application
 import android.util.Log
 import chooongg.box.Box
 
-object HttpBox {
+object BoxCore {
 
     @JvmStatic
     fun init(application: Application) {

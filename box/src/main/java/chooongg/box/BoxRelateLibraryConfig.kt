@@ -2,32 +2,27 @@ package chooongg.box
 
 import android.app.Application
 
-internal object BoxRelateLibraryConfig : IBoxInitialize {
+internal object BoxRelateLibraryConfig {
 
-    override fun initialize(application: Application) {
+    fun initialize(application: Application) {
         initHttpIfExist(application)
     }
 
-    override fun onTerminate() {
-        onTerminateHttpIfExist()
-    }
-
-    private fun initHttpIfExist(application: Application) {
+    private fun initCoreIfExist(application: Application) {
         try {
-            val clazz = application.classLoader.loadClass("chooongg.box.http.HttpBox")
-            val method = clazz.getMethod("initialize", Application::class.java)
+            val clazz = application.classLoader.loadClass("chooongg.box.core.HttpBox")
+            val method = clazz.getMethod("init", Application::class.java)
             method.invoke(clazz, application)
         } catch (e: Exception) {
         }
     }
 
-    private fun onTerminateHttpIfExist() {
+    private fun initHttpIfExist(application: Application) {
         try {
-            val clazz = Class.forName("chooongg.box.http.HttpBox")
-            val method = clazz.getMethod("onTerminate")
-            method.invoke(null)
+            val clazz = application.classLoader.loadClass("chooongg.box.http.HttpBox")
+            val method = clazz.getMethod("init", Application::class.java)
+            method.invoke(clazz, application)
         } catch (e: Exception) {
         }
     }
-
 }
