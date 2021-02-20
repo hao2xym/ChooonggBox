@@ -8,7 +8,6 @@ android {
     buildToolsVersion build_tools_version
 
     defaultConfig {
-        applicationId "chooongg.box"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode version_code
