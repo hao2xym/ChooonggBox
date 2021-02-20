@@ -1,14 +1,17 @@
 package chooongg.box.http
 
 import android.app.Application
-import chooongg.box.IBoxInitialize
+import android.util.Log
 
-object HttpBox: IBoxInitialize {
-    override fun initialize(application: Application) {
+object HttpBox {
 
+    @JvmStatic
+    fun initialize(application: Application) {
+        Log.e("CHOOONGG", "initialize: HTTP")
     }
 
-    override fun onTerminate() {
+    @JvmStatic
+    fun onTerminate() {
 
     }
 }

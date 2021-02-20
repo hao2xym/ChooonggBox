@@ -9,9 +9,12 @@ import chooongg.box.manager.AppManager
 object Box : IBoxInitialize {
     override fun initialize(application: Application) {
         AppManager.initialize(application)
+        BoxRelateLibraryConfig.initialize(application)
+
     }
 
     override fun onTerminate() {
         AppManager.onTerminate()
+        BoxRelateLibraryConfig.onTerminate()
     }
 }

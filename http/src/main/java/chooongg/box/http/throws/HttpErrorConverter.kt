@@ -1,6 +1,6 @@
 package chooongg.box.http.throws
 
-import chooongg.chooongg.box.http.BuildConfig
+import chooongg.box.http.BuildConfig
 
 /**
  * 错误类型转换成语义化文字
