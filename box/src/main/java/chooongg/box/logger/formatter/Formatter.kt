@@ -9,7 +9,7 @@ interface Formatter {
     /**
      * 顶部
      */
-    fun top(text: String?): String
+    fun top(childTag: String?, text: String?): String
 
     /**
      * 中间主要

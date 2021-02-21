@@ -8,5 +8,5 @@ interface Printer {
     /**
      * 打印日志
      */
-    fun printLog(@LogConfig.Level logLevel: Int, tag: String, msg: String)
+    fun printLog(@LogConfig.Level logLevel: Int, tag: String, log: String)
 }

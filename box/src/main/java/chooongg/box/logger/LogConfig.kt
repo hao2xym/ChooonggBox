@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
 import chooongg.box.Box
-import chooongg.box.ext.APP
+import chooongg.box.BuildConfig
 import chooongg.box.logger.formatter.DefaultFormatter
 import chooongg.box.logger.formatter.Formatter
 import chooongg.box.logger.handler.AnyHandler
@@ -18,12 +18,12 @@ class LogConfig {
     @IntDef(Log.VERBOSE, Log.DEBUG, Log.INFO, Log.WARN, Log.ERROR, Log.ASSERT)
     annotation class Level
 
-    var tag = APP.packageName ?: Box.TAG
+    var tag = Box.TAG
 
     /**
      * 启用状态
      */
-    var enable = true
+    var enable = BuildConfig.DEBUG
 
     /**
      * 默认日志等级

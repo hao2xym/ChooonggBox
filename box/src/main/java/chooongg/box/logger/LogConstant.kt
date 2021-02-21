@@ -2,7 +2,7 @@ package chooongg.box.logger
 
 object LogConstant {
 
-    const val DEFAULT_STACK_OFFSET = 1
+    const val DEFAULT_STACK_OFFSET = 3
 
     const val LINE_MAX_LENGTH = 120
 

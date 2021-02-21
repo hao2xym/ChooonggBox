@@ -9,9 +9,9 @@ object LogcatPrinter : Printer {
 
     private const val MAX_LENGTH = 4000
 
-    override fun printLog(@LogConfig.Level logLevel: Int, tag: String, msg: String) {
-        if (msg.getByteUTF8Length() > MAX_LENGTH) {
-            val sp = msg.split(LogConstant.BR)
+    override fun printLog(@LogConfig.Level logLevel: Int, tag: String, log: String) {
+        if (log.getByteUTF8Length() > MAX_LENGTH) {
+            val sp = log.split(LogConstant.BR)
             if (sp.size > 1) {
                 sp.forEachIndexed { index, s ->
                     if (index == 0) {
@@ -22,16 +22,16 @@ object LogcatPrinter : Printer {
                 }
             } else {
                 var i = 0
-                while (i < msg.length) {
-                    if (i + MAX_LENGTH < msg.length) {
-                        if (i == 0) printLog(logLevel, tag, msg.substring(i, i + MAX_LENGTH))
-                        else printLog(logLevel, "", msg.substring(i, i + MAX_LENGTH))
-                    } else printLog(logLevel, "", msg.substring(i, msg.length))
+                while (i < log.length) {
+                    if (i + MAX_LENGTH < log.length) {
+                        if (i == 0) printLog(logLevel, tag, log.substring(i, i + MAX_LENGTH))
+                        else printLog(logLevel, "", log.substring(i, i + MAX_LENGTH))
+                    } else printLog(logLevel, "", log.substring(i, log.length))
                     i += MAX_LENGTH
                 }
             }
         } else {
-            Log.println(logLevel, tag, msg)
+            Log.println(logLevel, tag, log)
         }
     }
 

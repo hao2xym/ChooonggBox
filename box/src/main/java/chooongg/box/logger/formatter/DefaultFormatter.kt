@@ -6,8 +6,12 @@ import chooongg.box.logger.LogConstant
 
 object DefaultFormatter : Formatter {
 
-    override fun top(text: String?) = buildString {
-        append(' ').append(LogConstant.BR)
+    override fun top(childTag: String?, text: String?) = buildString {
+        append(' ')
+        text?.removeLinefeed(" ")?.apply {
+            if (this.isNotEmpty()) append(this)
+        }
+        append(LogConstant.BR)
 
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
@@ -17,9 +21,9 @@ object DefaultFormatter : Formatter {
             .append(LogConstant.D_H_LINE)
         maxLength -= 4
 
-        val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
+        val textLength = childTag?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            append(text)
+            append(childTag)
             maxLength -= textLength
         }
         while (maxLength > 0) {
