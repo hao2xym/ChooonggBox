@@ -4,7 +4,7 @@ import android.util.Log
 import chooongg.box.logger.Logger
 import chooongg.box.logger.formatter.Formatter
 
-class LogcatPrinter(val formatter: Formatter) : LoggerPrinter {
+class LogcatPrinter(private var formatter: Formatter) : LoggerPrinter {
 
     override fun printLog(@Logger.LogLevel logLevel: Int, tag: String, msg: String) {
         when (logLevel) {
