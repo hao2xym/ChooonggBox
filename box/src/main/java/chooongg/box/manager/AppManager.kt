@@ -42,8 +42,4 @@ object AppManager : Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(activity: Activity) = Unit
     override fun onActivityStopped(activity: Activity) = Unit
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
-
-    fun onTerminate() {
-        application?.unregisterActivityLifecycleCallbacks(this)
-    }
 }

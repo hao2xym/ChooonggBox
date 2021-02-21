@@ -1,11 +1,20 @@
 package chooongg.box.simple
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import chooongg.box.Box
+import chooongg.box.ext.doOnClick
+import chooongg.box.logger.formatter.DefaultFormatter
+import chooongg.box.logger.printer.LogcatPrinter
 
 class MainActivity : AppCompatActivity() {
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -16,5 +25,24 @@ class MainActivity : AppCompatActivity() {
 //                showToast("失败")
 //            }
         }.launch(Manifest.permission.CAMERA)
+
+        val msg = buildString {
+            for (i in 0..10) {
+                if (i == 0) {
+                    append(DefaultFormatter.top("Request"))
+                } else {
+                    append(DefaultFormatter.middle("测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文测试中文 ${i}"))
+                }
+                append(DefaultFormatter.separator())
+            }
+            append(DefaultFormatter.bottom())
+        }
+
+        findViewById<TextView>(R.id.tv_text).apply {
+            text = msg.length.toString()
+            doOnClick {
+                LogcatPrinter.printLog(Log.ERROR, Box.TAG, msg)
+            }
+        }
     }
 }

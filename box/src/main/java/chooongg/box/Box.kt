@@ -8,14 +8,10 @@ import chooongg.box.manager.AppManager
  */
 object Box : IBoxInitialize {
 
-    const val TAG = "ChooonggBox"
+    const val TAG = "Box"
 
     override fun initialize(application: Application) {
         AppManager.initialize(application)
         BoxRelateLibraryConfig.initialize(application)
-    }
-
-    override fun onTerminate() {
-        AppManager.onTerminate()
     }
 }

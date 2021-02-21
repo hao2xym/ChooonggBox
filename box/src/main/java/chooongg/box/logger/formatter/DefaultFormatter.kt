@@ -1,28 +1,100 @@
 package chooongg.box.logger.formatter
 
-object DefaultFormatter : Formatter() {
+import chooongg.box.ext.getByteGB2312Length
+import chooongg.box.ext.removeLinefeed
+import chooongg.box.logger.LogConstant
 
-    const val TOP_LEFT_CORNER = '╔'
-    const val BOTTOM_LEFT_CORNER = '╚'
-    const val MIDDLE_CORNER = '╟'
-    const val HORIZONTAL_DOUBLE_LINE = "║"
+object DefaultFormatter : Formatter {
 
-    const val DOUBLE_DIVIDER = "═"
-    const val SINGLE_DIVIDER = "─"
+    override fun top(text: String?) = buildString {
+        append(' ').append(LogConstant.BR)
 
-    override fun top(text: String?): String {
-        return ""
+        var maxLength = LogConstant.LINE_MAX_LENGTH
+
+        append(LogConstant.D_TL)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+        maxLength -= 4
+
+        val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
+        if (textLength > 0) {
+            append(text)
+            maxLength -= textLength
+        }
+        while (maxLength > 0) {
+            append(LogConstant.D_H_LINE)
+            maxLength -= 1
+        }
     }
 
-    override fun middle(text: String?): String {
-        return ""
+    override fun middlePrimary(text: String?) = buildString {
+        var maxLength = LogConstant.LINE_MAX_LENGTH
+
+        append(LogConstant.D_MD)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+        maxLength -= 4
+
+        val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
+        if (textLength > 0) {
+            append(LogConstant.BLANK)
+            maxLength -= 1
+
+            append(text)
+            maxLength -= textLength
+
+            append(LogConstant.BLANK)
+            maxLength -= 1
+        }
+        while (maxLength > 0) {
+            append(LogConstant.D_H_LINE)
+            maxLength -= 1
+        }
     }
 
-    override fun separator(): String {
-        return ""
+    override fun middleSecondary(text: String?) = buildString {
+        var maxLength = LogConstant.LINE_MAX_LENGTH
+
+        append(LogConstant.D_ML)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.D_H_LINE)
+        maxLength -= 4
+
+        val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
+        if (textLength > 0) {
+            append(LogConstant.BLANK)
+            maxLength -= 1
+
+            append(text)
+            maxLength -= textLength
+
+            append(LogConstant.BLANK)
+            maxLength -= 1
+        }
+        while (maxLength > 0) {
+            append(LogConstant.D_H_LINE)
+            maxLength -= 1
+        }
     }
 
-    override fun bottom(): String {
-        return ""
+    override fun middle(text: String?) = buildString {
+        append(LogConstant.D_V_LINE).append(' ').append(text ?: "")
     }
+
+    override fun bottom() = buildString {
+        var maxLength = LogConstant.LINE_MAX_LENGTH
+
+        append(LogConstant.D_BL)
+        maxLength -= 1
+
+        while (maxLength > 0) {
+            append(LogConstant.D_H_LINE)
+            maxLength -= 1
+        }
+    }
+
+    override fun separator() = LogConstant.BR
 }

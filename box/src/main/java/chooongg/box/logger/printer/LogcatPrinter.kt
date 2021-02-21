@@ -1,29 +1,40 @@
 package chooongg.box.logger.printer
 
 import android.util.Log
-import chooongg.box.logger.Logger
-import chooongg.box.logger.formatter.Formatter
+import chooongg.box.ext.getByteUTF8Length
+import chooongg.box.logger.LogConfig
+import chooongg.box.logger.LogConstant
 
-class LogcatPrinter(private var formatter: Formatter) : LoggerPrinter {
+object LogcatPrinter : Printer {
 
-    override fun printLog(@Logger.LogLevel logLevel: Int, tag: String, msg: String) {
-        when (logLevel) {
-            Log.VERBOSE -> Log.v(tag, msg)
-            Log.DEBUG -> Log.d(tag, msg)
-            Log.INFO -> Log.i(tag, msg)
-            Log.WARN -> Log.w(tag, msg)
-            Log.ERROR -> Log.e(tag, msg)
-            Log.ASSERT -> Log.wtf(tag, msg)
+    private const val MAX_LENGTH = 4000
+
+    override fun printLog(@LogConfig.Level logLevel: Int, tag: String, msg: String) {
+        if (msg.getByteUTF8Length() > MAX_LENGTH) {
+            val sp = msg.split(LogConstant.BR)
+            if (sp.size > 1) {
+                sp.forEachIndexed { index, s ->
+                    if (index == 0) {
+                        printLog(logLevel, tag, s)
+                    } else {
+                        printLog(logLevel, "", s)
+                    }
+                }
+            } else {
+                var i = 0
+                while (i < msg.length) {
+                    if (i + MAX_LENGTH < msg.length) {
+                        if (i == 0) printLog(logLevel, tag, msg.substring(i, i + MAX_LENGTH))
+                        else printLog(logLevel, "", msg.substring(i, i + MAX_LENGTH))
+                    } else printLog(logLevel, "", msg.substring(i, msg.length))
+                    i += MAX_LENGTH
+                }
+            }
+        } else {
+            Log.println(logLevel, tag, msg)
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other is LogcatPrinter && other.formatter == formatter) return true
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return formatter.hashCode()
-    }
+    override fun equals(other: Any?) = other == this
+    override fun hashCode() = javaClass.hashCode()
 }

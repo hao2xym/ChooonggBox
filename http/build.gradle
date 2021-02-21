@@ -28,5 +28,5 @@ dependencies {
     implementation project(path: ':box')
     api 'com.squareup.okhttp3:okhttp:4.9.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.google.code.gson:gson:2.8.6'
+    api 'com.alibaba:fastjson:1.1.72.android'
 }
