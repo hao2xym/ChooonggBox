@@ -8,6 +8,11 @@ import chooongg.box.log.formatter.Formatter
 interface LogHandler {
 
     /**
+     * 子标签
+     */
+    fun getChildTag(any: Any): String?
+
+    /**
      * 是否能处理
      */
     fun isHandler(any: Any): Boolean

@@ -7,12 +7,9 @@ import chooongg.box.Box
 import chooongg.box.BuildConfig
 import chooongg.box.log.formatter.DefaultFormatter
 import chooongg.box.log.formatter.Formatter
-import chooongg.box.log.handler.AnyLogHandler
-import chooongg.box.log.handler.LogHandler
 import chooongg.box.log.printer.LogcatPrinter
 import chooongg.box.log.printer.Printer
 import java.util.*
-import kotlin.collections.ArrayList
 
 class LogConfig {
 
@@ -62,9 +59,7 @@ class LogConfig {
     /**
      * 日志处理器
      */
-    val handlers = ArrayList<LogHandler>().apply {
-        add(AnyLogHandler)
-    }
+    val handlers = LogConstant.getDefaultHandlers()
 
     /**
      * 日志打印器

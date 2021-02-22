@@ -1,4 +1,4 @@
-package chooongg.box.log.handler
-
-object MapLogHandler : LogHandler {
-}
+//package chooongg.box.log.handler
+//
+//object MapLogHandler : LogHandler {
+//}

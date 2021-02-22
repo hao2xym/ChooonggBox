@@ -7,6 +7,6 @@ import chooongg.box.Box
 object BoxHttp {
     @JvmStatic
     fun initialize(application: Application) {
-        Log.d(Box.TAG, "initialize: ${BuildConfig.LIBRARY_PACKAGE_NAME}")
+        Log.d(Box.TAG, "[initialize: ${BuildConfig.LIBRARY_PACKAGE_NAME}]")
     }
 }

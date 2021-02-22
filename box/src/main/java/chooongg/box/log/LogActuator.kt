@@ -72,21 +72,30 @@ object LogActuator {
 
         // Content
         any.forEach {
-            log.append(config.formatter.separator())
-            var content = if (it is LogBean) {
-                log.append(config.formatter.middleSecondary(it.childTag))
-                it.any
+            val contentTag: String?
+            val content: Any?
+            if (it is LogBean) {
+                contentTag = it.childTag
+                content = it.any
             } else {
-                log.append(config.formatter.middleSecondary(null))
-                it
+                contentTag = null
+                content = it
             }
             if (content == null) {
                 log.append(config.formatter.separator())
-                    .append(config.formatter.middle("[Object is Null!]"))
+                    .append(config.formatter.middle(LogConstant.NONE))
             } else {
-                for (i in 0 until config.handlers.size) {
+                for (i in config.handlers.size - 1 downTo 0) {
                     val handler = config.handlers[i]
                     if (handler.isHandler(content)) {
+                        // add contentMiddle
+                        log.append(config.formatter.separator())
+                            .append(
+                                config.formatter.middleSecondary(
+                                    contentTag ?: handler.getChildTag(content)
+                                )
+                            )
+                        // add content
                         val handlerContent = handler.handler(config.formatter, content)
                         handlerContent.forEach { text ->
                             log.append(config.formatter.separator())

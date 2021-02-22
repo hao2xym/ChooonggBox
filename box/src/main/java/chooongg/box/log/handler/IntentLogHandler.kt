@@ -1,4 +1,4 @@
-package chooongg.box.log.handler
-
-object IntentLogHandler : LogHandler {
-}
+//package chooongg.box.log.handler
+//
+//object IntentLogHandler : LogHandler {
+//}

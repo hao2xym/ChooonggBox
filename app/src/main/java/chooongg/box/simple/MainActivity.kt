@@ -26,7 +26,27 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tv_text).apply {
             text = System.currentTimeMillis().toString()
             doOnClick {
-                BoxLog.eTagChild("测试打印", "测试打印\n测试打印", "测试打印")
+                BoxLog.eTagChild("Test", "测试打印\n测试打印", Bundle().apply {
+                    putByte("byte", 123)
+                    putChar("char", 'c')
+                    putCharArray("charArray", charArrayOf('c', 'a'))
+                    putCharSequence("charSequence", "charSequence")
+                    putFloat("float", 3.4f)
+                    putBundle("bundle", Bundle().apply {
+                        putByte("byte", 123)
+                        putChar("char", 'c')
+                        putCharArray("charArray", charArrayOf('c', 'a'))
+                        putCharSequence("charSequence", "charSequence")
+                        putFloat("float", 3.4f)
+                        putBundle("bundle", Bundle().apply {
+                            putByte("byte", 123)
+                            putChar("char", 'c')
+                            putCharArray("charArray", charArrayOf('c', 'a'))
+                            putCharSequence("charSequence", "charSequence")
+                            putFloat("float", 3.4f)
+                        })
+                    })
+                })
             }
         }
     }

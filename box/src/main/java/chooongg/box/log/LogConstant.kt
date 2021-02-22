@@ -1,12 +1,20 @@
 package chooongg.box.log
 
+import chooongg.box.log.handler.AnyLogHandler
+import chooongg.box.log.handler.BundleLogHandler
+
 object LogConstant {
+
+    fun getDefaultHandlers() = arrayListOf(
+        AnyLogHandler,
+        BundleLogHandler
+    )
 
     const val DEFAULT_STACK_OFFSET = 3
 
     const val LINE_MAX_LENGTH = 120
 
-    const val CHILD_FORMAT_STEP = 4
+    const val FORMAT_STEP = 3
 
     const val D_TL = '╔'
     const val D_MD = '╠'
@@ -25,6 +33,13 @@ object LogConstant {
 
     const val BLANK = ' '
 
+    const val NONE = "[Params is Null!]"
+
     val BR = System.getProperty("line.separator")!! // 换行符
 
+    fun stepBlank() = buildString {
+        for (i in 0 until FORMAT_STEP) {
+            append(BLANK)
+        }
+    }
 }

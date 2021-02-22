@@ -41,14 +41,8 @@ object NoVerticalLineFormatter : Formatter {
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            append(LogConstant.BLANK)
-            maxLength -= 1
-
             append(text)
             maxLength -= textLength
-
-            append(LogConstant.BLANK)
-            maxLength -= 1
         }
         while (maxLength > 0) {
             append(LogConstant.D_H_LINE)
@@ -67,14 +61,8 @@ object NoVerticalLineFormatter : Formatter {
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            append(LogConstant.BLANK)
-            maxLength -= 1
-
             append(text)
             maxLength -= textLength
-
-            append(LogConstant.BLANK)
-            maxLength -= 1
         }
         while (maxLength > 0) {
             append(LogConstant.L_H_LINE)
