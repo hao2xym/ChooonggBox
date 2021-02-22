@@ -1,10 +1,12 @@
-package chooongg.box.logger
+package chooongg.box.log
 
 object LogConstant {
 
     const val DEFAULT_STACK_OFFSET = 3
 
     const val LINE_MAX_LENGTH = 120
+
+    const val CHILD_FORMAT_STEP = 4
 
     const val D_TL = '╔'
     const val D_MD = '╠'

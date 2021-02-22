@@ -1,4 +1,4 @@
-package chooongg.box.logger.formatter
+package chooongg.box.log.formatter
 
 /**
  * @since: V2.0 格式化日志，便于 Printer 进行打印。每一个 Printer 包含一个自身的 Formatter

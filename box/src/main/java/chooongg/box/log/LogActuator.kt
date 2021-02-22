@@ -1,4 +1,4 @@
-package chooongg.box.logger
+package chooongg.box.log
 
 import java.util.*
 import kotlin.math.min
@@ -44,7 +44,7 @@ object LogActuator {
                     .toString()
                 if (config.stackDeep <= 1) {
                     log.append(config.formatter.separator()).append(config.formatter.middle(head))
-                }else {
+                } else {
                     val consoleHead = arrayOfNulls<String>(
                         min(config.stackDeep, stackTrace.size - stackIndex)
                     )
@@ -71,7 +71,32 @@ object LogActuator {
         }
 
         // Content
-
+        any.forEach {
+            log.append(config.formatter.separator())
+            var content = if (it is LogBean) {
+                log.append(config.formatter.middleSecondary(it.childTag))
+                it.any
+            } else {
+                log.append(config.formatter.middleSecondary(null))
+                it
+            }
+            if (content == null) {
+                log.append(config.formatter.separator())
+                    .append(config.formatter.middle("[Object is Null!]"))
+            } else {
+                for (i in 0 until config.handlers.size) {
+                    val handler = config.handlers[i]
+                    if (handler.isHandler(content)) {
+                        val handlerContent = handler.handler(config.formatter, content)
+                        handlerContent.forEach { text ->
+                            log.append(config.formatter.separator())
+                                .append(config.formatter.middle(text))
+                        }
+                        break
+                    }
+                }
+            }
+        }
 
         // End
         log.append(config.formatter.separator()).append(config.formatter.bottom())

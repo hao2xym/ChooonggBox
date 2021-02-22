@@ -1,9 +1,9 @@
-package chooongg.box.logger.printer
+package chooongg.box.log.printer
 
 import android.util.Log
 import chooongg.box.ext.getByteUTF8Length
-import chooongg.box.logger.LogConfig
-import chooongg.box.logger.LogConstant
+import chooongg.box.log.LogConfig
+import chooongg.box.log.LogConstant
 
 object LogcatPrinter : Printer {
 

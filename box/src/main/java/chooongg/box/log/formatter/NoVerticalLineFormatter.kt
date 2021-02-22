@@ -1,16 +1,14 @@
-package chooongg.box.logger.formatter
+package chooongg.box.log.formatter
 
 import chooongg.box.ext.getByteGB2312Length
 import chooongg.box.ext.removeLinefeed
-import chooongg.box.logger.LogConstant
+import chooongg.box.log.LogConstant
 
-object DefaultFormatter : Formatter {
+object NoVerticalLineFormatter : Formatter {
 
     override fun top(childTag: String?, text: String?) = buildString {
-        append(' ')
-        text?.removeLinefeed(" ")?.apply {
-            if (this.isNotEmpty()) append(this)
-        }
+        val textProcessed = text?.removeLinefeed(" ")
+        if (textProcessed.isNullOrEmpty()) append(' ') else append(textProcessed)
         append(LogConstant.BR)
 
         var maxLength = LogConstant.LINE_MAX_LENGTH
@@ -62,9 +60,9 @@ object DefaultFormatter : Formatter {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
         append(LogConstant.D_ML)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
+            .append(LogConstant.L_H_LINE)
+            .append(LogConstant.L_H_LINE)
+            .append(LogConstant.L_H_LINE)
         maxLength -= 4
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
@@ -79,13 +77,13 @@ object DefaultFormatter : Formatter {
             maxLength -= 1
         }
         while (maxLength > 0) {
-            append(LogConstant.D_H_LINE)
+            append(LogConstant.L_H_LINE)
             maxLength -= 1
         }
     }
 
     override fun middle(text: String?) = buildString {
-        append(LogConstant.D_V_LINE).append(' ').append(text ?: "")
+        append(LogConstant.BLANK).append(LogConstant.BLANK).append(text ?: "")
     }
 
     override fun bottom() = buildString {

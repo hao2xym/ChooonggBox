@@ -1,6 +1,6 @@
-package chooongg.box.logger.printer
+package chooongg.box.log.printer
 
-import chooongg.box.logger.LogConfig
+import chooongg.box.log.LogConfig
 
 interface Printer {
 
