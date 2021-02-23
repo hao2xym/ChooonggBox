@@ -9,7 +9,6 @@ import chooongg.box.log.formatter.DefaultFormatter
 import chooongg.box.log.formatter.Formatter
 import chooongg.box.log.printer.LogcatPrinter
 import chooongg.box.log.printer.Printer
-import java.util.*
 
 class LogConfig {
 
@@ -64,7 +63,7 @@ class LogConfig {
     /**
      * 日志打印器
      */
-    val printers = LinkedList<Printer>().apply {
+    val printers = LinkedHashSet<Printer>().apply {
         add(LogcatPrinter)
     }
 }

@@ -1,16 +1,11 @@
 package chooongg.box.log.handler
 
-import chooongg.box.log.formatter.Formatter
+import chooongg.box.log.LogConfig
 
 /**
  * Log处理
  */
 interface LogHandler {
-
-    /**
-     * 子标签
-     */
-    fun getChildTag(any: Any): String?
 
     /**
      * 是否能处理
@@ -20,6 +15,6 @@ interface LogHandler {
     /**
      * 处理
      */
-    fun handler(formatter: Formatter, any: Any): List<String>
+    fun handler(config: LogConfig, any: Any): List<String>
 
 }

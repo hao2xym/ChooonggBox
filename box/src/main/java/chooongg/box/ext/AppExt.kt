@@ -31,10 +31,3 @@ fun isAppDebug(packageName: String = APP.packageName): Boolean {
 fun debug(init: () -> Unit) {
     if (BuildConfig.DEBUG) init()
 }
-
-/**
- * Release才运行的代码块
- */
-fun unDebug(init: () -> Unit) {
-    if (!BuildConfig.DEBUG) init()
-}

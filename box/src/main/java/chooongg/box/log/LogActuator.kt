@@ -71,38 +71,26 @@ object LogActuator {
         }
 
         // Content
-        any.forEach {
+        any.forEach { item ->
             val contentTag: String?
             val content: Any?
-            if (it is LogBean) {
-                contentTag = it.childTag
-                content = it.any
+            if (item is LogBean) {
+                contentTag = item.childTag
+                content = item.any
             } else {
                 contentTag = null
-                content = it
+                content = item
             }
             if (content == null) {
                 log.append(config.formatter.separator())
                     .append(config.formatter.middle(LogConstant.NONE))
             } else {
-                for (i in config.handlers.size - 1 downTo 0) {
-                    val handler = config.handlers[i]
-                    if (handler.isHandler(content)) {
-                        // add contentMiddle
-                        log.append(config.formatter.separator())
-                            .append(
-                                config.formatter.middleSecondary(
-                                    contentTag ?: handler.getChildTag(content)
-                                )
-                            )
-                        // add content
-                        val handlerContent = handler.handler(config.formatter, content)
-                        handlerContent.forEach { text ->
-                            log.append(config.formatter.separator())
-                                .append(config.formatter.middle(text))
-                        }
-                        break
-                    }
+                log.append(config.formatter.separator())
+                    .append(config.formatter.middleSecondary(contentTag))
+
+                handlerLoop(config, content).forEach { text ->
+                    log.append(config.formatter.separator())
+                        .append(config.formatter.middle(text))
                 }
             }
         }
@@ -112,6 +100,19 @@ object LogActuator {
 
         config.printers.forEach {
             it.printLog(level ?: config.defaultLevel, tag ?: config.tag, log.toString())
+        }
+    }
+
+    fun handlerLoop(config: LogConfig, any: Any?): List<String> = ArrayList<String>().apply {
+        if (any == null) {
+            add(LogConstant.NONE)
+            return@apply
+        }
+        config.handlers.reversed().forEach { handler ->
+            if (handler.isHandler(any)) {
+                addAll(handler.handler(config, any))
+                return@apply
+            }
         }
     }
 
