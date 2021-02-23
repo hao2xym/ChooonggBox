@@ -71,7 +71,7 @@ object LogActuator {
         }
 
         // Content
-        any.forEach { item ->
+        any.forEachIndexed { index, item ->
             val contentTag: String?
             val content: Any?
             if (item is LogBean) {
@@ -86,7 +86,11 @@ object LogActuator {
                     .append(config.formatter.middle(LogConstant.NONE))
             } else {
                 log.append(config.formatter.separator())
-                    .append(config.formatter.middleSecondary(contentTag))
+                if (index == 0) {
+                    log.append(config.formatter.middlePrimary(contentTag))
+                } else {
+                    log.append(config.formatter.middleSecondary(contentTag))
+                }
 
                 handlerLoop(config, content).forEach { text ->
                     log.append(config.formatter.separator())

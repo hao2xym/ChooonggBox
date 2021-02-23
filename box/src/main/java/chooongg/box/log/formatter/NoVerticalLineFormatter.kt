@@ -13,19 +13,30 @@ object NoVerticalLineFormatter : Formatter {
 
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
-        append(LogConstant.D_TL)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
-        maxLength -= 4
+        append(LogConstant.TABS_DL_DT)
+        maxLength -= 1
+        for (i in 0 until LogConstant.CHILD_TAG_OFFSET) {
+            append(LogConstant.TABS_DM_NN)
+            maxLength -= 1
+        }
 
         val textLength = childTag?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.TABS_DR_DB).append(LogConstant.BLANK)
+                maxLength -= 2
+            }
+
             append(childTag)
             maxLength -= textLength
+
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.BLANK).append(LogConstant.TABS_DL_DB)
+                maxLength -= 2
+            }
         }
         while (maxLength > 0) {
-            append(LogConstant.D_H_LINE)
+            append(LogConstant.TABS_DM_NN)
             maxLength -= 1
         }
     }
@@ -33,19 +44,30 @@ object NoVerticalLineFormatter : Formatter {
     override fun middlePrimary(text: String?) = buildString {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
-        append(LogConstant.D_MD)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
-            .append(LogConstant.D_H_LINE)
-        maxLength -= 4
+        append(LogConstant.TABS_DL_DM)
+        maxLength -= 1
+        for (i in 0 until LogConstant.CONTENT_TAG_OFFSET) {
+            append(LogConstant.TABS_DM_NN)
+            maxLength -= 1
+        }
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.TABS_DR_SB).append(LogConstant.BLANK)
+                maxLength -= 2
+            }
+
             append(text)
             maxLength -= textLength
+
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.BLANK).append(LogConstant.TABS_DL_SB)
+                maxLength -= 2
+            }
         }
         while (maxLength > 0) {
-            append(LogConstant.D_H_LINE)
+            append(LogConstant.TABS_DM_NN)
             maxLength -= 1
         }
     }
@@ -53,19 +75,30 @@ object NoVerticalLineFormatter : Formatter {
     override fun middleSecondary(text: String?) = buildString {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
-        append(LogConstant.D_ML)
-            .append(LogConstant.L_H_LINE)
-            .append(LogConstant.L_H_LINE)
-            .append(LogConstant.L_H_LINE)
-        maxLength -= 4
+        append(LogConstant.TABS_SL_DM)
+        maxLength -= 1
+        for (i in 0 until LogConstant.CONTENT_TAG_OFFSET) {
+            append(LogConstant.TABS_SM_NN)
+            maxLength -= 1
+        }
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.TABS_SR_SB).append(LogConstant.BLANK)
+                maxLength -= 2
+            }
+
             append(text)
             maxLength -= textLength
+
+            if (LogConstant.TAG_HIGHLIGHT) {
+                append(LogConstant.BLANK).append(LogConstant.TABS_SL_SB)
+                maxLength -= 2
+            }
         }
         while (maxLength > 0) {
-            append(LogConstant.L_H_LINE)
+            append(LogConstant.TABS_SM_NN)
             maxLength -= 1
         }
     }
@@ -77,11 +110,11 @@ object NoVerticalLineFormatter : Formatter {
     override fun bottom() = buildString {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
-        append(LogConstant.D_BL)
+        append(LogConstant.TABS_DL_DB)
         maxLength -= 1
 
         while (maxLength > 0) {
-            append(LogConstant.D_H_LINE)
+            append(LogConstant.TABS_DM_NN)
             maxLength -= 1
         }
     }
