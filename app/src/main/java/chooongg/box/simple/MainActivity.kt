@@ -3,6 +3,7 @@ package chooongg.box.simple
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import chooongg.box.ext.doOnClick
 import chooongg.box.log.BoxLog
 import chooongg.box.log.LogBean
-import com.alibaba.fastjson.JSON
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,11 +33,16 @@ class MainActivity : AppCompatActivity() {
                 BoxLog.eTagChild(
                     "Test",
                     LogBean("TTT", "测试打印\n测试打印"),
-                    arrayOf("Asdfasdf", "asdfasdf", "asdfasdfasdf"),
-                    JSON.toJSONString(Intent(context, MainActivity::class.java)),
+                    arrayOf("Asdfasdf", "asdfasdf", null),
+                    Intent(Intent.ACTION_DIAL, Uri.parse("tel:4001790720l")),
+                    Intent(Intent.ACTION_VIEW).apply {
+                        data = Uri.parse("http://www.baidu.com/")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    },
                     Bundle().apply {
                         putString("sdfa", "asdasdg")
                         putInt("wefsz", 17858)
+                        putFloatArray("floatArray", floatArrayOf(0f, 1f, 2f, 3f))
                         putBundle("bundle", Bundle().apply {
                             putString("sdfa", "asdasdg")
                             putInt("wefsz", 17858)

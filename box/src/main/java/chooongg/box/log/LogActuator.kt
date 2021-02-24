@@ -16,18 +16,13 @@ object LogActuator {
         val log = StringBuilder()
 
         // ThreadInfo
-        log.append(
-            config.formatter.top(
-                childTag, if (config.showThreadInfo) {
-                    "[Thread: ${Thread.currentThread().name}]"
-                } else {
-                    null
-                }
-            )
-        )
+        val threadInfo =
+            if (config.showThreadInfo) "[Thread: ${Thread.currentThread().name}]" else null
 
         // StackInfo
         if (config.showStackInfo) {
+            log.append(config.formatter.top(threadInfo, childTag, null))
+
             val stackTrace = Throwable().stackTrace
             val stackIndex = LogConstant.DEFAULT_STACK_OFFSET + config.stackOffset
             if (stackIndex < stackTrace.size) {
@@ -74,29 +69,33 @@ object LogActuator {
         any.forEachIndexed { index, item ->
             val contentTag: String?
             val content: Any?
-            when {
-                item is LogBean -> {
-                    contentTag = "${item.childTag}~${item::class.simpleName}~"
-                    content = item.any
-                }
-                item != null -> {
-                    contentTag = "~${item::class.simpleName}~"
-                    content = item
-                }
-                else -> {
-                    contentTag = null
-                    content = item
-                }
+            val isShowType: Boolean
+            if (item is LogBean) {
+                contentTag = "${item.contentTag}"
+                content = item.any
+                isShowType = item.isShowType
+            } else {
+                contentTag = null
+                content = item
+                isShowType = true
             }
             if (content == null) {
                 log.append(config.formatter.separator())
                     .append(config.formatter.middle(LogConstant.NONE))
             } else {
+                val contentClassType = if (isShowType) content::class.simpleName else null
                 log.append(config.formatter.separator())
                 if (index == 0) {
-                    log.append(config.formatter.middlePrimary(contentTag))
+                    if (config.showStackInfo) {
+                        log.append(config.formatter.middlePrimary(contentTag, contentClassType))
+                    } else {
+                        val tempTag = if (childTag != null && contentTag != null) {
+                            "$childTag/$contentTag"
+                        } else childTag ?: contentTag
+                        log.append(config.formatter.top(threadInfo, tempTag, contentClassType))
+                    }
                 } else {
-                    log.append(config.formatter.middleSecondary(contentTag))
+                    log.append(config.formatter.middleSecondary(contentTag, contentClassType))
                 }
 
                 handlerLoop(config, content).forEach { text ->

@@ -4,7 +4,6 @@ import android.os.Bundle
 import chooongg.box.log.LogActuator
 import chooongg.box.log.LogConfig
 import chooongg.box.log.LogConstant
-import org.json.JSONObject
 
 object BundleLogHandler : LogHandler {
 
@@ -18,26 +17,18 @@ object BundleLogHandler : LogHandler {
             return@apply
         }
         add("{")
-        val step = LogConstant.stepBlank()
-        val json = JSONObject()
-        keys.forEach { key ->
+        keys.forEachIndexed { index, key ->
+            val lastPunctuation = if (index == keys.size - 1) "" else ","
             val values = LogActuator.handlerLoop(config, bundle.get(key))
             when {
-                values.isEmpty() -> {
-                    json.put(key, null)
-                }
-                values.size == 1 -> {
-                    json.put(key, values[0])
-                }
-                else -> {
-
-                }
-            }
-            LogActuator.handlerLoop(config, bundle.get(key)).forEachIndexed { index, text ->
-                when (index) {
-                    0 -> add("${step}\"${key}\": $text")
-                    config.handlers.size - 1 -> add("${step}${text}")
-                    else -> add("${step}${text},")
+                values.isEmpty() -> add("${LogConstant.FORMAT_STEP}\"${key}\":null${lastPunctuation}")
+                values.size == 1 -> add("${LogConstant.FORMAT_STEP}\"${key}\":${values[0]}${lastPunctuation}")
+                else -> values.forEachIndexed { childIndex, text ->
+                    when (childIndex) {
+                        0 -> add("${LogConstant.FORMAT_STEP}\"${key}\":$text")
+                        values.size - 1 -> add("${LogConstant.FORMAT_STEP}$text${lastPunctuation}")
+                        else -> add("${LogConstant.FORMAT_STEP}$text")
+                    }
                 }
             }
         }

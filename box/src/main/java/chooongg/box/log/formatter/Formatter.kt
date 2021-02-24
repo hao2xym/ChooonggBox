@@ -9,17 +9,17 @@ interface Formatter {
     /**
      * 顶部
      */
-    fun top(childTag: String?, text: String?): String
+    fun top(childTag: String?, text: String?, type: String?): String
 
     /**
      * 中间主要
      */
-    fun middlePrimary(text: String?): String
+    fun middlePrimary(text: String?, type: String?): String
 
     /**
      * 中间次要
      */
-    fun middleSecondary(text: String?): String
+    fun middleSecondary(text: String?, type: String?): String
 
     /**
      * 中间内容

@@ -4,10 +4,10 @@ import chooongg.box.ext.getByteGB2312Length
 import chooongg.box.ext.removeLinefeed
 import chooongg.box.log.LogConstant
 
-object NoVerticalLineFormatter : Formatter {
+object DefaultNoLineFormatter : Formatter {
 
-    override fun top(childTag: String?, text: String?) = buildString {
-        val textProcessed = text?.removeLinefeed(" ")
+    override fun top(childTag: String?, text: String?, type: String?) = buildString {
+        val textProcessed = childTag?.removeLinefeed(" ")
         if (textProcessed.isNullOrEmpty()) append(' ') else append(textProcessed)
         append(LogConstant.BR)
 
@@ -20,91 +20,115 @@ object NoVerticalLineFormatter : Formatter {
             maxLength -= 1
         }
 
-        val textLength = childTag?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
+        val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.TABS_DR_DB).append(LogConstant.BLANK)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
 
-            append(childTag)
+            append(text)
             maxLength -= textLength
 
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.BLANK).append(LogConstant.TABS_DL_DB)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
         }
+        val typeLength = type.getByteGB2312Length()
         while (maxLength > 0) {
             append(LogConstant.TABS_DM_NN)
             maxLength -= 1
+
+            if (type != null && LogConstant.CHILD_TYPE_OFFSET + typeLength == maxLength) {
+                append('<')
+                maxLength -= 1
+
+                append(type)
+                maxLength -= typeLength
+
+                append('>')
+                maxLength -= 1
+            }
         }
     }
 
-    override fun middlePrimary(text: String?) = buildString {
+    override fun middlePrimary(text: String?, type: String?) = buildString {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
         append(LogConstant.TABS_DL_DM)
         maxLength -= 1
-        for (i in 0 until LogConstant.CONTENT_TAG_OFFSET) {
+        for (i in 0 until LogConstant.CHILD_TAG_OFFSET) {
             append(LogConstant.TABS_DM_NN)
             maxLength -= 1
         }
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.TABS_DR_SB).append(LogConstant.BLANK)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
 
             append(text)
             maxLength -= textLength
 
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.BLANK).append(LogConstant.TABS_DL_SB)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
         }
+        val typeLength = type.getByteGB2312Length()
         while (maxLength > 0) {
             append(LogConstant.TABS_DM_NN)
             maxLength -= 1
+
+            if (type != null && LogConstant.CHILD_TYPE_OFFSET + typeLength == maxLength) {
+                append('<')
+                maxLength -= 1
+
+                append(type)
+                maxLength -= typeLength
+
+                append('>')
+                maxLength -= 1
+            }
         }
     }
 
-    override fun middleSecondary(text: String?) = buildString {
+    override fun middleSecondary(text: String?, type: String?) = buildString {
         var maxLength = LogConstant.LINE_MAX_LENGTH
 
         append(LogConstant.TABS_SL_DM)
         maxLength -= 1
-        for (i in 0 until LogConstant.CONTENT_TAG_OFFSET) {
+        for (i in 0 until LogConstant.CHILD_TAG_OFFSET) {
             append(LogConstant.TABS_SM_NN)
             maxLength -= 1
         }
 
         val textLength = text?.removeLinefeed(" ")?.getByteGB2312Length() ?: 0
         if (textLength > 0) {
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.TABS_SR_SB).append(LogConstant.BLANK)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
 
             append(text)
             maxLength -= textLength
 
-            if (LogConstant.TAG_HIGHLIGHT) {
-                append(LogConstant.BLANK).append(LogConstant.TABS_SL_SB)
-                maxLength -= 2
-            }
+            append(LogConstant.BLANK)
+            maxLength -= 1
         }
+        val typeLength = type.getByteGB2312Length()
         while (maxLength > 0) {
             append(LogConstant.TABS_SM_NN)
             maxLength -= 1
+
+            if (type != null && LogConstant.CHILD_TYPE_OFFSET + typeLength == maxLength) {
+                append('<')
+                maxLength -= 1
+
+                append(type)
+                maxLength -= typeLength
+
+                append('>')
+                maxLength -= 1
+            }
         }
     }
 
     override fun middle(text: String?) = buildString {
-        append(LogConstant.BLANK).append(LogConstant.BLANK).append(text ?: "")
+        append(LogConstant.BLANK).append(text ?: "")
     }
 
     override fun bottom() = buildString {

@@ -38,7 +38,6 @@ import android.view.accessibility.AccessibilityManager
 import android.view.accessibility.CaptioningManager
 import android.view.inputmethod.InputMethodManager
 import android.view.textservice.TextServicesManager
-import androidx.annotation.RequiresApi
 
 inline val Context.accessibilityManager
     get() = getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
@@ -53,7 +52,6 @@ inline val Context.alarmManager
     get() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
 inline val Context.appWidgetManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager
 
 inline val Context.appOpsManager
@@ -63,14 +61,12 @@ inline val Context.audioManager
     get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
 inline val Context.batteryManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.BATTERY_SERVICE) as BatteryManager
 
 inline val Context.bluetoothManager
     get() = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
 
 inline val Context.cameraManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
 inline val Context.captioningManager
@@ -104,14 +100,12 @@ inline val Context.inputManager
     get() = getSystemService(Context.INPUT_SERVICE) as InputManager
 
 inline val Context.jobScheduler
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
 
 inline val Context.keyguardManager
     get() = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
 
 inline val Context.launcherApps
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps
 
 inline val Context.layoutInflater
@@ -121,14 +115,12 @@ inline val Context.locationManager
     get() = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
 inline val Context.mediaProjectionManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager
 
 inline val Context.mediaRouter
     get() = getSystemService(Context.MEDIA_ROUTER_SERVICE) as MediaRouter
 
 inline val Context.mediaSessionManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.MEDIA_SESSION_SERVICE) as MediaSessionManager
 
 inline val Context.nfcManager
@@ -147,7 +139,6 @@ inline val Context.printManager
     get() = getSystemService(Context.PRINT_SERVICE) as PrintManager
 
 inline val Context.restrictionsManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.RESTRICTIONS_SERVICE) as RestrictionsManager
 
 inline val Context.searchManager
@@ -160,7 +151,6 @@ inline val Context.storageManager
     get() = getSystemService(Context.STORAGE_SERVICE) as StorageManager
 
 inline val Context.telecomManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
 
 inline val Context.telephonyManager
@@ -170,7 +160,6 @@ inline val Context.textServicesManager
     get() = getSystemService(Context.TEXT_SERVICES_MANAGER_SERVICE) as TextServicesManager
 
 inline val Context.tvInputManager
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     get() = getSystemService(Context.TV_INPUT_SERVICE) as TvInputManager
 
 inline val Context.uiModeManager

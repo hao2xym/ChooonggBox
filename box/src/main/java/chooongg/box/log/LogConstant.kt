@@ -13,14 +13,14 @@ object LogConstant {
     const val DEFAULT_STACK_OFFSET = 3
 
     const val LINE_MAX_LENGTH = 120
-    const val TAG_HIGHLIGHT = false
     const val CHILD_TAG_OFFSET = 5
-    const val CONTENT_TAG_OFFSET = 5
+    const val CHILD_TYPE_OFFSET = 5
 
     const val TABS_DM_NN = '═'
     const val TABS_NN_DM = '║'
     const val TABS_SM_NN = '─'
     const val TABS_NN_SM = '│'
+
 
     /**
      * ╔ ╦ ╗
@@ -88,11 +88,5 @@ object LogConstant {
 
     const val NONE = "[Params is Null!]"
 
-    const val FORMAT_STEP = 3
-
-    fun stepBlank() = buildString {
-        for (i in 0 until FORMAT_STEP) {
-            append(BLANK)
-        }
-    }
+    const val FORMAT_STEP = "    "
 }
