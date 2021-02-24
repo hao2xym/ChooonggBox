@@ -21,6 +21,18 @@ object BundleLogHandler : LogHandler {
         val step = LogConstant.stepBlank()
         val json = JSONObject()
         keys.forEach { key ->
+            val values = LogActuator.handlerLoop(config, bundle.get(key))
+            when {
+                values.isEmpty() -> {
+                    json.put(key, null)
+                }
+                values.size == 1 -> {
+                    json.put(key, values[0])
+                }
+                else -> {
+
+                }
+            }
             LogActuator.handlerLoop(config, bundle.get(key)).forEachIndexed { index, text ->
                 when (index) {
                     0 -> add("${step}\"${key}\": $text")

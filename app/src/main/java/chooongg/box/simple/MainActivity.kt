@@ -33,7 +33,20 @@ class MainActivity : AppCompatActivity() {
                 BoxLog.eTagChild(
                     "Test",
                     LogBean("TTT", "测试打印\n测试打印"),
-                    JSON.toJSONString(Intent(context, MainActivity::class.java))
+                    arrayOf("Asdfasdf", "asdfasdf", "asdfasdfasdf"),
+                    JSON.toJSONString(Intent(context, MainActivity::class.java)),
+                    Bundle().apply {
+                        putString("sdfa", "asdasdg")
+                        putInt("wefsz", 17858)
+                        putBundle("bundle", Bundle().apply {
+                            putString("sdfa", "asdasdg")
+                            putInt("wefsz", 17858)
+                            putBundle("bundle", Bundle().apply {
+                                putString("sdfa", "asdasdg")
+                                putInt("wefsz", 17858)
+                            })
+                        })
+                    }
                 )
             }
         }

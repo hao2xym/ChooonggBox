@@ -74,12 +74,19 @@ object LogActuator {
         any.forEachIndexed { index, item ->
             val contentTag: String?
             val content: Any?
-            if (item is LogBean) {
-                contentTag = item.childTag
-                content = item.any
-            } else {
-                contentTag = null
-                content = item
+            when {
+                item is LogBean -> {
+                    contentTag = "${item.childTag}~${item::class.simpleName}~"
+                    content = item.any
+                }
+                item != null -> {
+                    contentTag = "~${item::class.simpleName}~"
+                    content = item
+                }
+                else -> {
+                    contentTag = null
+                    content = item
+                }
             }
             if (content == null) {
                 log.append(config.formatter.separator())

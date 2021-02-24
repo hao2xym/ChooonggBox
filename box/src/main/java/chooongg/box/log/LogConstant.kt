@@ -1,14 +1,12 @@
 package chooongg.box.log
 
 import chooongg.box.log.handler.AnyLogHandler
-import chooongg.box.log.handler.ArrayLogHandler
 import chooongg.box.log.handler.BundleLogHandler
 
 object LogConstant {
 
     fun getDefaultHandlers() = linkedSetOf(
         AnyLogHandler,
-        ArrayLogHandler,
         BundleLogHandler
     )
 

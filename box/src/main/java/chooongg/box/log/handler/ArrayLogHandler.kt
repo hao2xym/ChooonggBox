@@ -35,13 +35,10 @@ object ArrayLogHandler : LogHandler {
             return@apply
         }
         add("[")
+        array.toList()
         array.forEach { item ->
-            LogActuator.handlerLoop(config, item).forEachIndexed { index, text ->
-                if (index == 0) {
-                    add("${step}$text")
-                } else {
-                    add("${step}${text}")
-                }
+            LogActuator.handlerLoop(config, item).forEach {
+                add("${step}${it}")
             }
         }
         add("]")
