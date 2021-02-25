@@ -1,56 +1,42 @@
 package chooongg.box.simple
 
-import android.Manifest
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import chooongg.box.core.activity.BoxActivity
-import chooongg.box.ext.doOnClick
-import chooongg.box.log.BoxLog
-import chooongg.box.log.LogBean
+import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import chooongg.box.core.activity.BoxViewBindingActivity
+import chooongg.box.ext.layoutInflater
+import chooongg.box.simple.databinding.ActivityMainBinding
+import chooongg.box.simple.databinding.ItemMainBinding
 
-class MainActivity : BoxActivity(R.layout.activity_main) {
+class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
+
+    private val modules by lazy { arrayListOf("") }
+    private val adapter by lazy { Adapter(modules) }
 
     override fun initConfig(savedInstanceState: Bundle?) {
-
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-
-        }.launch(Manifest.permission.CAMERA)
-
-        findViewById<TextView>(R.id.tv_text).apply {
-            text = System.currentTimeMillis().toString()
-            doOnClick {
-                BoxLog.e("测试")
-                BoxLog.eTagChild(
-                    "Test",
-                    LogBean("TTT", "测试打印\n测试打印"),
-                    supportActionBar?.title,
-                    arrayOf("Asdfasdf", "asdfasdf", null),
-                    Intent(Intent.ACTION_DIAL, Uri.parse("tel:4001790720l")),
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse("http://www.baidu.com/")
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    },
-                    Bundle().apply {
-                        putString("sdfa", "asdasdg")
-                        putInt("wefsz", 17858)
-                        putFloatArray("floatArray", floatArrayOf(0f, 1f, 2f, 3f))
-                        putBundle("bundle", Bundle().apply {
-                            putString("sdfa", "asdasdg")
-                            putInt("wefsz", 17858)
-                            putBundle("bundle", Bundle().apply {
-                                putString("sdfa", "asdasdg")
-                                putInt("wefsz", 17858)
-                            })
-                        })
-                    }
-                )
-            }
-        }
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+        binding.recyclerView.adapter = adapter
     }
 
     override fun initContent(savedInstanceState: Bundle?) {
+    }
+
+    class Adapter(private var data: List<String>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+
+        class ViewHolder(binding: ItemMainBinding) : RecyclerView.ViewHolder(binding.root)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+            ItemMainBinding.inflate(parent.context.layoutInflater, parent, false)
+        )
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            holder.itemView.updateLayoutParams<RecyclerView.LayoutParams> {
+                height = width
+            }
+        }
+
+        override fun getItemCount() = data.size
     }
 }

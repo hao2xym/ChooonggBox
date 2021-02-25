@@ -17,8 +17,8 @@ android {
         versionName version_name
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -29,9 +29,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 

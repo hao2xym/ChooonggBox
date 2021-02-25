@@ -15,9 +15,8 @@ inline val Activity.decorView: FrameLayout get() = window.decorView as FrameLayo
 inline val Activity.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 inline val Window.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 
-fun Context.loadActivityLabel() = getActivity()?.loadActivityLabel()
-fun Fragment.loadActivityLabel() = activity?.loadActivityLabel()
-fun Activity.loadActivityLabel(): CharSequence {
+fun Fragment.loadActivityLabel() = activity?.loadLabel()
+fun Activity.loadLabel(): CharSequence {
     val activityInfo = packageManager.getActivityInfo(ComponentName(this, javaClass), 0)
     return activityInfo.loadLabel(packageManager)
 }
@@ -44,7 +43,7 @@ class StartActivityConfig(private val context: Context, private val intent: Inte
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 
-    fun launch(){
+    fun launch() {
 
     }
 
@@ -64,7 +63,7 @@ class StartActivityConfig(private val context: Context, private val intent: Inte
         intent.addFlags(flags)
     }
 
-    internal fun removeFlags(){
+    internal fun removeFlags() {
         intent.flags = 0
     }
 

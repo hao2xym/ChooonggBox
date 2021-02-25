@@ -16,11 +16,19 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
