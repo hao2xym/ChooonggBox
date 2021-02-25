@@ -1,29 +1,22 @@
 package chooongg.box.simple
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import chooongg.box.core.activity.BoxActivity
 import chooongg.box.ext.doOnClick
 import chooongg.box.log.BoxLog
 import chooongg.box.log.LogBean
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BoxActivity(R.layout.activity_main) {
 
-    @SuppressLint("SetTextI18n")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun initConfig(savedInstanceState: Bundle?) {
+
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-//            if (it) {
-//                showToast("成功")
-//            } else {
-//                showToast("失败")
-//            }
+
         }.launch(Manifest.permission.CAMERA)
 
         findViewById<TextView>(R.id.tv_text).apply {
@@ -33,6 +26,7 @@ class MainActivity : AppCompatActivity() {
                 BoxLog.eTagChild(
                     "Test",
                     LogBean("TTT", "测试打印\n测试打印"),
+                    supportActionBar?.title,
                     arrayOf("Asdfasdf", "asdfasdf", null),
                     Intent(Intent.ACTION_DIAL, Uri.parse("tel:4001790720l")),
                     Intent(Intent.ACTION_VIEW).apply {
@@ -55,5 +49,8 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun initContent(savedInstanceState: Bundle?) {
     }
 }

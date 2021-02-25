@@ -17,8 +17,8 @@ android {
         versionName version_name
     }
 
-    buildFeatures {
-        dataBinding true
+    viewBinding {
+        enabled = true
     }
 
     buildTypes {
