@@ -11,19 +11,32 @@ abstract class BoxViewBindingActivity<T : ViewBinding> : BoxActivity() {
 
     protected lateinit var binding: T
 
-    @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentViewForViewBinding()
+        initConfig(savedInstanceState)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    protected open fun setContentViewForViewBinding() {
         val type = javaClass.genericSuperclass
         if (type is ParameterizedType) {
             try {
                 val clazz = type.actualTypeArguments[0] as Class<*>
                 val method = clazz.getMethod("inflate", LayoutInflater::class.java)
                 binding = method.invoke(null, layoutInflater) as T
+                setContentView(binding.root)
             } catch (e: Exception) {
                 BoxLog.e(LogBean(javaClass.simpleName, "ViewBinding initialization failed"), false)
             }
         }
-        setContentView(binding.root)
     }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        initContent(savedInstanceState)
+    }
+
+    override fun onCreateToInitConfig(savedInstanceState: Bundle?) = Unit
+    override fun onPostCreateToInitContent(savedInstanceState: Bundle?) = Unit
 }

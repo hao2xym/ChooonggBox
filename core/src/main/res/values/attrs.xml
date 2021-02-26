@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="toolbarCenterTitle" format="boolean" />
+
+    <declare-styleable name="SquareLayout">
+        <attr name="basisAxis">
+            <enum name="basisWidth" value="0" />
+            <enum name="basisHeight" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>

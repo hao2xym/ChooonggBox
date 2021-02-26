@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BoxWidget.Toolbar.Primary" parent="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    <style name="BoxWidget.Toolbar.Surface" parent="@style/Widget.MaterialComponents.Toolbar.Surface" />
+
+    <style name="BoxWidget.Toolbar.PrimarySurface" parent="@style/Widget.MaterialComponents.Toolbar.PrimarySurface" />
+
+</resources>

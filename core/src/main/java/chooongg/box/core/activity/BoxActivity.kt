@@ -16,16 +16,24 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
 
     inline val activity: Activity get() = this
 
-    @Deprecated(
-        "请使用初始化方法进行初始化",
-        ReplaceWith("initConfig(savedInstanceState)"),
-        DeprecationLevel.ERROR
-    )
+    open fun initAppBar() {
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onCreateToInitConfig(savedInstanceState)
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        // 初始化配置
+        onPostCreateToInitContent(savedInstanceState)
+    }
+
+    protected open fun onCreateToInitConfig(savedInstanceState: Bundle?) {
         initConfig(savedInstanceState)
-        // 初始化内容
+    }
+
+    protected open fun onPostCreateToInitContent(savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
     }
 }
