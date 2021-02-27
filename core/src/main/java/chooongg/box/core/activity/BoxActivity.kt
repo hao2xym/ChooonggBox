@@ -36,4 +36,9 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
     protected open fun onPostCreateToInitContent(savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
     }
+
+    protected open fun initToolBar(){
+
+
+    }
 }

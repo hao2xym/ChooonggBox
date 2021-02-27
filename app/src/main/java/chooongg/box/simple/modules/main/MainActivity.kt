@@ -44,6 +44,7 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.choose_night, menu)
+        lifecycle.currentState
         return true
     }
 
