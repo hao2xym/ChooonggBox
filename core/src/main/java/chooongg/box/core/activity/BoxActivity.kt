@@ -3,9 +3,15 @@ package chooongg.box.core.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import chooongg.box.core.R
 import chooongg.box.core.interfaces.BoxInit
+import chooongg.box.core.widget.BoxToolBar
+import chooongg.box.ext.attrDimensionPixelSize
+import chooongg.box.ext.contentView
+import chooongg.box.ext.dp2px
 
 abstract class BoxActivity : AppCompatActivity, BoxInit {
 
@@ -16,11 +22,11 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
 
     inline val activity: Activity get() = this
 
-    open fun initAppBar() {
-    }
+    protected open fun isShowTopAppBar() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (isShowTopAppBar()) initToolBar()
         onCreateToInitConfig(savedInstanceState)
     }
 
@@ -37,8 +43,20 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
         initContent(savedInstanceState)
     }
 
-    protected open fun initToolBar(){
-
-
+    protected open fun initToolBar() {
+        val typedArray = theme.obtainStyledAttributes(intArrayOf(R.attr.toolbarStyle))
+        val resourceId = typedArray.getResourceId(0, R.style.BoxWidget_Toolbar_PrimarySurface)
+        val boxToolbar = BoxToolBar(context, null, 0, resourceId)
+        boxToolbar.minimumHeight = attrDimensionPixelSize(R.attr.actionBarSize, dp2px(56f))
+        val parentLayout = contentView.parent as LinearLayout
+        parentLayout.addView(
+            boxToolbar, 0,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
+        setSupportActionBar(boxToolbar)
+        typedArray.recycle()
     }
 }

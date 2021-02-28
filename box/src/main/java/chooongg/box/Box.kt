@@ -12,6 +12,6 @@ object Box : IBoxInitialize {
 
     override fun initialize(application: Application) {
         AppManager.initialize(application)
-        BoxRelateLibraryConfig.initialize(application)
+        BoxLibrariesConfig.initialize(application)
     }
 }

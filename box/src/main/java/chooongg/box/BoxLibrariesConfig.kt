@@ -2,7 +2,7 @@ package chooongg.box
 
 import android.app.Application
 
-internal object BoxRelateLibraryConfig : IBoxInitialize {
+internal object BoxLibrariesConfig : IBoxInitialize {
 
     override fun initialize(application: Application) {
         initializeCoreIfExist(application)

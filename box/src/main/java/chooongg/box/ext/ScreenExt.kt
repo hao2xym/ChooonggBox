@@ -3,9 +3,6 @@ package chooongg.box.ext
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.view.View
 
 fun Context.getScreenWidth() = resources.displayMetrics.widthPixels
 
@@ -22,15 +19,3 @@ fun Context.isLandscape() =
 
 fun Context.isPortrait() =
     resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-
-/**
- * View截图返回Bitmap
- */
-fun View?.toBitmap(): Bitmap? {
-    if (this == null) return null
-    val screenshot = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-    val canvas = Canvas(screenshot)
-    canvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
-    draw(canvas)
-    return screenshot
-}

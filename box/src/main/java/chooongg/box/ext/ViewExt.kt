@@ -1,6 +1,8 @@
 package chooongg.box.ext
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -90,4 +92,15 @@ fun doOnDoubleClick(vararg views: View, listener: ((View) -> Unit)?) {
             }).onTouchEvent(event)
         }
     }
+}
+
+/**
+ * View截图返回Bitmap
+ */
+fun View.toBitmap(): Bitmap {
+    val screenshot = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+    val canvas = Canvas(screenshot)
+    canvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
+    draw(canvas)
+    return screenshot
 }

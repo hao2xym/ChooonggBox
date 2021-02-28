@@ -3,6 +3,10 @@
 
     <attr name="toolbarCenterTitle" format="boolean" />
 
+    <declare-styleable name="BoxToolBar">
+        <attr name="isCenterTitle" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="SquareLayout">
         <attr name="basisAxis">
             <enum name="basisWidth" value="0" />
