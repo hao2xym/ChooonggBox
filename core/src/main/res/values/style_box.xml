@@ -11,7 +11,9 @@
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.Surface</item>
     </style>
 
-    <style name="Base.BoxTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.BoxTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
@@ -30,7 +32,7 @@
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
         <item name="navigationIcon">@drawable/ic_app_bar_back</item>
         <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
-        <item name="toolbarCenterTitle">true</item>
+        <item name="toolbarCenterTitle">false</item>
     </style>
 
     <style name="BoxToolBarNavigationButton" parent="Widget.AppCompat.Toolbar.Button.Navigation">

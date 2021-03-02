@@ -32,11 +32,5 @@ abstract class BoxViewBindingActivity<T : ViewBinding> : BoxActivity() {
         }
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
-        initContent(savedInstanceState)
-    }
-
     override fun onCreateToInitConfig(savedInstanceState: Bundle?) = Unit
-    override fun onPostCreateToInitContent(savedInstanceState: Bundle?) = Unit
 }

@@ -3,29 +3,31 @@ package chooongg.box.core.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.widget.LinearLayout
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.FitWindowsLinearLayout
+import androidx.appcompat.widget.Toolbar
 import chooongg.box.core.R
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.contentView
 import chooongg.box.log.BoxLog
 
-abstract class BoxActivity : AppCompatActivity, BoxInit {
-
-    constructor() : super()
-    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+abstract class BoxActivity : AppCompatActivity(), BoxInit {
 
     inline val context: Context get() = this
 
     inline val activity: Activity get() = this
 
-    protected open fun isShowTopAppBar() = true
+    open fun isShowToolBar() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (isShowTopAppBar()) initToolBar()
+        if (isShowToolBar()) {
+            val parentLayout = contentView.parent as FitWindowsLinearLayout
+            val boxToolBar = initToolBar(parentLayout)
+            parentLayout.addView(boxToolBar, 0)
+            setSupportActionBar(boxToolBar)
+        }
         onCreateToInitConfig(savedInstanceState)
     }
 
@@ -42,18 +44,12 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
         initContent(savedInstanceState)
     }
 
-    protected open fun initToolBar() {
-        val parentLayout = contentView.parent as LinearLayout
-        val boxToolbar =
-            layoutInflater.inflate(R.layout.box_activity_toolbar, parentLayout, false) as BoxToolBar
-        parentLayout.addView(
-            boxToolbar, 0,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
-        setSupportActionBar(boxToolbar)
+    protected open fun initToolBar(parentLayout: FitWindowsLinearLayout): Toolbar {
+        return layoutInflater.inflate(
+            R.layout.box_activity_toolbar,
+            parentLayout,
+            false
+        ) as BoxToolBar
     }
 
     override fun onNightModeChanged(mode: Int) {
