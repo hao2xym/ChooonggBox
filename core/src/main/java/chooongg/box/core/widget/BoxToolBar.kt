@@ -14,7 +14,7 @@ class BoxToolBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-    defStyleRes: Int = R.style.Widget_MaterialComponents_Toolbar
+    defStyleRes: Int = R.style.BoxWidget_Toolbar_PrimarySurface
 ) : MaterialToolbar(context, attrs, defStyleAttr) {
 
     private var isCenterTitle: Boolean = false

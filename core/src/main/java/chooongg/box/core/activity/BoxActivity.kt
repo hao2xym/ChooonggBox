@@ -9,9 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import chooongg.box.core.R
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.widget.BoxToolBar
-import chooongg.box.ext.attrDimensionPixelSize
 import chooongg.box.ext.contentView
-import chooongg.box.ext.dp2px
+import chooongg.box.log.BoxLog
 
 abstract class BoxActivity : AppCompatActivity, BoxInit {
 
@@ -44,11 +43,9 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
     }
 
     protected open fun initToolBar() {
-        val typedArray = theme.obtainStyledAttributes(intArrayOf(R.attr.toolbarStyle))
-        val resourceId = typedArray.getResourceId(0, R.style.BoxWidget_Toolbar_PrimarySurface)
-        val boxToolbar = BoxToolBar(context, null, 0, resourceId)
-        boxToolbar.minimumHeight = attrDimensionPixelSize(R.attr.actionBarSize, dp2px(56f))
         val parentLayout = contentView.parent as LinearLayout
+        val boxToolbar =
+            layoutInflater.inflate(R.layout.box_activity_toolbar, parentLayout, false) as BoxToolBar
         parentLayout.addView(
             boxToolbar, 0,
             LinearLayout.LayoutParams(
@@ -57,6 +54,10 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
             )
         )
         setSupportActionBar(boxToolbar)
-        typedArray.recycle()
+    }
+
+    override fun onNightModeChanged(mode: Int) {
+        super.onNightModeChanged(mode)
+        BoxLog.e(mode)
     }
 }

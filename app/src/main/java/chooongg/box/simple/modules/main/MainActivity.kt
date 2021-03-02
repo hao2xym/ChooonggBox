@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxViewBindingActivity
 import chooongg.box.core.ext.setNightMode
+import chooongg.box.ext.loadLabel
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.modules.main.adapter.MainAdapter
@@ -40,6 +41,9 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
     override fun initConfig(savedInstanceState: Bundle?) {
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerView.adapter = adapter
+        binding.toolbar.setNavigationIcon(R.drawable.ic_app_bar_back)
+        binding.toolbar.title = loadLabel()
+        binding.toolbar.inflateMenu(R.menu.choose_night)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
