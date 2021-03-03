@@ -10,7 +10,7 @@ import chooongg.box.log.formatter.Formatter
 import chooongg.box.log.printer.LogcatPrinter
 import chooongg.box.log.printer.Printer
 
-class LogConfig {
+open class LogConfig {
 
     @IntDef(Log.VERBOSE, Log.DEBUG, Log.INFO, Log.WARN, Log.ERROR, Log.ASSERT)
     annotation class Level
@@ -26,7 +26,7 @@ class LogConfig {
      * 默认日志等级
      */
     @Level
-    var defaultLevel: Int = Log.DEBUG
+    var level: Int = Log.DEBUG
 
     /**
      * 是否显示线程信息

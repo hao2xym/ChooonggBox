@@ -109,7 +109,7 @@ object LogActuator {
         log.append(config.formatter.separator()).append(config.formatter.bottom())
 
         config.printers.forEach {
-            it.printLog(level ?: config.defaultLevel, tag ?: config.tag, log.toString())
+            it.printLog(level ?: config.level, tag ?: config.tag, log.toString())
         }
     }
 

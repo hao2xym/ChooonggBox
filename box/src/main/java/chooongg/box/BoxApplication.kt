@@ -2,9 +2,17 @@ package chooongg.box
 
 import android.app.Application
 import android.os.Process
+import androidx.appcompat.app.AppCompatDelegate
 import chooongg.box.ext.activityManager
 
 open class BoxApplication : Application() {
+
+    companion object{
+        init {
+            // 兼容矢量图片
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()

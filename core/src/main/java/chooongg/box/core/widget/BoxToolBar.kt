@@ -77,12 +77,13 @@ class BoxToolBar @JvmOverloads constructor(
                     gravity = Gravity.CENTER
 
                     centerLogoView = AppCompatImageView(context).apply {
+                        adjustViewBounds = true
                         maxWidth = context.attrDimensionPixelSize(R.attr.actionBarSize, dp2px(56f))
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         ).apply {
-                            setMargins(0, 0, dp2px(4f), 0)
+                            setMargins(0, dp2px(4f), dp2px(4f), dp2px(4f))
                         }
                     }
                     addView(centerLogoView)
@@ -223,6 +224,7 @@ class BoxToolBar @JvmOverloads constructor(
     }
 
     override fun setLogo(drawable: Drawable?) {
+
         if (isCenterTitle) {
             super.setLogo(null)
             if (drawable == null) {
