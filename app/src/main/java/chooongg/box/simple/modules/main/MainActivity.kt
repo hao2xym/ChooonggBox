@@ -39,6 +39,8 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
     private val adapter = MainAdapter(modules)
 
     override fun initConfig(savedInstanceState: Bundle?) {
+        supportActionBar?.setLogo(R.mipmap.ic_launcher)
+        supportActionBar?.subtitle = "chooongg@outlook.com"
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerView.adapter = adapter.apply {
             setOnClickListener {
@@ -50,10 +52,6 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
                 }
             }
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

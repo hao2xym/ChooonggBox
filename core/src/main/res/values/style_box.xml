@@ -28,15 +28,16 @@
         <item name="colorOnError">@color/color_on_error</item>
         <item name="statusBarScrim">@android:color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
-
+        <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
         <item name="navigationIcon">@drawable/ic_app_bar_back</item>
-        <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarCenterTitle">false</item>
     </style>
 
     <style name="BoxToolBarNavigationButton" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-        <item name="minWidth">24dp</item>
+        <item name="minWidth">?attr/actionBarSize</item>
+        <item name="maxWidth">?attr/actionBarSize</item>
+        <item name="android:scaleType">center</item>
     </style>
 
 </resources>

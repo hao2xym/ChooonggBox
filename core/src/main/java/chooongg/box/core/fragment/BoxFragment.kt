@@ -1,7 +1,32 @@
 package chooongg.box.core.fragment
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import chooongg.box.core.activity.BoxActivity
+import chooongg.box.core.interfaces.BoxInit
 
-class BoxFragment : Fragment() {
+abstract class BoxFragment : Fragment, BoxInit {
 
+    constructor() : super()
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
+
+    protected val boxActivity get() = if (activity is BoxActivity) activity as BoxActivity else null
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        initConfig(savedInstanceState)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initContent(savedInstanceState)
+    }
 }
