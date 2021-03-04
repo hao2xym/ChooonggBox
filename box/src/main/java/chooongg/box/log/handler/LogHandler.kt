@@ -12,9 +12,11 @@ interface LogHandler {
      */
     fun isHandler(any: Any): Boolean
 
+    fun getTypeString(any: Any): String?
+
     /**
      * 处理
      */
-    fun handler(config: LogConfig, any: Any): List<String>
+    fun handler(config: LogConfig, any: Any, columns: Int): List<String>
 
 }

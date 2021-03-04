@@ -31,12 +31,12 @@ open class LogConfig {
     /**
      * 是否显示线程信息
      */
-    var showThreadInfo = true
+    var showThreadInfo = BuildConfig.DEBUG
 
     /**
      * 是否显示堆栈信息
      */
-    var showStackInfo = true
+    var showStackInfo = BuildConfig.DEBUG
 
     /**
      * 堆栈深度

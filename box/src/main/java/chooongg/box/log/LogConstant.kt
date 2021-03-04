@@ -2,11 +2,13 @@ package chooongg.box.log
 
 import chooongg.box.log.handler.AnyLogHandler
 import chooongg.box.log.handler.BundleLogHandler
+import chooongg.box.log.handler.JsonLogHandler
 
 object LogConstant {
 
     fun getDefaultHandlers() = linkedSetOf(
         AnyLogHandler,
+        JsonLogHandler,
         BundleLogHandler
     )
 
@@ -89,4 +91,5 @@ object LogConstant {
     const val NONE = "[Params is Null!]"
 
     const val FORMAT_STEP = "    "
+    const val FORMAT_STEP_COUNT = 4
 }

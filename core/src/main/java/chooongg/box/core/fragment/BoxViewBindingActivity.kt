@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import chooongg.box.log.BoxLog
-import chooongg.box.log.LogBean
+import chooongg.box.log.LogEntity
 import java.lang.reflect.ParameterizedType
 
 abstract class BoxViewBindingActivity<T : ViewBinding> : BoxFragment() {
@@ -28,7 +28,7 @@ abstract class BoxViewBindingActivity<T : ViewBinding> : BoxFragment() {
                 initConfig(savedInstanceState)
                 return binding.root
             } catch (e: Exception) {
-                BoxLog.e(LogBean(javaClass.simpleName, "ViewBinding initialization failed"), false)
+                BoxLog.e(LogEntity(javaClass.simpleName, "ViewBinding initialization failed"), false)
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState)

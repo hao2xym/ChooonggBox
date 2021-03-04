@@ -201,6 +201,7 @@ class BoxToolBar @JvmOverloads constructor(
         } else super.setSubtitle(subtitle)
     }
 
+    @Suppress("DEPRECATION")
     override fun setSubtitleTextAppearance(context: Context?, resId: Int) {
         mSubtitleTextAppearance = resId
         super.setSubtitleTextAppearance(context, resId)

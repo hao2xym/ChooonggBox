@@ -70,7 +70,7 @@ object LogActuator {
             val contentTag: String?
             val content: Any?
             val isShowType: Boolean
-            if (item is LogBean) {
+            if (item is LogEntity) {
                 contentTag = "${item.contentTag}"
                 content = item.any
                 isShowType = item.isShowType
@@ -83,7 +83,18 @@ object LogActuator {
                 log.append(config.formatter.separator())
                     .append(config.formatter.middle(LogConstant.NONE))
             } else {
-                val contentClassType = if (isShowType) content::class.simpleName else null
+                var classType: String? = null
+                val contentSplit = ArrayList<String>().apply {
+                    config.handlers.reversed().forEach { handler ->
+                        if (handler.isHandler(any)) {
+                            classType = handler.getTypeString(any)
+                            addAll(handler.handler(config, any, 0))
+                            return@apply
+                        }
+                    }
+                }
+
+                val contentClassType = if (isShowType) classType else null
                 log.append(config.formatter.separator())
                 if (index == 0) {
                     if (config.showStackInfo) {
@@ -98,7 +109,7 @@ object LogActuator {
                     log.append(config.formatter.middleSecondary(contentTag, contentClassType))
                 }
 
-                handlerLoop(config, content).forEach { text ->
+                contentSplit.forEach { text ->
                     log.append(config.formatter.separator())
                         .append(config.formatter.middle(text))
                 }
@@ -113,18 +124,19 @@ object LogActuator {
         }
     }
 
-    fun handlerLoop(config: LogConfig, any: Any?): List<String> = ArrayList<String>().apply {
-        if (any == null) {
-            add(LogConstant.NONE)
-            return@apply
-        }
-        config.handlers.reversed().forEach { handler ->
-            if (handler.isHandler(any)) {
-                addAll(handler.handler(config, any))
+    fun handlerLoop(config: LogConfig, any: Any?, columns: Int): List<String> =
+        ArrayList<String>().apply {
+            if (any == null) {
+                add(LogConstant.NONE)
                 return@apply
             }
+            config.handlers.reversed().forEach { handler ->
+                if (handler.isHandler(any)) {
+                    addAll(handler.handler(config, any, columns))
+                    return@apply
+                }
+            }
         }
-    }
 
     private fun getFileName(targetElement: StackTraceElement): String {
         val fileName = targetElement.fileName

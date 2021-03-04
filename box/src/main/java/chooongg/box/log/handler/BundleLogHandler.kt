@@ -8,8 +8,8 @@ import chooongg.box.log.LogConstant
 object BundleLogHandler : LogHandler {
 
     override fun isHandler(any: Any) = any is Bundle
-
-    override fun handler(config: LogConfig, any: Any) = ArrayList<String>().apply {
+    override fun getTypeString(any: Any) = "Bundle"
+    override fun handler(config: LogConfig, any: Any, columns: Int) = ArrayList<String>().apply {
         val bundle = any as Bundle
         val keys = bundle.keySet()
         if (keys.isEmpty()) {
@@ -19,7 +19,7 @@ object BundleLogHandler : LogHandler {
         add("{")
         keys.forEachIndexed { index, key ->
             val lastPunctuation = if (index == keys.size - 1) "" else ","
-            val values = LogActuator.handlerLoop(config, bundle.get(key))
+            val values = LogActuator.handlerLoop(config, bundle.get(key), columns + 1)
             when {
                 values.isEmpty() -> add("${LogConstant.FORMAT_STEP}\"${key}\":null${lastPunctuation}")
                 values.size == 1 -> add("${LogConstant.FORMAT_STEP}\"${key}\":${values[0]}${lastPunctuation}")

@@ -1,6 +1,6 @@
 package chooongg.box.log
 
-class LogBean {
+class LogEntity {
     internal val contentTag: String?
     internal val any: Any?
     internal val isShowType: Boolean

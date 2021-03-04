@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "chooongg.box";
+option java_multiple_files = true;
+
+message BoxDataStore{
+  int32 night_mode = 1;
+}

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.log.BoxLog
-import chooongg.box.log.LogBean
+import chooongg.box.log.LogEntity
 import java.lang.reflect.ParameterizedType
 
 abstract class BoxViewBindingActivity<T : ViewBinding> : BoxActivity() {
@@ -31,7 +31,7 @@ abstract class BoxViewBindingActivity<T : ViewBinding> : BoxActivity() {
                 binding = method.invoke(null, layoutInflater) as T
                 setContentView(binding.root)
             } catch (e: Exception) {
-                BoxLog.e(LogBean(javaClass.simpleName, "ViewBinding initialization failed"), false)
+                BoxLog.e(LogEntity(javaClass.simpleName, "ViewBinding initialization failed"), false)
             }
         }
     }

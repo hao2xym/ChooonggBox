@@ -10,12 +10,18 @@ import java.util.regex.Pattern
 object AnyLogHandler : LogHandler {
 
     override fun isHandler(any: Any) = true
-
-    override fun handler(config: LogConfig, any: Any): List<String> {
-        return JSON.toJSONString(
+    override fun getTypeString(any: Any) = any::class.simpleName
+    override fun handler(config: LogConfig, any: Any, columns: Int): List<String> {
+        var string = JSON.toJSONString(
             any, SerializerFeature.PrettyFormat, SerializerFeature.DisableCircularReferenceDetect
         ).replace("\t", LogConstant.FORMAT_STEP)
             .removeLinefeed(config.formatter.separator())
-            .split(Pattern.compile(config.formatter.separator()))
+        if (columns <= 0) {
+            if (string.first() == '\"' && string.last() == '\"') {
+                string = string.substring(1)
+                string = string.substring(0, string.length - 1)
+            }
+        }
+        return string.split(Pattern.compile(config.formatter.separator()))
     }
 }
