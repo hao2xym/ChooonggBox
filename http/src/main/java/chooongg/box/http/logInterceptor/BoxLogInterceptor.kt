@@ -1,16 +1,15 @@
-package chooongg.box.http.loggerInterceptor
+package chooongg.box.http.logInterceptor
 
 import chooongg.box.log.LogEntity
+import okhttp3.FormBody
 import okhttp3.Interceptor
+import okhttp3.MultipartBody
 import okhttp3.Response
 
-class BoxLogInterceptor(config: ((HttpLogConfig) -> Unit)? = null) : Interceptor {
-
-    init {
-        if (config != null) BoxHttpLog.config(config)
-    }
+object BoxLogInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+        if (!BoxHttpLog.config.enable) return chain.proceed(chain.request())
         // Request
         val requestLog = ArrayList<Any?>()
         val request = chain.request()
@@ -30,7 +29,7 @@ class BoxLogInterceptor(config: ((HttpLogConfig) -> Unit)? = null) : Interceptor
         )
 
         val requestHeaders = request.headers
-        if (BoxHttpLog.config.type == HttpTypeLevel.BASIC || BoxHttpLog.config.type == HttpTypeLevel.HEADERS) {
+        if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.HEADERS) {
             if (requestHeaders.size > 0) {
                 requestLog.add(
                     LogEntity("Headers", buildString {
@@ -46,17 +45,34 @@ class BoxLogInterceptor(config: ((HttpLogConfig) -> Unit)? = null) : Interceptor
         }
 
         val requestBody = request.body
-        if (BoxHttpLog.config.type == HttpTypeLevel.BASIC || BoxHttpLog.config.type == HttpTypeLevel.BODY) {
-            if (requestBody!= null){
-                requestBody
+        if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.BODY) {
+            if (requestBody != null) {
+                when (requestBody) {
+                    is MultipartBody -> {
+                        if (requestBody.size > 0) {
+                            requestBody.parts.forEach {
+
+                            }
+                        }
+                    }
+                    is FormBody -> {
+                        if (requestBody.size > 0) {
+                            val keyValue = HashMap<String, String>()
+                            for (i in 0 until requestBody.size) {
+                                keyValue[requestBody.name(i)] = requestBody.value(i)
+                            }
+                            requestLog.add(LogEntity("Body", keyValue, false))
+                        }
+                    }
+                    else -> requestBody.isOneShot()
+                }
             }
         }
-
-
         BoxHttpLog.request(requestLog.toArray())
 
         // Response
         val response = chain.proceed(request)
+
 
         return response
     }

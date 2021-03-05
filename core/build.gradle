@@ -13,7 +13,7 @@ android {
         targetSdkVersion target_sdk_version
         versionCode version_code
         versionName version_name
-        consumerProguardFiles "consumer-rules.pro"
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
 
     buildFeatures {

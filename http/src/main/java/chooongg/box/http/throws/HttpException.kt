@@ -3,8 +3,6 @@ package chooongg.box.http.throws
 import android.net.ParseException
 import android.util.MalformedJsonException
 import chooongg.box.utils.NetworkUtils
-import com.google.gson.JsonParseException
-import com.google.gson.JsonSyntaxException
 import org.json.JSONException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -93,8 +91,7 @@ class HttpException : RuntimeException {
                     }
                     tempType
                 }
-                e is JsonParseException
-                        || e is JsonSyntaxException
+                e is com.alibaba.fastjson.JSONException
                         || e is JSONException
                         || e is ParseException
                         || e is NullPointerException

@@ -1,4 +1,4 @@
-package chooongg.box.http.loggerInterceptor
+package chooongg.box.http.logInterceptor
 
 import android.util.Log
 import chooongg.box.http.BoxHttp
@@ -13,7 +13,7 @@ class HttpLogConfig : LogConfig() {
     /**
      * 日志显示方式
      */
-    var type: HttpTypeLevel = HttpTypeLevel.BASIC
+    var httpLogLevel: HttpLogLevel = HttpLogLevel.BASIC
 
     /**
      * 请求日志等级

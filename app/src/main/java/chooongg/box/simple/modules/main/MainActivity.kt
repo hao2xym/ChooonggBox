@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxViewBindingActivity
 import chooongg.box.core.ext.setNightMode
@@ -47,22 +46,22 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
     }
 
     override fun initContent(savedInstanceState: Bundle?) {
-        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int {
-            }
-
-            override fun getNewListSize(): Int {
-            }
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-
-            }
-
-            ]
-        })
+//        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+//            override fun getOldListSize(): Int {
+//            }
+//
+//            override fun getNewListSize(): Int {
+//            }
+//
+//            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+//            }
+//
+//            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+//
+//            }
+//
+//            ]
+//        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
