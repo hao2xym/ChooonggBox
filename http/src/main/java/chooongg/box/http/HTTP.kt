@@ -24,9 +24,6 @@ object HTTP {
 
     class Builder{
 
-
-
-
     }
 
 
