@@ -4,22 +4,25 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxViewBindingActivity
 import chooongg.box.core.ext.setNightMode
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
+import chooongg.box.simple.api.HTTP
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.modules.main.adapter.MainAdapter
 import chooongg.box.simple.modules.main.entity.MainItemEntity
+import kotlinx.coroutines.launch
 
 class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
 
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top", R.mipmap.ic_topappbar)
     )
-    private val adapter = MainAdapter(modules)
 
+    private val adapter = MainAdapter(modules)
 
     override fun initConfig(savedInstanceState: Bundle?) {
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
@@ -46,22 +49,9 @@ class MainActivity : BoxViewBindingActivity<ActivityMainBinding>() {
     }
 
     override fun initContent(savedInstanceState: Bundle?) {
-//        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-//            override fun getOldListSize(): Int {
-//            }
-//
-//            override fun getNewListSize(): Int {
-//            }
-//
-//            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-//            }
-//
-//            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-//
-//            }
-//
-//            ]
-//        })
+        lifecycleScope.launch {
+            HTTP.apiWanAndroid().allPackage()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

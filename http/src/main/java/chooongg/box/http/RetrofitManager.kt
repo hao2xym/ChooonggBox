@@ -1,16 +1,15 @@
 package chooongg.box.http
 
 import chooongg.box.ext.APP
+import chooongg.box.http.cookie.CookieManager
 import chooongg.box.http.logInterceptor.BoxLogInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.fastjson.FastJsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
-object HTTP {
+object RetrofitManager {
 
     private var defaultConfig = HttpConfig()
 
@@ -18,21 +17,15 @@ object HTTP {
         this.defaultConfig = defaultConfig
     }
 
-    fun builder(){
-
+    fun <T : Any> getAPI(clazz: KClass<T>, config: HttpConfig = defaultConfig): T {
+        val builder = Retrofit.Builder()
+            .baseUrl(getBaseUrlForAnnotation(clazz.java))
+            .client(okHttpClientBuilder(config).build())
+        config.converterFactories.forEach { builder.addConverterFactory(it) }
+        config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
+        val retrofit = builder.build()
+        return retrofit.create(clazz.java)
     }
-
-    class Builder{
-
-    }
-
-
-    fun getRetrofit(baseUrl: String) = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .client(okHttpClientBuilder().build())
-        .addConverterFactory(FastJsonConverterFactory.create())
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .build().create<API>()
 
     fun okHttpClientBuilder(config: HttpConfig = defaultConfig) = OkHttpClient.Builder().apply {
         connectTimeout(config.connectTimeout, TimeUnit.SECONDS)
@@ -40,8 +33,15 @@ object HTTP {
         readTimeout(config.readTimeout, TimeUnit.SECONDS)
         retryOnConnectionFailure(true)
         cache(Cache(APP.cacheDir, config.cacheSize))
+        cookieJar(CookieManager(APP))
         config.interceptor.forEach { addInterceptor(it) }
         addInterceptor(BoxLogInterceptor)
         config.networkInterceptor.forEach { addNetworkInterceptor(it) }
+    }
+
+    fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
+        if (clazz.javaClass.isAnnotationPresent(BaseUrl::class.java)) {
+            return clazz.javaClass.getAnnotation(BaseUrl::class.java).value
+        } else throw RuntimeException("unable to find BaseUrl from Annotation")
     }
 }
