@@ -47,9 +47,7 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
 
     private fun configThemeForAnnotation() {
         val theme = this::class.findAnnotation<Theme>()
-        if (theme != null) {
-            setTheme(theme.value)
-        }
+        if (theme != null) setTheme(theme.value)
     }
 
     protected open fun onCreateToInitConfig(savedInstanceState: Bundle?) {
