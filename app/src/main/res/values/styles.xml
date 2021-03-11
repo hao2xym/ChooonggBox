@@ -1,8 +1,12 @@
 <resources>
-    <!-- Base application theme. -->
+
     <style name="AppTheme" parent="BoxTheme">
         <item name="actionBarSize">48dp</item>
         <item name="toolbarCenterTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Splash" parent="BoxTheme.Surface">
+        <item name="android:windowBackground">@color/color_surface</item>
     </style>
 
     <style name="ShapeAppearanceImage.Main" parent="ShapeAppearanceImage">

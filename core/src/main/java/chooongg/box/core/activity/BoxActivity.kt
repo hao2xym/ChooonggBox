@@ -24,20 +24,22 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
 
     inline val activity: Activity get() = this
 
-    open fun isShowToolBar() = true
+    open fun isShowActionBar() = true
 
     protected open fun isAutoHideKeyBoard() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configThemeForAnnotation()
         super.onCreate(savedInstanceState)
-        if (isShowToolBar()) {
+        if (isShowActionBar()) {
             val parentLayout = contentView.parent as FitWindowsLinearLayout
             val boxToolBar = initToolBar(parentLayout)
+            parentLayout.addView(boxToolBar, 0)
             setSupportActionBar(boxToolBar)
             supportActionBar?.title = loadLabel()
         }
         onCreateToInitConfig(savedInstanceState)
+        if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -52,9 +54,6 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
 
     protected open fun onCreateToInitConfig(savedInstanceState: Bundle?) {
         initConfig(savedInstanceState)
-        if (isAutoHideKeyBoard()) {
-            HideKeyboardManager.init(activity)
-        }
     }
 
     protected open fun onPostCreateToInitContent(savedInstanceState: Bundle?) {
@@ -62,24 +61,11 @@ abstract class BoxActivity : AppCompatActivity, BoxInit {
     }
 
     protected open fun initToolBar(parentLayout: FitWindowsLinearLayout): Toolbar {
-//        if (attrBoolean(R.attr.toolbarCenterTitle, false)) {
-//            val appBarLayout =
-//                layoutInflater.inflate(
-//                    R.layout.box_activity_toolbar_center,
-//                    parentLayout,
-//                    false
-//                ) as AppBarLayout
-//            val boxToolBar = appBarLayout.findViewById<BoxToolBar>(R.id.toolbar)
-//            parentLayout.addView(appBarLayout, 0)
-//            return boxToolBar
-//        } else {
         val boxToolBar = layoutInflater.inflate(
             R.layout.box_activity_toolbar,
             parentLayout,
             false
         ) as BoxToolBar
-        parentLayout.addView(boxToolBar, 0)
         return boxToolBar
-//        }
     }
 }

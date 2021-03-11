@@ -14,14 +14,24 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
 
-        <activity android:name=".modules.main.MainActivity">
+        <activity
+            android:name=".modules.SplashActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".modules.appBarTop.AppBarTopActivity" />
+        <activity
+            android:name=".modules.main.MainActivity"
+            android:label="@string/app_name" />
+
+        <activity
+            android:name=".modules.appBarTop.AppBarTopActivity"
+            android:label="AppBar: Top" />
 
     </application>
 
