@@ -31,7 +31,6 @@
         <item name="android:windowActivityTransitions">true</item>
         <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
-        <item name="navigationIcon">@drawable/ic_app_bar_back</item>
         <item name="toolbarCenterTitle">false</item>
     </style>
 

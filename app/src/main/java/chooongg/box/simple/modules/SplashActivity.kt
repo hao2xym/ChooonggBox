@@ -1,5 +1,6 @@
 package chooongg.box.simple.modules
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
@@ -32,7 +33,10 @@ class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
         job = lifecycleScope.launch {
             delay(3000)
             withMain {
-                startActivity(Intent(context, MainActivity::class.java))
+                startActivity(
+                    Intent(context, MainActivity::class.java),
+                    ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+                )
             }
         }
     }

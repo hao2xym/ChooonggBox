@@ -30,7 +30,7 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name=".modules.appBarTop.AppBarTopActivity"
+            android:name=".modules.appBarTop.TopAppBarActivity"
             android:label="AppBar: Top" />
 
     </application>
