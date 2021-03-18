@@ -12,8 +12,8 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxVBVMActivity
-import chooongg.box.core.ext.isNightMode
-import chooongg.box.core.ext.setNightMode
+import chooongg.box.ext.isNightMode
+import chooongg.box.ext.setNightMode
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding

@@ -1,8 +1,9 @@
-package chooongg.box.core.ext
+package chooongg.box.ext
 
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import chooongg.box.entity.BoxMMKVConst
 
 /**
  * 判断当前是否深色模式
@@ -19,4 +20,5 @@ fun Context.isNightMode(): Boolean {
  */
 fun setNightMode(@AppCompatDelegate.NightMode mode: Int) {
     AppCompatDelegate.setDefaultNightMode(mode)
+    BoxMMKVConst.dayNightMode.encode(mode)
 }

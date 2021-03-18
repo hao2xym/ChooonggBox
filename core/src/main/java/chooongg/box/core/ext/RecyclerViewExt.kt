@@ -2,7 +2,7 @@ package chooongg.box.core.ext
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import chooongg.box.core.widget.tablayoutattacer.ScrollMethod
+import chooongg.box.core.widget.tabLayoutAttache.ScrollMethod
 
 internal fun RecyclerView.scrollToPosition(position: Int, scrollMethod: ScrollMethod) {
     when (scrollMethod) {

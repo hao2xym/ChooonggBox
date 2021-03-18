@@ -6,10 +6,32 @@ import com.tencent.mmkv.MMKV
 /**
  * MMKV控制器
  */
-object MMKVUtils {
+open class MMKVController {
 
-    private val mmkv: MMKV by lazy {
-        MMKV.defaultMMKV()
+    val mmkv: MMKV
+
+    constructor() {
+        mmkv = MMKV.defaultMMKV()
+    }
+
+    constructor(mode: Int, cryptKey: String?) {
+        mmkv = MMKV.defaultMMKV(mode, cryptKey)
+    }
+
+    constructor(mmkv: MMKV) {
+        this.mmkv = mmkv
+    }
+
+    constructor(mmapID: String) {
+        mmkv = MMKV.mmkvWithID(mmapID)
+    }
+
+    constructor(mmapID: String, mode: Int) {
+        mmkv = MMKV.mmkvWithID(mmapID, mode)
+    }
+
+    constructor(mmapID: String, mode: Int, cryptKey: String?) {
+        mmkv = MMKV.mmkvWithID(mmapID, mode, cryptKey)
     }
 
     fun <T> encode(mmkvKey: MMKVKey<T>, value: T?) {

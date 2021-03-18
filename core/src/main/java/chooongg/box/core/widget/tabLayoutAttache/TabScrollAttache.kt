@@ -1,11 +1,11 @@
-package chooongg.box.core.widget.tablayoutattacer
+package chooongg.box.core.widget.tabLayoutAttache
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import chooongg.box.core.ext.scrollToPosition
 import com.google.android.material.tabs.TabLayout
 
-class TabScrollAttacher(
+class TabScrollAttache(
     private val tabLayout: TabLayout,
     private val recyclerView: RecyclerView,
     private val tabStartIndexOffsets: List<Int>,
@@ -16,7 +16,7 @@ class TabScrollAttacher(
 
     private lateinit var config: Configuration
 
-    private var attacherState = AttacheState.IDLE
+    private var attacheState = AttacheState.IDLE
 
     private var isAttached = false
 
@@ -24,13 +24,13 @@ class TabScrollAttacher(
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
 
-            if (attacherState == AttacheState.TAB_SELECTED) {
+            if (attacheState == AttacheState.TAB_SELECTED) {
                 return
             }
 
             val isScrolling = dx != 0 || dy != 0
-            if (attacherState == AttacheState.IDLE && isScrolling) {
-                attacherState = AttacheState.RECYCLERVIEW_SCROLLING
+            if (attacheState == AttacheState.IDLE && isScrolling) {
+                attacheState = AttacheState.RECYCLERVIEW_SCROLLING
             }
 
             val calculatedRecyclerViewItemPosition = when {
@@ -48,15 +48,15 @@ class TabScrollAttacher(
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                attacherState = AttacheState.IDLE
+                attacheState = AttacheState.IDLE
             }
         }
     }
 
     private var tabSelectedListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabSelected(p0: TabLayout.Tab?) {
-            if (attacherState != AttacheState.RECYCLERVIEW_SCROLLING) {
-                attacherState = AttacheState.TAB_SELECTED
+            if (attacheState != AttacheState.RECYCLERVIEW_SCROLLING) {
+                attacheState = AttacheState.TAB_SELECTED
                 val recyclerViewPosition = tabStartIndexOffsets[tabLayout.selectedTabPosition]
                 recyclerView.scrollToPosition(recyclerViewPosition, config.scrollMethod)
             }

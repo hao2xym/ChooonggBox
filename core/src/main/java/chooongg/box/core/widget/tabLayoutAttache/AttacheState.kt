@@ -1,4 +1,4 @@
-package chooongg.box.core.widget.tablayoutattacer
+package chooongg.box.core.widget.tabLayoutAttache
 
 enum class AttacheState {
     IDLE,
