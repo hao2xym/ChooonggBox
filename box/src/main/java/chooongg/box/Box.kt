@@ -1,8 +1,7 @@
 package chooongg.box
 
 import android.app.Application
-import chooongg.box.entity.BoxMMKVConst
-import chooongg.box.ext.setNightMode
+import chooongg.box.ext.initNightMode
 import chooongg.box.manager.AppManager
 import com.tencent.mmkv.MMKV
 
@@ -15,8 +14,8 @@ object Box : IBoxInitialize {
 
     override fun initialize(application: Application) {
         MMKV.initialize(application)
+        application.initNightMode()
         AppManager.initialize(application)
         BoxLibrariesConfig.initialize(application)
-        setNightMode(BoxMMKVConst.dayNightMode.decode())
     }
 }

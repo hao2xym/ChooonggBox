@@ -86,9 +86,9 @@ object LogActuator {
                 var classType: String? = null
                 val contentSplit = ArrayList<String>().apply {
                     config.handlers.reversed().forEach { handler ->
-                        if (handler.isHandler(any)) {
-                            classType = handler.getTypeString(any)
-                            addAll(handler.handler(config, any, 0))
+                        if (handler.isHandler(content)) {
+                            classType = handler.getTypeString(content)
+                            addAll(handler.handler(config, content, 0))
                             return@apply
                         }
                     }

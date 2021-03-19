@@ -6,5 +6,5 @@ import chooongg.box.mmkv.MMKVController
 import chooongg.box.mmkv.MMKVKey
 
 object BoxMMKVConst : MMKVController(Box.TAG) {
-    val dayNightMode = MMKVKey(this, "dayNightMode", AppCompatDelegate.MODE_NIGHT_NO)
+    object DayNightMode : MMKVKey<Int>(this, "dayNightMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 }

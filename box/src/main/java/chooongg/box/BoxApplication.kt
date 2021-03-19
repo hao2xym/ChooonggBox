@@ -7,7 +7,7 @@ import chooongg.box.ext.activityManager
 
 open class BoxApplication : Application() {
 
-    companion object{
+    companion object {
         init {
             // 兼容矢量图片
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)

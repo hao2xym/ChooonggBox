@@ -14,6 +14,7 @@ import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.contentView
 import chooongg.box.ext.loadActivityLabel
 import chooongg.box.ext.resourcesDimension
+import chooongg.box.log.BoxLog
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import kotlin.reflect.full.findAnnotation
 
@@ -52,12 +53,16 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             toolbar = configToolBar(parentLayout).apply {
                 id = R.id.box_toolbar
                 elevation = resourcesDimension(R.dimen.design_appbar_elevation)
-                if (isAutoShowNavigationIcon()) {
-                    setNavigationIcon(R.drawable.ic_app_bar_back)
-                }
             }
             parentLayout.addView(toolbar, 0)
             setSupportActionBar(toolbar)
+            if (isAutoShowNavigationIcon()) {
+                toolbar!!.setNavigationIcon(R.drawable.ic_app_bar_back)
+                toolbar!!.setNavigationOnClickListener {
+                    BoxLog.e("OnBackPressed")
+                    onBackPressed()
+                }
+            }
             supportActionBar?.title = loadActivityLabel()
         }
         initTransition()

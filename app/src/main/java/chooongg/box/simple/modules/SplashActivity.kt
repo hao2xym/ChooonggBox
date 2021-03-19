@@ -1,9 +1,7 @@
 package chooongg.box.simple.modules
 
 import android.app.ActivityOptions
-import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxVBActivity
@@ -28,7 +26,6 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
     override fun initContent(savedInstanceState: Bundle?) {
         binding.ivLogo.animate().alpha(1f)
         binding.tvName.animate().alpha(1f).translationY(0f)
-
     }
 
     override fun onResume() {
@@ -36,20 +33,20 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
         job = lifecycleScope.launch {
             delay(3000)
             withMain {
-                val oldActivity = ComponentName(applicationContext, SplashActivity::class.java)
-                applicationContext.packageManager.setComponentEnabledSetting(
-                    oldActivity,
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP
-                )
-
-                val newActivity =
-                    ComponentName(applicationContext, SplashNewYearActivity::class.java)
-                applicationContext.packageManager.setComponentEnabledSetting(
-                    newActivity,
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
-                )
+//                val oldActivity = ComponentName(applicationContext, SplashActivity::class.java)
+//                applicationContext.packageManager.setComponentEnabledSetting(
+//                    oldActivity,
+//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//                    PackageManager.DONT_KILL_APP
+//                )
+//
+//                val newActivity =
+//                    ComponentName(applicationContext, SplashNewYearActivity::class.java)
+//                applicationContext.packageManager.setComponentEnabledSetting(
+//                    newActivity,
+//                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                    PackageManager.DONT_KILL_APP
+//                )
 
                 startActivity(
                     Intent(context, MainActivity::class.java),
