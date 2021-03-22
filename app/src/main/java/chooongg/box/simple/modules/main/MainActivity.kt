@@ -1,27 +1,25 @@
 package chooongg.box.simple.modules.main
 
-import android.app.ActivityOptions
-import android.content.Intent
 import android.os.Bundle
-import android.transition.AutoTransition
 import android.transition.Explode
-import android.transition.Fade
-import android.transition.Slide
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxVBVMActivity
+import chooongg.box.ext.dp2px
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
-import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -37,9 +35,8 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         window.allowEnterTransitionOverlap = true
         window.allowReturnTransitionOverlap = true
         window.enterTransition = Explode()
-        window.exitTransition = Fade()
-        window.returnTransition = Slide()
-        window.reenterTransition = AutoTransition()
+        window.exitTransition = Explode()
+        window.allowReturnTransitionOverlap = false
     }
 
     override fun initConfig(savedInstanceState: Bundle?) {
@@ -49,11 +46,17 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         binding.recyclerView.adapter = adapter
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, view, position ->
-            val intent = Intent(this, TopAppBarActivity::class.java)
-            val options = ActivityOptions.makeSceneTransitionAnimation(
-                this, view, "root"
-            )
-            startActivity(intent, options.toBundle())
+//            val intent = Intent(this, TopAppBarActivity::class.java)
+//            val options = ActivityOptions.makeSceneTransitionAnimation(
+//                this, view, "root"
+//            )
+//            startActivity(intent, options.toBundle())
+            Snackbar.make(binding.recyclerView, "测试Snackbar", Snackbar.LENGTH_INDEFINITE)
+                .apply {
+                    view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                        bottomMargin = dp2px(16f)
+                    }
+                }.show()
         }
     }
 

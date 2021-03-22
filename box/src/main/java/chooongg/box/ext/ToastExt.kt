@@ -13,9 +13,14 @@ private var boxToast: Toast? = null
 /**
  * 展示Toast
  */
-fun showToast(text: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
+fun showToast(
+    text: CharSequence?,
+    duration: Int = Toast.LENGTH_SHORT,
+    block: ((Toast) -> Unit)? = null
+) {
     boxToast?.cancel()
     boxToast = Toast.makeText(AppManager.activityTop as? Context ?: APP, text, duration).apply {
+        block?.invoke(this)
         show()
     }
 }
@@ -23,9 +28,14 @@ fun showToast(text: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
 /**
  * 展示Toast
  */
-fun showToast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) {
+fun showToast(
+    @StringRes resId: Int,
+    duration: Int = Toast.LENGTH_SHORT,
+    block: ((Toast) -> Unit)? = null
+) {
     boxToast?.cancel()
     boxToast = Toast.makeText(AppManager.activityTop as? Context ?: APP, resId, duration).apply {
+        block?.invoke(this)
         show()
     }
 }

@@ -7,6 +7,7 @@ open class MMKVKey<T>(
     val key: String,
     val defaultValue: T
 ) {
+    fun getSuperTClass() = Unit
     fun getTClass() =
         (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<*>
 

@@ -1,6 +1,10 @@
 package chooongg.box.ext
 
+import java.math.BigDecimal
+import java.math.BigInteger
 import java.text.DecimalFormat
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 /**
  * @sample formatNumber("#.00")
@@ -15,7 +19,43 @@ import java.text.DecimalFormat
  *  \u2030 = 乘1000显示千分比
  *  ' = 以上字符前缀，使其为字符显示
  */
-fun Any.formatNumber(pattern: String): String {
+fun Long.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun Int.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun Short.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun Byte.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun AtomicInteger.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun AtomicLong.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun BigInteger.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun BigDecimal.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+fun Number.formatNumber(pattern: String): String {
+    return formatNumberByAny(pattern)
+}
+
+private fun Any.formatNumberByAny(pattern: String): String {
     return try {
         val decimalFormat = DecimalFormat(pattern)
         decimalFormat.format(this)
