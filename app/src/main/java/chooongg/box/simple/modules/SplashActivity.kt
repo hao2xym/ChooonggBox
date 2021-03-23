@@ -1,12 +1,12 @@
 package chooongg.box.simple.modules
 
-import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxVBActivity
 import chooongg.box.ext.withMain
 import chooongg.box.simple.BuildConfig
+import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivitySplashBinding
 import chooongg.box.simple.modules.main.MainActivity
 import kotlinx.coroutines.Job
@@ -48,10 +48,8 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
 //                    PackageManager.DONT_KILL_APP
 //                )
 
-                startActivity(
-                    Intent(context, MainActivity::class.java),
-                    ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
-                )
+                startActivity(Intent(context, MainActivity::class.java))
+                overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
             }
         }
     }

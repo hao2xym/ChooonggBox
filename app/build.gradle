@@ -15,6 +15,7 @@ android {
         targetSdkVersion target_sdk_version
         versionCode version_code
         versionName version_name
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "default"]
     }
 
     buildFeatures {
@@ -41,9 +42,14 @@ android {
 }
 
 dependencies {
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':core')
     implementation project(path: ':http')
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'com.airbnb.android:lottie:3.6.1'
+    // 友盟
+    implementation 'com.umeng.umsdk:common:9.3.7'
+    implementation 'com.umeng.umsdk:asms:1.2.1'
+    implementation 'com.umeng.umsdk:apm:1.1.1'
 }

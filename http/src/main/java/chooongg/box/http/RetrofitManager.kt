@@ -27,7 +27,7 @@ object RetrofitManager {
         return retrofit.create(clazz.java)
     }
 
-    fun okHttpClientBuilder(config: HttpConfig = defaultConfig) = OkHttpClient.Builder().apply {
+    private fun okHttpClientBuilder(config: HttpConfig = defaultConfig) = OkHttpClient.Builder().apply {
         connectTimeout(config.connectTimeout, TimeUnit.SECONDS)
         writeTimeout(config.writeTimeout, TimeUnit.SECONDS)
         readTimeout(config.readTimeout, TimeUnit.SECONDS)
@@ -39,7 +39,7 @@ object RetrofitManager {
         config.networkInterceptor.forEach { addNetworkInterceptor(it) }
     }
 
-    fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
+    private fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
         if (clazz.javaClass.isAnnotationPresent(BaseUrl::class.java)) {
             return clazz.javaClass.getAnnotation(BaseUrl::class.java).value
         } else throw RuntimeException("unable to find BaseUrl from Annotation")

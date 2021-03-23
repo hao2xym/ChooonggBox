@@ -34,6 +34,7 @@ android {
 
 dependencies {
     implementation project(path: ':box')
+    api 'io.coil-kt:coil:1.1.1'
     api 'com.squareup.okhttp3:okhttp:4.9.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-scalars:2.9.0'

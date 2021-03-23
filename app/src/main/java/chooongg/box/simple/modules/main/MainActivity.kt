@@ -32,11 +32,8 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
     override fun isAutoShowNavigationIcon() = false
 
     override fun initTransition() {
-        window.allowEnterTransitionOverlap = true
-        window.allowReturnTransitionOverlap = true
-        window.enterTransition = Explode()
         window.exitTransition = Explode()
-        window.allowReturnTransitionOverlap = false
+        window.enterTransition = Explode()
     }
 
     override fun initConfig(savedInstanceState: Bundle?) {

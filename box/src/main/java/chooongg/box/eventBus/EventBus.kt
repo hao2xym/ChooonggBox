@@ -73,7 +73,6 @@ object EventBus : CoroutineScope {
 
         val event = mStickyEventMap[eventClass]
         event?.let {
-
             postEvent(it)
         }
     }
@@ -156,8 +155,8 @@ object EventBus : CoroutineScope {
         mStickyEventMap.remove(eventType)
     }
 
+    @ExperimentalCoroutinesApi
     private fun postEvent(event: Any) {
-
         val cloneContexMap = ConcurrentHashMap<String, MutableMap<Class<*>, EventData<*>>>()
         cloneContexMap.putAll(contextMap)
         for ((_, eventDataMap) in cloneContexMap) {
