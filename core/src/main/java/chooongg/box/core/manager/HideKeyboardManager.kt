@@ -27,7 +27,7 @@ class HideKeyboardManager private constructor(activity: Activity, content: ViewG
     init {
         var contentTemp: ViewGroup? = content
         if (contentTemp == null) {
-            contentTemp = activity.contentView
+            contentTemp = activity.window.contentView
         }
         getScrollView(contentTemp, activity)
         contentTemp.setOnTouchListener { _, motionEvent ->

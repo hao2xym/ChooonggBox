@@ -66,7 +66,7 @@ fun isSoftInputVisible(activity: Activity, minHeightOfSoftInput: Int = 200): Boo
  * 软键盘显示监听
  */
 fun Activity.onKeyboardShowListener(listener: (isShow: Boolean) -> Unit) {
-    contentView.viewTreeObserver.addOnGlobalLayoutListener {
+    window.contentView.viewTreeObserver.addOnGlobalLayoutListener {
         val rect = Rect()
         window.decorView.getWindowVisibleDisplayFrame(rect)
         val screenHeight = window.decorView.rootView.height

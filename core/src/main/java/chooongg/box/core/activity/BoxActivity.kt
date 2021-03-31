@@ -3,15 +3,16 @@ package chooongg.box.core.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.ContentFrameLayout
 import androidx.appcompat.widget.FitWindowsLinearLayout
 import androidx.appcompat.widget.Toolbar
 import chooongg.box.core.R
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
-import chooongg.box.ext.contentView
 import chooongg.box.ext.loadActivityLabel
 import chooongg.box.ext.resourcesDimension
 import chooongg.box.log.BoxLog
@@ -20,6 +21,8 @@ import kotlin.reflect.full.findAnnotation
 
 abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
     AppCompatActivity(), BoxInit {
+
+    val Activity.contentView: ContentFrameLayout by lazy { findViewById(Window.ID_ANDROID_CONTENT) }
 
     inline val context: Context get() = this
 

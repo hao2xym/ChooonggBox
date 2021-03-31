@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.transition.Explode
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.updateLayoutParams
-import androidx.recyclerview.widget.GridLayoutManager
 import chooongg.box.core.activity.BoxVBVMActivity
-import chooongg.box.ext.dp2px
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.log.BoxLog
@@ -39,7 +35,6 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
     override fun initConfig(savedInstanceState: Bundle?) {
         BoxLog.e(isNightMode())
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
-        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerView.adapter = adapter
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, view, position ->
@@ -48,12 +43,6 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
 //                this, view, "root"
 //            )
 //            startActivity(intent, options.toBundle())
-            Snackbar.make(binding.recyclerView, "测试Snackbar", Snackbar.LENGTH_INDEFINITE)
-                .apply {
-                    view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                        bottomMargin = dp2px(16f)
-                    }
-                }.show()
         }
     }
 
@@ -81,4 +70,17 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
                 .setImageResource(R.id.iv_image, item.imgRes)
         }
     }
+
+    private var firstTime: Long = 0
+
+    override fun onBackPressed() {
+        val secondTime = System.currentTimeMillis()
+        if (secondTime - firstTime > 2000) {
+            Snackbar.make(contentView, "再按一次退出程序", Snackbar.LENGTH_SHORT).show()
+            firstTime = secondTime
+        } else {
+            super.onBackPressed()
+        }
+    }
+
 }

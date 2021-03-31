@@ -9,6 +9,7 @@ import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivitySplashBinding
 import chooongg.box.simple.modules.main.MainActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,5 +58,17 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
     override fun onPause() {
         super.onPause()
         job?.cancel()
+    }
+
+    private var firstTime: Long = 0
+
+    override fun onBackPressed() {
+        val secondTime = System.currentTimeMillis()
+        if (secondTime - firstTime > 2000) {
+            Snackbar.make(contentView,"再按一次退出程序",Snackbar.LENGTH_SHORT).show()
+            firstTime = secondTime
+        } else {
+            super.onBackPressed()
+        }
     }
 }
