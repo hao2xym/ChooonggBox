@@ -1,6 +1,4 @@
-package chooongg.box.permission.request;
-
-import java.util.List;
+package chooongg.box.permission.request
 
 /**
  * 定义任务界面以请求权限
@@ -8,36 +6,35 @@ import java.util.List;
  * 一些权限需要单独请求
  * 因此，每个权限请求都需要实现此接口，并在其实现中执行请求逻辑
  */
-public interface ChainTask {
-
+interface ChainTask {
     /**
      * Get the ExplainScope for showing RequestReasonDialog.
      *
      * @return Instance of ExplainScope.
      */
-    ExplainScope getExplainScope();
+    fun getExplainScope(): ExplainScope?
 
     /**
      * Get the ForwardScope for showing ForwardToSettingsDialog.
      *
      * @return Instance of ForwardScope.
      */
-    ForwardScope getForwardScope();
+    fun getForwardScope(): ForwardScope?
 
     /**
      * Do the request logic.
      */
-    void request();
+    fun request()
 
     /**
      * Request permissions again when user denied.
      *
      * @param permissions Permissions to request again.
      */
-    void requestAgain(List<String> permissions);
+    fun requestAgain(permissions: List<String?>?)
 
     /**
      * Finish this task and notify the request result.
      */
-    void finish();
+    fun finish()
 }
