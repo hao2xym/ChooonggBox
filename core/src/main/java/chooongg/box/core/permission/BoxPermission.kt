@@ -3,14 +3,18 @@ package chooongg.box.core.permission
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import chooongg.box.core.permission.request.ChainTask
-import chooongg.box.core.permission.request.ExplainScope
-import chooongg.box.core.permission.request.ForwardScope
-import chooongg.box.core.permission.request.RequestBackgroundLocationPermission
+import androidx.fragment.app.FragmentManager
+import chooongg.box.core.permission.request.*
 
 object BoxPermission {
 
@@ -30,6 +34,18 @@ object BoxPermission {
 
     @JvmStatic
     fun init(fragment: Fragment) = PermissionMediator(fragment)
+
+    /**
+     * 检查权限是否被授予
+     *
+     * @param context    任何 Context
+     * @param permission 具体要检查的权限名称
+     * @return 如果授予此权限，则为True，否则为False
+     */
+    fun isGranted(context: Context?, permission: String?): Boolean {
+        return ContextCompat.checkSelfPermission(context!!,
+            permission!!) == PackageManager.PERMISSION_GRANTED
+    }
 
     interface RequestCallback {
         /**
@@ -147,36 +163,36 @@ object BoxPermission {
          * 一些不应请求的权限将存储在此处
          * 并在请求完成时通知用户
          */
-        internal var permissionsWontRequest: Set<String> = LinkedHashSet()
+        internal var permissionsWontRequest: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 在请求的权限中授予的权限
          */
-        internal var grantedPermissions: Set<String> = LinkedHashSet()
+        internal var grantedPermissions: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 在请求的权限中被拒绝的权限
          */
-        internal var deniedPermissions: Set<String> = LinkedHashSet()
+        internal var deniedPermissions: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 保留在请求的权限中被永久拒绝的权限
          * {@link 拒绝，不再提示}
          */
-        internal var permanentDeniedPermissions: Set<String> = LinkedHashSet()
+        internal var permanentDeniedPermissions: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 当我们请求多个权限时，有些被拒绝，有些被永久拒绝
          * 拒绝的权限将首先回调。并且永久拒绝的权限将存储在此tempPermanentDeniedPermissions中
          * 一旦不再存在拒绝的权限，它们将被回调
          */
-        internal var tempPermanentDeniedPermissions: Set<String> = LinkedHashSet()
+        internal var tempPermanentDeniedPermissions: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 拥有应转发给“设置”以允许它们的权限。并非所有永久拒绝的权限都应转发到“设置”
          * 只有那些认为必要的开发人员才应该这样做
          */
-        internal var forwardPermissions: Set<String> = java.util.LinkedHashSet()
+        internal var forwardPermissions: LinkedHashSet<String> = LinkedHashSet()
 
         /**
          * 权限请求回调
@@ -361,6 +377,141 @@ object BoxPermission {
                     chainTask.finish()
                 }
             }
+        }
+
+        /**
+         * 在Fragment中立即请求权限
+         *
+         * @param permissions 要请求的权限
+         * @param chainTask   当前任务的实例
+         */
+        fun requestNow(permissions: Set<String?>?, chainTask: ChainTask?) {
+            getInvisibleFragment().requestNow(this, permissions, chainTask)
+        }
+
+        /**
+         * 在Fragment中立即 ACCESS_BACKGROUND_LOCATION 权限
+         *
+         * @param chainTask 当前任务的实例
+         */
+        fun requestAccessBackgroundLocationNow(chainTask: ChainTask?) {
+            getInvisibleFragment().requestAccessBackgroundLocationNow(this, chainTask)
+        }
+
+        /**
+         * Request SYSTEM_ALERT_WINDOW permission at once in the fragment.
+         *
+         * @param chainTask Instance of current task.
+         */
+        fun requestSystemAlertWindowPermissionNow(chainTask: ChainTask?) {
+            getInvisibleFragment().requestSystemAlertWindowPermissionNow(this, chainTask)
+        }
+
+        /**
+         * Request WRITE_SETTINGS permission at once in the fragment.
+         *
+         * @param chainTask Instance of current task.
+         */
+        fun requestWriteSettingsPermissionNow(chainTask: ChainTask?) {
+            getInvisibleFragment().requestWriteSettingsPermissionNow(this, chainTask)
+        }
+
+        /**
+         * Request MANAGE_EXTERNAL_STORAGE permission at once in the fragment.
+         *
+         * @param chainTask Instance of current task.
+         */
+        fun requestManageExternalStoragePermissionNow(chainTask: ChainTask?) {
+            getInvisibleFragment().requestManageExternalStoragePermissionNow(this, chainTask)
+        }
+
+        /**
+         * Should we request ACCESS_BACKGROUND_LOCATION permission or not.
+         *
+         * @return True if specialPermissions contains ACCESS_BACKGROUND_LOCATION permission, false otherwise.
+         */
+        fun shouldRequestBackgroundLocationPermission(): Boolean {
+            return specialPermissions.contains(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+        }
+
+        /**
+         * Should we request SYSTEM_ALERT_WINDOW permission or not.
+         *
+         * @return True if specialPermissions contains SYSTEM_ALERT_WINDOW permission, false otherwise.
+         */
+        fun shouldRequestSystemAlertWindowPermission(): Boolean {
+            return specialPermissions.contains(Manifest.permission.SYSTEM_ALERT_WINDOW)
+        }
+
+        /**
+         * Should we request WRITE_SETTINGS permission or not.
+         *
+         * @return True if specialPermissions contains WRITE_SETTINGS permission, false otherwise.
+         */
+        fun shouldRequestWriteSettingsPermission(): Boolean {
+            return specialPermissions.contains(Manifest.permission.WRITE_SETTINGS)
+        }
+
+        /**
+         * Should we request MANAGE_EXTERNAL_STORAGE permission or not.
+         *
+         * @return True if specialPermissions contains MANAGE_EXTERNAL_STORAGE permission, false otherwise.
+         */
+        fun shouldRequestManageExternalStoragePermission(): Boolean {
+            return specialPermissions.contains(RequestManageExternalStoragePermission.MANAGE_EXTERNAL_STORAGE)
+        }
+
+        /**
+         * Get the targetSdkVersion of current app.
+         *
+         * @return The targetSdkVersion of current app.
+         */
+        fun getTargetSdkVersion(): Int {
+            return activity!!.applicationInfo.targetSdkVersion
+        }
+
+        /**
+         * Get the FragmentManager if it's in Activity, or the ChildFragmentManager if it's in Fragment.
+         * @return The FragmentManager to operate Fragment.
+         */
+        fun getFragmentManager(): FragmentManager? {
+            val fragmentManager: FragmentManager
+            fragmentManager = fragment?.childFragmentManager ?: activity!!.supportFragmentManager
+            return fragmentManager
+        }
+
+        /**
+         * Get the invisible fragment in activity for request permissions.
+         * If there is no invisible fragment, add one into activity.
+         * Don't worry. This is very lightweight.
+         */
+        private fun getInvisibleFragment(): InvisibleFragment? {
+            val fragmentManager: FragmentManager = getFragmentManager()
+            val existedFragment = fragmentManager.findFragmentByTag(PermissionBuilder.FRAGMENT_TAG)
+            return if (existedFragment != null) {
+                existedFragment as InvisibleFragment?
+            } else {
+                val invisibleFragment = InvisibleFragment()
+                fragmentManager.beginTransaction()
+                    .add(invisibleFragment, PermissionBuilder.FRAGMENT_TAG)
+                    .commitNowAllowingStateLoss()
+                invisibleFragment
+            }
+        }
+
+        /**
+         * Go to your app's Settings page to let user turn on the necessary permissions.
+         *
+         * @param permissions Permissions which are necessary.
+         */
+        private fun forwardToSettings(permissions: List<String>) {
+            forwardPermissions.clear()
+            forwardPermissions.addAll(permissions)
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", activity!!.packageName, null)
+            intent.data = uri
+            getInvisibleFragment().startActivityForResult(intent,
+                InvisibleFragment.FORWARD_TO_SETTINGS)
         }
     }
 }
