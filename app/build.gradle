@@ -49,7 +49,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     implementation 'com.airbnb.android:lottie:3.6.1'
     // 友盟
-    implementation 'com.umeng.umsdk:common:9.3.7'
-    implementation 'com.umeng.umsdk:asms:1.2.1'
-    implementation 'com.umeng.umsdk:apm:1.1.1'
+    implementation 'com.umeng.umsdk:common:9.3.8'
+    implementation 'com.umeng.umsdk:asms:1.2.2'
+    implementation 'com.umeng.umsdk:apm:1.2.0'
 }

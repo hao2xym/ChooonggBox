@@ -8,7 +8,7 @@ import com.tencent.mmkv.MMKV
  */
 open class MMKVController {
 
-    val mmkv: MMKV
+    val mmkv: MMKV?
 
     constructor() {
         mmkv = MMKV.defaultMMKV()
@@ -35,6 +35,7 @@ open class MMKVController {
     }
 
     fun <T> encode(mmkvKey: MMKVKey<T>, value: T?) {
+        if (mmkv == null) return
         if (value == null) mmkv.removeValueForKey(mmkvKey.key)
         else when (mmkvKey.getTClass()) {
             Int::class.javaObjectType -> mmkv.encode(mmkvKey.key, value as Int)
@@ -50,6 +51,7 @@ open class MMKVController {
 
     @Suppress("UNCHECKED_CAST")
     fun <T> decode(mmkvKey: MMKVKey<T>, defaultValue: T = mmkvKey.defaultValue): T {
+        if (mmkv == null) return defaultValue
         return if (mmkv.containsKey(mmkvKey.key)) {
             when (mmkvKey.getTClass()) {
                 Int::class.javaObjectType -> mmkv.decodeInt(mmkvKey.key) as T
@@ -65,6 +67,7 @@ open class MMKVController {
     }
 
     fun <T : Parcelable?> encode(mmkvKey: MMKVKeyParcelable<T>, value: T?) {
+        if (mmkv == null) return
         if (value == null) mmkv.removeValueForKey(mmkvKey.key)
         else mmkv.encode(mmkvKey.key, value)
     }
@@ -74,6 +77,7 @@ open class MMKVController {
         mmkvKey: MMKVKeyParcelable<T>,
         defaultValue: T = mmkvKey.defaultValue
     ): T {
+        if (mmkv == null) return defaultValue
         return if (mmkv.containsKey(mmkvKey.key)) mmkv.decodeParcelable(
             mmkvKey.key,
             mmkvKey.getTClass() as Class<Parcelable>
@@ -82,6 +86,7 @@ open class MMKVController {
     }
 
     fun remove(vararg mmkvKey: MMKVKey<*>) {
+        if (mmkv == null) return
         if (mmkvKey.isNotEmpty()) {
             val keys = Array(mmkvKey.size) {
                 mmkvKey[it].key
@@ -91,6 +96,7 @@ open class MMKVController {
     }
 
     fun remove(vararg mmkvKeyParcelable: MMKVKeyParcelable<*>) {
+        if (mmkv == null) return
         if (mmkvKeyParcelable.isNotEmpty()) {
             val keys = Array(mmkvKeyParcelable.size) {
                 mmkvKeyParcelable[it].key

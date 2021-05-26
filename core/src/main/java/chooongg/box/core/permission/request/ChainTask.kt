@@ -20,7 +20,7 @@ interface ChainTask {
     /**
      * 用户被拒绝时，再次请求权限
      */
-    fun requestAgain(permissions: List<String?>?)
+    fun requestAgain(permissions: List<String>?)
 
     /**
      * 完成此任务并通知请求结果

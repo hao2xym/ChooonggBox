@@ -18,6 +18,8 @@ import chooongg.box.core.permission.request.*
 
 object BoxPermission {
 
+    private const val FRAGMENT_TAG = "InvisibleFragment"
+
     /**
      * 维护我们需要通过特殊情况处理的所有特殊权限
      */
@@ -135,8 +137,8 @@ object BoxPermission {
     class PermissionBuilder(
         internal val activity: FragmentActivity?,
         internal val fragment: Fragment?,
-        internal val normalPermissions: Set<String>,
-        internal val specialPermissions: Set<String>,
+        internal val normalPermissions: MutableSet<String>,
+        internal val specialPermissions: MutableSet<String>,
     ) {
 
         /**
@@ -474,10 +476,8 @@ object BoxPermission {
          * Get the FragmentManager if it's in Activity, or the ChildFragmentManager if it's in Fragment.
          * @return The FragmentManager to operate Fragment.
          */
-        fun getFragmentManager(): FragmentManager? {
-            val fragmentManager: FragmentManager
-            fragmentManager = fragment?.childFragmentManager ?: activity!!.supportFragmentManager
-            return fragmentManager
+        fun getFragmentManager(): FragmentManager {
+            return fragment?.childFragmentManager ?: activity!!.supportFragmentManager
         }
 
         /**
@@ -487,13 +487,13 @@ object BoxPermission {
          */
         private fun getInvisibleFragment(): InvisibleFragment? {
             val fragmentManager: FragmentManager = getFragmentManager()
-            val existedFragment = fragmentManager.findFragmentByTag(PermissionBuilder.FRAGMENT_TAG)
+            val existedFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG)
             return if (existedFragment != null) {
                 existedFragment as InvisibleFragment?
             } else {
                 val invisibleFragment = InvisibleFragment()
                 fragmentManager.beginTransaction()
-                    .add(invisibleFragment, PermissionBuilder.FRAGMENT_TAG)
+                    .add(invisibleFragment, FRAGMENT_TAG)
                     .commitNowAllowingStateLoss()
                 invisibleFragment
             }

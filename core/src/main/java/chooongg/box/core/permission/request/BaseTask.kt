@@ -7,7 +7,7 @@ import android.provider.Settings
 import chooongg.box.core.permission.BoxPermission
 import java.util.*
 
-abstract class BaseTask internal constructor(private val pb: BoxPermission.PermissionBuilder) :
+abstract class BaseTask internal constructor(internal val pb: BoxPermission.PermissionBuilder) :
     ChainTask {
 
     /**
@@ -15,7 +15,7 @@ abstract class BaseTask internal constructor(private val pb: BoxPermission.Permi
      * 完成此任务后，将运行下一个任务
      * 如果没有下一个任务，则请求过程结束
      */
-    protected var next: ChainTask? = null
+    var next: ChainTask? = null
 
     /**
      * 提供对explainReasonCallback的特定范围，以调用特定的函数。
@@ -39,8 +39,10 @@ abstract class BaseTask internal constructor(private val pb: BoxPermission.Permi
             deniedList.addAll(pb.permanentDeniedPermissions)
             deniedList.addAll(pb.permissionsWontRequest)
             if (pb.shouldRequestBackgroundLocationPermission()) {
-                if (PermissionX.isGranted(pb.activity,
-                        RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
+                if (BoxPermission.isGranted(
+                        pb.activity,
+                        RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION
+                    )
                 ) {
                     pb.grantedPermissions.add(RequestBackgroundLocationPermission.ACCESS_BACKGROUND_LOCATION)
                 } else {
@@ -75,9 +77,11 @@ abstract class BaseTask internal constructor(private val pb: BoxPermission.Permi
                 }
             }
             if (pb.requestCallback != null) {
-                pb.requestCallback.onResult(deniedList.isEmpty(),
-                    ArrayList<E>(pb.grantedPermissions),
-                    deniedList)
+                pb.requestCallback!!.onResult(
+                    deniedList.isEmpty(),
+                    ArrayList(pb.grantedPermissions),
+                    deniedList
+                )
             }
         }
     }
