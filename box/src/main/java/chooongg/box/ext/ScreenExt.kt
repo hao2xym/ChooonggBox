@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.provider.Settings
+import android.view.WindowManager
+import androidx.annotation.RequiresPermission
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 
@@ -132,3 +135,86 @@ fun Activity.isLightNavigationBars(): Boolean? {
     val insetsController = WindowCompat.getInsetsController(window, decorView) ?: return null
     return insetsController.isAppearanceLightNavigationBars
 }
+
+/**
+ * 屏幕是否亮屏
+ */
+fun isScreenOn() = APP.powerManager.isInteractive
+
+/**
+ * 屏幕是否熄灭
+ */
+fun isScreenOff() = !isScreenOn()
+
+/**
+ * 屏幕是否锁屏
+ */
+fun isScreenLocked() = APP.keyguardManager.isKeyguardLocked
+
+/**
+ * 屏幕是否解锁
+ */
+fun isScreenUnlocked() = !isScreenLocked()
+
+/**
+ * 判断和设置是否保持屏幕常亮，只作用于当前窗口
+ */
+var Activity.isKeepScreenOn: Boolean
+    get() {
+        val flag = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+        return (window.attributes.flags and flag) == flag
+    }
+    set(value) {
+        when (value) {
+            true -> window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+            false -> window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+    }
+
+/**
+ * 保持屏幕常亮，只作用于当前窗口
+ */
+fun Activity.setKeepScreenOn() {
+    if (!isKeepScreenOn) {
+        isKeepScreenOn = true
+    }
+}
+
+/**
+ * 取消保持屏幕常亮，只作用于当前窗口
+ */
+fun Activity.setNonKeepScreenOn() {
+    if (isKeepScreenOn) {
+        isKeepScreenOn = false
+    }
+}
+
+/**
+ * 获取自动锁屏时间
+ * @throws Settings.SettingNotFoundException
+ */
+fun getScreenAutoLockTime() = try {
+    Settings.System.getInt(APP.contentResolver, Settings.System.SCREEN_OFF_TIMEOUT)
+} catch (e: Settings.SettingNotFoundException) {
+    e.printStackTrace()
+    -1
+}
+
+/**
+ * 设置自动锁屏时间
+ * @return 设置成功返回true
+ */
+@RequiresPermission(android.Manifest.permission.WRITE_SETTINGS)
+fun setScreenAutoLockTime(time: Int): Boolean =
+    Settings.System.putInt(
+        APP.contentResolver,
+        Settings.System.SCREEN_OFF_TIMEOUT,
+        time
+    )
+
+/**
+ * 设置永不自动锁屏，即自动锁屏时间为Int.MAX_VALUE
+ * @return 设置成功返回true
+ */
+@RequiresPermission(android.Manifest.permission.WRITE_SETTINGS)
+fun setScreenAutoLockNever(): Boolean = setScreenAutoLockTime(Int.MAX_VALUE)

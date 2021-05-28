@@ -6,36 +6,28 @@ import androidx.annotation.StringRes
 import chooongg.box.manager.AppManager
 
 /**
- * Toast唯一实例
+ * Toast 唯一实例
  */
 private var boxToast: Toast? = null
 
+
+
 /**
- * 展示Toast
+ * 展示 Toast
  */
-fun showToast(
-    text: CharSequence?,
-    duration: Int = Toast.LENGTH_SHORT,
-    block: ((Toast) -> Unit)? = null
-) {
-    boxToast?.cancel()
+fun showToast(text: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
+    cancelToast()
     boxToast = Toast.makeText(AppManager.activityTop as? Context ?: APP, text, duration).apply {
-        block?.invoke(this)
         show()
     }
 }
 
 /**
- * 展示Toast
+ * 展示 Toast
  */
-fun showToast(
-    @StringRes resId: Int,
-    duration: Int = Toast.LENGTH_SHORT,
-    block: ((Toast) -> Unit)? = null
-) {
-    boxToast?.cancel()
+fun showToast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) {
+    cancelToast()
     boxToast = Toast.makeText(AppManager.activityTop as? Context ?: APP, resId, duration).apply {
-        block?.invoke(this)
         show()
     }
 }
@@ -45,4 +37,5 @@ fun showToast(
  */
 fun cancelToast() {
     boxToast?.cancel()
+    boxToast = null
 }

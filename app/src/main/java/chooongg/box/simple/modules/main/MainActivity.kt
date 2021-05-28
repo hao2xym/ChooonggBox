@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.transition.Explode
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import chooongg.box.core.activity.BoxVBVMActivity
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
+import chooongg.box.ext.showToast
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
@@ -15,12 +17,12 @@ import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
 
     private val modules = arrayListOf(
-        MainItemEntity("App Bar: Top", R.mipmap.ic_topappbar)
+        MainItemEntity("App Bar: Top"),
+        MainItemEntity("Request Permissions")
     )
 
     private val adapter = MainAdapter()
@@ -38,6 +40,7 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         binding.recyclerView.adapter = adapter
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, view, position ->
+            showToast("测试$position", Toast.LENGTH_LONG)
 //            val intent = Intent(this, TopAppBarActivity::class.java)
 //            val options = ActivityOptions.makeSceneTransitionAnimation(
 //                this, view, "root"
@@ -67,7 +70,6 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
     class MainAdapter : BaseQuickAdapter<MainItemEntity, BaseViewHolder>(R.layout.item_main) {
         override fun convert(holder: BaseViewHolder, item: MainItemEntity) {
             holder.setText(R.id.tv_name, item.name)
-                .setImageResource(R.id.iv_image, item.imgRes)
         }
     }
 
@@ -76,7 +78,7 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
     override fun onBackPressed() {
         val secondTime = System.currentTimeMillis()
         if (secondTime - firstTime > 2000) {
-            Snackbar.make(contentView, "再按一次退出程序", Snackbar.LENGTH_SHORT).show()
+            showToast("    再按一次退出程序    ", Toast.LENGTH_SHORT)
             firstTime = secondTime
         } else {
             super.onBackPressed()

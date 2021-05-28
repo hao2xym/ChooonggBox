@@ -2,6 +2,7 @@ package chooongg.box.utils
 
 import android.graphics.Color
 import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 
 object ColorUtils {
@@ -11,46 +12,98 @@ object ColorUtils {
      *
      * @param color 颜色
      */
-    fun isColorDark(@ColorInt color: Int): Boolean {
-        val darkness =
-            1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
-        return darkness >= 0.5
+    fun isColorDark(@ColorInt color: Int) =
+        0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color) >= 127.5
+
+    /**
+     * 修改透明度
+     */
+    fun changeAlpha(@ColorInt color: Int, @IntRange(from = 0x0, to = 0xFF) alpha: Int) =
+        color and 0x00ffffff or (alpha shl 24)
+
+    /**
+     * 修改透明度
+     */
+    fun setAlpha(@ColorInt color: Int, @FloatRange(from = 0.0, to = 1.0) alpha: Float) =
+        color and 0x00ffffff or ((alpha * 255.0f + 0.5f).toInt() shl 24)
+
+    /**
+     * 修改红色值
+     */
+    fun changeRed(@ColorInt color: Int, @IntRange(from = 0x0, to = 0xFF) red: Int) =
+        color and -0xff0001 or (red shl 16)
+
+    /**
+     * 修改红色值
+     */
+    fun changeRed(@ColorInt color: Int, @FloatRange(from = 0.0, to = 1.0) red: Float) =
+        color and -0xff0001 or ((red * 255.0f + 0.5f).toInt() shl 16)
+
+    /**
+     * 修改绿色值
+     */
+    fun changeGreen(@ColorInt color: Int, @IntRange(from = 0x0, to = 0xFF) green: Int) =
+        color and -0xff01 or (green shl 8)
+
+    /**
+     * 修改绿色值
+     */
+    fun changeGreen(@ColorInt color: Int, @FloatRange(from = 0.0, to = 1.0) green: Float) =
+        color and -0xff01 or ((green * 255.0f + 0.5f).toInt() shl 8)
+
+    /**
+     * 修改蓝色值
+     */
+    fun changeBlue(@ColorInt color: Int, @IntRange(from = 0x0, to = 0xFF) blue: Int) =
+        color and -0x100 or blue
+
+    /**
+     * 修改蓝色值
+     */
+    fun changeBlue(@ColorInt color: Int, @FloatRange(from = 0.0, to = 1.0) blue: Float) =
+        color and -0x100 or (blue * 255.0f + 0.5f).toInt()
+
+    /**
+     * 计算从 startColor 过渡到 endColor 过程中百分比的颜色值
+     *
+     * @param startColor 起始颜色 int 类型
+     * @param endColor 结束颜色 int 类型
+     * @param percentage 百分比
+     * @return 返回 int 格式的 color
+     */
+    fun calculateColor(
+        startColor: Int,
+        endColor: Int,
+        @FloatRange(from = 0.0, to = 1.0) percentage: Float
+    ): Int {
+        val startAlpha = Color.alpha(startColor)
+        val startRed = Color.red(startColor)
+        val startGreen = Color.green(startColor)
+        val startBlue = Color.blue(startColor)
+        val endAlpha = Color.alpha(endColor)
+        val endRed = Color.red(endColor)
+        val endGreen = Color.green(endColor)
+        val endBlue = Color.blue(endColor)
+        val currentAlpha = ((endAlpha - startAlpha) * percentage + startAlpha).toInt()
+        val currentRed = ((endRed - startRed) * percentage + startRed).toInt()
+        val currentGreen = ((endGreen - startGreen) * percentage + startGreen).toInt()
+        val currentBlue = ((endBlue - startBlue) * percentage + startBlue).toInt()
+        return Color.argb(currentAlpha, currentRed, currentGreen, currentBlue)
     }
 
     /**
-     * 修改颜色透明度
+     * 计算从 startColor 过渡到 endColor 过程中百分比的颜色值
      *
-     * @param color 颜色
-     * @param alpha 透明度
+     * @param startColor 起始颜色 （格式 #FFFFFFFF）
+     * @param endColor 结束颜色 （格式 #FFFFFFFF）
+     * @param percentage 百分比
+     * @return 返回 String 格式的 color（格式#FFFFFFFF）
      */
-    fun changeAlpha(color: Int, @IntRange(from = 0, to = 255) alpha: Int): Int {
-        return Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color))
-    }
-
-
-    /**
-     * 计算从startColor过度到endColor过程中百分比为franch时的颜色值
-     *
-     * @param startColor 起始颜色 int类型
-     * @param endColor 结束颜色 int类型
-     * @param franch franch 百分比0.5
-     * @return 返回int格式的color
-     */
-    fun caculateColor(startColor: Int, endColor: Int, franch: Float): Int {
-        val strStartColor = "#" + Integer.toHexString(startColor)
-        val strEndColor = "#" + Integer.toHexString(endColor)
-        return Color.parseColor(caculateColor(strStartColor, strEndColor, franch))
-    }
-
-    /**
-     * 计算从startColor过度到endColor过程中百分比为franch时的颜色值
-     *
-     * @param startColor 起始颜色 （格式#FFFFFFFF）
-     * @param endColor 结束颜色 （格式#FFFFFFFF）
-     * @param franch 百分比0.5
-     * @return 返回String格式的color（格式#FFFFFFFF）
-     */
-    fun caculateColor(startColor: String, endColor: String, franch: Float): String? {
+    fun calculateColor(
+        startColor: String,
+        endColor: String,
+        @FloatRange(from = 0.0, to = 1.0) percentage: Float
+    ): String {
         val startAlpha = startColor.substring(1, 3).toInt(16)
         val startRed = startColor.substring(3, 5).toInt(16)
         val startGreen = startColor.substring(5, 7).toInt(16)
@@ -59,10 +112,10 @@ object ColorUtils {
         val endRed = endColor.substring(3, 5).toInt(16)
         val endGreen = endColor.substring(5, 7).toInt(16)
         val endBlue = endColor.substring(7).toInt(16)
-        val currentAlpha = ((endAlpha - startAlpha) * franch + startAlpha).toInt()
-        val currentRed = ((endRed - startRed) * franch + startRed).toInt()
-        val currentGreen = ((endGreen - startGreen) * franch + startGreen).toInt()
-        val currentBlue = ((endBlue - startBlue) * franch + startBlue).toInt()
+        val currentAlpha = ((endAlpha - startAlpha) * percentage + startAlpha).toInt()
+        val currentRed = ((endRed - startRed) * percentage + startRed).toInt()
+        val currentGreen = ((endGreen - startGreen) * percentage + startGreen).toInt()
+        val currentBlue = ((endBlue - startBlue) * percentage + startBlue).toInt()
         return ("#" + getHexString(currentAlpha) + getHexString(currentRed)
                 + getHexString(currentGreen) + getHexString(currentBlue))
     }
@@ -72,7 +125,7 @@ object ColorUtils {
      *
      * @param value 十进制
      */
-    fun getHexString(value: Int): String? {
+    private fun getHexString(value: Int): String? {
         var hexString = Integer.toHexString(value)
         if (hexString.length == 1) {
             hexString = "0$hexString"
