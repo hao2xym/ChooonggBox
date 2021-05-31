@@ -4,24 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progress_indicator"
-        android:layout_width="@dimen/d56"
-        android:layout_height="@dimen/d56"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_view"
+        android:layout_width="@dimen/d72"
+        android:layout_height="@dimen/d72"
         android:layout_gravity="center"
         android:layout_margin="@dimen/d32"
-        app:indicatorColor="?colorPrimary"
-        app:indicatorSize="@dimen/d56"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sdfsdf"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_default_loading" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
