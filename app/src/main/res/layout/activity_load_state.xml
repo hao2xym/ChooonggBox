@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorAccent"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/contentMiddle"
+            android:text="测试标题"
+            android:textAppearance="?textAppearanceHeadline5"
+            android:textColor="?colorSurface"
+            app:layout_scrollFlags="scroll|snap" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurface"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/contentMiddle"
+                android:text="测试内容"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorAccent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

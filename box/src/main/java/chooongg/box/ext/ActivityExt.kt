@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import kotlin.reflect.KClass
 
 inline val Activity.decorView: FrameLayout get() = window.decorView as FrameLayout
+inline val Activity.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 inline val Window.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 
 fun Fragment.loadActivityLabel() = activity?.loadActivityLabel()

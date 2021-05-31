@@ -1,5 +1,6 @@
 package chooongg.box.simple.modules.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.transition.Explode
 import android.view.Menu
@@ -13,6 +14,8 @@ import chooongg.box.ext.showToast
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
+import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
+import chooongg.box.simple.modules.loadState.LoadStateActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,7 +25,8 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
 
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top"),
-        MainItemEntity("Request Permissions")
+        MainItemEntity("Request Permissions"),
+        MainItemEntity("Load State")
     )
 
     private val adapter = MainAdapter()
@@ -41,11 +45,10 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, view, position ->
             showToast("测试$position", Toast.LENGTH_LONG)
-//            val intent = Intent(this, TopAppBarActivity::class.java)
-//            val options = ActivityOptions.makeSceneTransitionAnimation(
-//                this, view, "root"
-//            )
-//            startActivity(intent, options.toBundle())
+            when (modules[position].name) {
+                "App Bar: Top" -> startActivity(Intent(context, TopAppBarActivity::class.java))
+                "Load State" -> startActivity(Intent(context, LoadStateActivity::class.java))
+            }
         }
     }
 

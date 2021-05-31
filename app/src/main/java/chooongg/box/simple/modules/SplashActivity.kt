@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxVBActivity
+import chooongg.box.ext.getScreenHeight
 import chooongg.box.ext.withMain
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
@@ -21,6 +22,7 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
     override fun isShowActionBar() = false
 
     override fun initConfig(savedInstanceState: Bundle?) {
+        getScreenHeight()
         binding.tvVersion.text = BuildConfig.VERSION_NAME
     }
 
