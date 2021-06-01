@@ -39,11 +39,11 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initConfig(savedInstanceState: Bundle?) {
-        BoxLog.e(isNightMode())
+        BoxLog.e("isNightMode=${isNightMode()}")
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
         binding.recyclerView.adapter = adapter
         adapter.addData(modules)
-        adapter.setOnItemClickListener { _, view, position ->
+        adapter.setOnItemClickListener { _, _, position ->
             showToast("测试$position", Toast.LENGTH_LONG)
             when (modules[position].name) {
                 "App Bar: Top" -> startActivity(Intent(context, TopAppBarActivity::class.java))

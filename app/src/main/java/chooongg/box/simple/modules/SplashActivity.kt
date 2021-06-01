@@ -36,21 +36,6 @@ open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
         job = lifecycleScope.launch {
             delay(3000)
             withMain {
-//                val oldActivity = ComponentName(applicationContext, SplashActivity::class.java)
-//                applicationContext.packageManager.setComponentEnabledSetting(
-//                    oldActivity,
-//                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-//                    PackageManager.DONT_KILL_APP
-//                )
-//
-//                val newActivity =
-//                    ComponentName(applicationContext, SplashNewYearActivity::class.java)
-//                applicationContext.packageManager.setComponentEnabledSetting(
-//                    newActivity,
-//                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-//                    PackageManager.DONT_KILL_APP
-//                )
-
                 startActivity(Intent(context, MainActivity::class.java))
                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
             }

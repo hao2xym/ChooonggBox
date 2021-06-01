@@ -5,44 +5,54 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import chooongg.box.core.R
-import chooongg.box.ext.attrColor
-import chooongg.box.ext.resourcesColor
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieProperty
-import com.airbnb.lottie.model.KeyPath
+import chooongg.box.ext.launchIO
+import chooongg.box.ext.withMain
+import com.google.android.material.progressindicator.CircularProgressIndicator
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 class DefaultLoadingCallback : Callback() {
 
-    private lateinit var lottieAnimationView: LottieAnimationView
+    private lateinit var progressIndicator: CircularProgressIndicator
+
+    private var launch: Job? = null
 
     override fun getViewLayout() = R.layout.callback_default_loading
     override fun onViewCreated(context: Context, view: View) = Unit
     override fun onAttach(context: Context, view: View) {
-        val colorPrimary = context.attrColor(
-            R.attr.colorPrimary, context.resourcesColor(R.color.color_primary)
-        )
-        val colorSecondary = context.attrColor(
-            R.attr.colorSecondary, context.resourcesColor(R.color.color_secondary)
-        )
-        lottieAnimationView = view.findViewById(R.id.lottie_view)
-        lottieAnimationView.addValueCallback(KeyPath("Ellipse 1.Ellipse Path 1","Ellipse 1.Stroke 1"), LottieProperty.COLOR, { colorPrimary })
-        lottieAnimationView.addValueCallback(KeyPath("Ellipse 1"), LottieProperty.COLOR, { colorSecondary })
-        lottieAnimationView.playAnimation()
+        progressIndicator = view.findViewById(R.id.lottie_view)
+        launch = GlobalScope.launchIO {
+            delay(2000)
+            withMain {
+                progressIndicator.show()
+            }
+        }
     }
 
+//    override fun onReloadEvent(): View? {
+//        return null
+//    }
+
     override fun setVerticalPercentage(percentage: Float) {
-        lottieAnimationView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        progressIndicator.updateLayoutParams<ConstraintLayout.LayoutParams> {
             verticalBias = percentage
         }
     }
 
     override fun setHorizontalPercentage(percentage: Float) {
-        lottieAnimationView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        progressIndicator.updateLayoutParams<ConstraintLayout.LayoutParams> {
             horizontalBias = percentage
         }
     }
 
     override fun onDetach(context: Context, view: View) {
-        lottieAnimationView.cancelAnimation()
+        if (launch != null && launch!!.isActive) {
+            launch!!.cancel()
+            launch = null
+        }
+        progressIndicator.hide()
     }
+
+    override fun isEnableAnimation() = false
 }

@@ -6,25 +6,57 @@ import chooongg.box.core.loadState.LoadService
 import chooongg.box.core.loadState.LoadUtils
 import chooongg.box.core.loadState.callback.DefaultLoadingCallback
 import chooongg.box.core.loadState.callback.SuccessCallback
-import chooongg.box.ext.doOnClick
+import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityLoadStateBinding
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
 
     private lateinit var loadService: LoadService<*>
 
+    private val datas = arrayListOf(
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+        "sdifjsidf",
+    )
+
     override fun initConfig(savedInstanceState: Bundle?) {
         loadService = LoadUtils.Builder()
             .addCallback(DefaultLoadingCallback::class)
             .setDefaultCallback(SuccessCallback::class)
-            .build().register(binding.scrollView) {
+            .build().register(binding.refreshLayout) {
                 loadService.showSuccess()
             }
+        binding.recyclerView.adapter = Adapter().apply {
+            addData(datas)
+            setOnItemClickListener { _, _, _ ->
+                loadService.showCallback(DefaultLoadingCallback::class)
+            }
+        }
     }
 
     override fun initContent(savedInstanceState: Bundle?) {
-        binding.tvTest.doOnClick {
-            loadService.showCallback(DefaultLoadingCallback::class)
+    }
+
+    private class Adapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main) {
+        override fun convert(holder: BaseViewHolder, item: String) {
+            holder.setText(R.id.tv_name, item)
         }
     }
 }

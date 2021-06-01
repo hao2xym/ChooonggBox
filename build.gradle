@@ -5,7 +5,7 @@ buildscript {
     // beta${num}  公测版
     // rc${num}    候选版
     // stable      正式版
-    ext.version_name = "0.0.1-alpha01"
+    ext.version_name = "0.0.1"
 
     ext.compile_sdk_version = 30
     ext.build_tools_version = '31.0.0-rc4'
@@ -17,10 +17,9 @@ buildscript {
     ext.appcompat_version = "1.4.0-alpha01"
 
     repositories {
-//        maven { url 'https://maven.aliyun.com/repository/google' }
-//        maven { url 'https://maven.aliyun.com/repository/mavenCentral' }
         google()
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
@@ -36,6 +35,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
+        jcenter()
     }
 }
 

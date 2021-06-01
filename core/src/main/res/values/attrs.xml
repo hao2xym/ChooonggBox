@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--工具栏是否居中标题-->
     <attr name="toolbarCenterTitle" format="boolean" />
 
+    <!--框架中的工具栏-->
     <declare-styleable name="BoxToolBar">
+        <!-- 是否是居中标题 -->
         <attr name="isCenterTitle" format="boolean" />
+    </declare-styleable>
+
+    <!--自动文字大小调整-->
+    <declare-styleable name="AutofitTextView">
+        <!--最小文字大小-->
+        <attr name="autofit_minTextSize" format="dimension" />
+        <!--精度，精度越低耗时越高-->
+        <attr name="autofit_precision" format="float" />
+        <!--是否自动调整-->
+        <attr name="autofit_sizeToFit" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SquareLayout">
@@ -15,7 +27,8 @@
     </declare-styleable>
 
     <declare-styleable name="MaskEditText">
-        <attr format="string" name="met_mask"/>
+        <!--占位格式 #为占位符-->
+        <attr name="met_mask" format="string" />
     </declare-styleable>
 
 </resources>
