@@ -7,7 +7,9 @@ import androidx.core.view.NestedScrollingChild2
 import androidx.core.view.NestedScrollingChildHelper
 import chooongg.box.core.loadState.callback.Callback
 import chooongg.box.core.loadState.callback.SuccessCallback
+import chooongg.box.ext.doOnClick
 import chooongg.box.ext.isMainThread
+import chooongg.box.log.BoxLog
 import kotlin.collections.set
 import kotlin.reflect.KClass
 
@@ -55,7 +57,7 @@ class LoadLayout : FrameLayout, NestedScrollingChild2 {
 
     fun setupSuccessLayout(callback: Callback) {
         addCallback(callback)
-        val successView = callback.getRootView()
+        val successView = callback.createRootView()
         addView(
             successView, ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -70,7 +72,7 @@ class LoadLayout : FrameLayout, NestedScrollingChild2 {
         addCallback(callback)
     }
 
-    fun addCallback(callback: Callback) {
+    private fun addCallback(callback: Callback) {
         if (!callbacks.containsKey(callback::class)) {
             callbacks[callback::class] = callback
         }
@@ -81,10 +83,17 @@ class LoadLayout : FrameLayout, NestedScrollingChild2 {
         if (isMainThread()) showCallbackView(callback) else post { showCallbackView(callback) }
     }
 
+    fun showCallback(callback: KClass<out Callback>, text: CharSequence) {
+        showCallback(callback)
+        callbacks[callback]?.onTextChange()?.text = text
+    }
+
     private fun showCallbackView(status: KClass<out Callback>) {
         if (preCallback != null) {
             if (preCallback == status) return
-            callbacks[preCallback!!]!!.onDetach(context, callbacks[preCallback!!]!!.getRootView())
+            callbacks[preCallback!!]!!.onDetach(
+                context, callbacks[preCallback!!]!!.createRootView()
+            )
         }
         if (childCount > 1) removeViewAt(CALLBACK_CUSTOM_INDEX)
         callbacks.forEach {
@@ -98,13 +107,17 @@ class LoadLayout : FrameLayout, NestedScrollingChild2 {
                     }
                 } else {
                     successCallback.showWithCallback(callbacks[it.key]!!.successViewVisible)
-                    val rootView = callbacks[it.key]!!.getRootView()
+                    val rootView = callbacks[it.key]!!.createRootView()
                     addView(rootView)
                     callbacks[it.key]!!.onAttach(context, rootView)
                     callbacks[it.key]!!.setVerticalPercentage(verticalPercentage)
                     callbacks[it.key]!!.setHorizontalPercentage(horizontalPercentage)
                     if (callbacks[it.key]!!.isEnableAnimation()) {
                         rootView.startAnimation(callbacks[it.key]!!.getAnimation())
+                    }
+                    callbacks[it.key]!!.onReloadEvent()?.doOnClick { _ ->
+                        BoxLog.e("点击")
+                        onReloadListener?.invoke(it.key)
                     }
                 }
                 preCallback = status
@@ -115,7 +128,7 @@ class LoadLayout : FrameLayout, NestedScrollingChild2 {
 
     fun setCallback(callback: KClass<out Callback>, transport: Transport) {
         checkCallbackExist(callback)
-        transport.order(context, callbacks[callback]!!.obtainRootView())
+        transport.order(context, callbacks[callback]!!.getRootView())
     }
 
     private fun checkCallbackExist(callback: KClass<out Callback>) {

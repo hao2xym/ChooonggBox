@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/activity_load_state_scene"
-    app:motionDebug="SHOW_PATH">
+    app:motionDebug="SHOW_ALL">
 
     <chooongg.box.core.widget.BoxToolBar
         android:id="@+id/box_toolbar"
@@ -20,15 +20,19 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/box_toolbar">
+        app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+        app:srlEnableNestedScrolling="false">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/box_toolbar" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

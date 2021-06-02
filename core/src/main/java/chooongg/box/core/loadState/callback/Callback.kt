@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import chooongg.box.ext.doOnClick
 import chooongg.box.ext.resourcesInteger
+import chooongg.box.log.BoxLog
 import java.io.*
 import kotlin.reflect.KClass
 
@@ -60,18 +60,12 @@ abstract class Callback : Serializable {
         this.onReloadListener = onReloadListener
     }
 
-    fun getRootView(): View {
+    fun createRootView(): View {
         if (rootView != null) return rootView!!
-        val resId: Int = getViewLayout()
-        rootView = if (resId != 0) {
-            View.inflate(context, getViewLayout(), null)
-        } else onBuildView(context)
-
-        onViewCreated(context, rootView!!)
-        onReloadEvent()?.doOnClick {
-            onReloadListener?.invoke(this::class)
-        }
-        return rootView!!
+        val obtainRootView = getRootView()
+        onViewCreated(context, obtainRootView)
+        BoxLog.e(onReloadEvent()!!::class.simpleName)
+        return obtainRootView
     }
 
     open fun isEnableAnimation() = true
@@ -90,9 +84,11 @@ abstract class Callback : Serializable {
         }
     }
 
-    fun obtainRootView(): View {
+    fun getRootView(): View {
         if (rootView == null) {
-            rootView = View.inflate(context, getViewLayout(), null)
+            rootView = if (getViewLayout() != 0) {
+                View.inflate(context, getViewLayout(), null)
+            } else onBuildView(context)
         }
         return rootView!!
     }

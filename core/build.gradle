@@ -46,6 +46,6 @@ dependencies {
     api 'com.airbnb.android:lottie:3.6.1'
     api 'com.scwang.smart:refresh-layout-kernel:2.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
-    api 'androidx.constraintlayout:constraintlayout:2.1.0-beta02'
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.permissionx.guolindev:permissionx:1.4.0'
 }

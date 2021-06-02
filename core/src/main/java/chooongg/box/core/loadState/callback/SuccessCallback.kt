@@ -21,8 +21,8 @@ class SuccessCallback(
     override fun onAttach(context: Context, view: View) = Unit
     override fun onDetach(context: Context, view: View) = Unit
 
-    fun show() = obtainRootView().visible()
-    fun hide() = obtainRootView().inVisible()
+    fun show() = getRootView().visible()
+    fun hide() = getRootView().inVisible()
 
     fun showWithCallback(successVisible: Boolean) {
         if (successVisible) show() else hide()

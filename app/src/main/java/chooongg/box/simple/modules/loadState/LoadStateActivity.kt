@@ -7,6 +7,7 @@ import chooongg.box.core.loadState.LoadService
 import chooongg.box.core.loadState.LoadUtils
 import chooongg.box.core.loadState.callback.DefaultLoadingCallback
 import chooongg.box.core.loadState.callback.SuccessCallback
+import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityLoadStateBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -47,10 +48,11 @@ class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
             .addCallback(DefaultLoadingCallback::class)
             .setDefaultCallback(SuccessCallback::class)
             .build().register(binding.refreshLayout) {
+                BoxLog.e("点击")
                 loadService.showSuccess()
             }
         binding.recyclerView.adapter = Adapter().apply {
-            setDiffNewData(datas)
+            addData(datas)
             setOnItemClickListener { _, _, _ ->
                 loadService.showCallback(DefaultLoadingCallback::class)
             }
