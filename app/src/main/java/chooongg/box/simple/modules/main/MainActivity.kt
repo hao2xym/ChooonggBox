@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import chooongg.box.core.activity.BoxVBVMActivity
+import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
@@ -44,12 +45,13 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         binding.recyclerView.adapter = adapter
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, _, position ->
-            showToast("测试$position", Toast.LENGTH_LONG)
             when (modules[position].name) {
                 "App Bar: Top" -> startActivity(Intent(context, TopAppBarActivity::class.java))
                 "Load State" -> startActivity(Intent(context, LoadStateActivity::class.java))
+                else -> showToast("未实现功能")
             }
         }
+        toolbar?.setDefaultNavigation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

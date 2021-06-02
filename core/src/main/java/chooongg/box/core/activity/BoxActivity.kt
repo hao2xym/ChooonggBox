@@ -10,6 +10,7 @@ import androidx.appcompat.widget.ContentFrameLayout
 import androidx.appcompat.widget.FitWindowsLinearLayout
 import androidx.appcompat.widget.Toolbar
 import chooongg.box.core.R
+import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
@@ -52,6 +53,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         super.onCreate(savedInstanceState)
+        BoxLog.d("${this::class.simpleName}: onCreate")
         if (isShowActionBar()) {
             val parentLayout = contentView.parent as FitWindowsLinearLayout
             toolbar = configToolBar(parentLayout).apply {
@@ -62,11 +64,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             parentLayout.addView(toolbar, 0)
             setSupportActionBar(toolbar)
             if (isAutoShowNavigationIcon()) {
-                toolbar!!.setNavigationIcon(R.drawable.ic_app_bar_back)
-                toolbar!!.setNavigationOnClickListener {
-                    BoxLog.e("OnBackPressed")
-                    onBackPressed()
-                }
+                toolbar!!.setDefaultNavigation()
             }
             supportActionBar?.title = loadActivityLabel()
         }
@@ -95,5 +93,10 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     protected open fun onPostCreateToInitContent(savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        BoxLog.d("${this::class.simpleName}: OnBackPressed")
     }
 }

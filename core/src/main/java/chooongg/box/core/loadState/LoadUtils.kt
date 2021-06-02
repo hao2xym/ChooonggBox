@@ -29,14 +29,14 @@ class LoadUtils {
 
     fun register(
         target: Any,
-        onReloadListener: ((Class<out Callback>) -> Unit)? = null
+        onReloadListener: ((KClass<out Callback>) -> Unit)? = null
     ): LoadService<*> {
         return register<Any>(target, onReloadListener, null)
     }
 
     fun <T> register(
         target: Any,
-        onReloadListener: ((Class<out Callback>) -> Unit)?,
+        onReloadListener: ((KClass<out Callback>) -> Unit)?,
         convertor: Convertor<T>?
     ): LoadService<T> {
         val targetContext = getTargetContext(target, builder.targetList)

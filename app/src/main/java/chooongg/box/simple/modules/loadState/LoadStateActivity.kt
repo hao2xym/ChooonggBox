@@ -2,6 +2,7 @@ package chooongg.box.simple.modules.loadState
 
 import android.os.Bundle
 import chooongg.box.core.activity.BoxVBActivity
+import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.core.loadState.LoadService
 import chooongg.box.core.loadState.LoadUtils
 import chooongg.box.core.loadState.callback.DefaultLoadingCallback
@@ -16,27 +17,32 @@ class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
     private lateinit var loadService: LoadService<*>
 
     private val datas = arrayListOf(
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
-        "sdifjsidf",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表",
+        "测试列表"
     )
 
+    override fun isShowActionBar() = false
+
     override fun initConfig(savedInstanceState: Bundle?) {
+        binding.boxToolbar.setDefaultNavigation()
         loadService = LoadUtils.Builder()
             .addCallback(DefaultLoadingCallback::class)
             .setDefaultCallback(SuccessCallback::class)
@@ -44,7 +50,7 @@ class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
                 loadService.showSuccess()
             }
         binding.recyclerView.adapter = Adapter().apply {
-            addData(datas)
+            setDiffNewData(datas)
             setOnItemClickListener { _, _, _ ->
                 loadService.showCallback(DefaultLoadingCallback::class)
             }

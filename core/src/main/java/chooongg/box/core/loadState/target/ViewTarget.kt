@@ -6,13 +6,14 @@ import chooongg.box.core.R
 import chooongg.box.core.loadState.LoadLayout
 import chooongg.box.core.loadState.callback.Callback
 import chooongg.box.core.loadState.callback.SuccessCallback
+import kotlin.reflect.KClass
 
 class ViewTarget : ITarget {
     override fun withEquals(target: Any?) = target is View
 
     override fun replaceView(
         target: Any,
-        onReloadListener: ((Class<out Callback>) -> Unit)?
+        onReloadListener: ((KClass<out Callback>) -> Unit)?
     ): LoadLayout {
         val oldContent = target as View
         val background = oldContent.background

@@ -13,18 +13,19 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import chooongg.box.ext.doOnClick
 import chooongg.box.ext.resourcesInteger
 import java.io.*
+import kotlin.reflect.KClass
 
 abstract class Callback : Serializable {
 
     private var rootView: View? = null
     protected lateinit var context: Context
-    private var onReloadListener: ((Class<out Callback>) -> Unit)? = null
+    private var onReloadListener: ((KClass<out Callback>) -> Unit)? = null
     var successViewVisible = false
 
     @LayoutRes
-    protected abstract fun getViewLayout(): Int
+    protected open fun getViewLayout(): Int = 0
 
-    private fun onBuildView(context: Context): View? = null
+    protected open fun onBuildView(context: Context): View? = null
 
     protected abstract fun onViewCreated(context: Context, view: View)
 
@@ -47,34 +48,28 @@ abstract class Callback : Serializable {
     internal constructor(
         view: View,
         context: Context,
-        onReloadListener: ((Class<out Callback>) -> Unit)?
+        onReloadListener: ((KClass<out Callback>) -> Unit)?
     ) {
         this.rootView = view
         this.context = context
         this.onReloadListener = onReloadListener
     }
 
-    fun setCallback(context: Context, onReloadListener: ((Class<out Callback>) -> Unit)?) = apply {
+    fun setCallback(context: Context, onReloadListener: ((KClass<out Callback>) -> Unit)?) = apply {
         this.context = context
         this.onReloadListener = onReloadListener
     }
 
     fun getRootView(): View {
+        if (rootView != null) return rootView!!
         val resId: Int = getViewLayout()
-        if (resId == 0 && rootView != null) {
-            return rootView!!
-        }
+        rootView = if (resId != 0) {
+            View.inflate(context, getViewLayout(), null)
+        } else onBuildView(context)
 
-        if (onBuildView(context) != null) {
-            rootView = onBuildView(context)
-        }
-
-        if (rootView == null) {
-            rootView = View.inflate(context, getViewLayout(), null)
-        }
         onViewCreated(context, rootView!!)
         onReloadEvent()?.doOnClick {
-            onReloadListener?.invoke(javaClass)
+            onReloadListener?.invoke(this::class)
         }
         return rootView!!
     }
@@ -86,7 +81,7 @@ abstract class Callback : Serializable {
             addAnimation(AlphaAnimation(0f, 1f))
             addAnimation(
                 ScaleAnimation(
-                    0.8f, 1f, 0.8f, 1f,
+                    0.9f, 1f, 0.9f, 1f,
                     Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
                 )
             )

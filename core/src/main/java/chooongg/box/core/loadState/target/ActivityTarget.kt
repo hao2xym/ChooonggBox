@@ -7,6 +7,7 @@ import chooongg.box.core.loadState.callback.Callback
 import chooongg.box.core.loadState.callback.SuccessCallback
 import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.contentView
+import kotlin.reflect.KClass
 
 class ActivityTarget : ITarget {
 
@@ -14,7 +15,7 @@ class ActivityTarget : ITarget {
 
     override fun replaceView(
         target: Any,
-        onReloadListener: ((Class<out Callback>) -> Unit)?
+        onReloadListener: ((KClass<out Callback>) -> Unit)?
     ): LoadLayout {
         val activity = target as Activity
         val contentParent = activity.contentView

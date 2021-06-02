@@ -4,55 +4,56 @@ import android.content.Context
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
-import chooongg.box.core.R
+import chooongg.box.core.databinding.CallbackDefaultLoadingBinding
 import chooongg.box.ext.launchIO
+import chooongg.box.ext.layoutInflater
 import chooongg.box.ext.withMain
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 class DefaultLoadingCallback : Callback() {
 
-    private lateinit var progressIndicator: CircularProgressIndicator
+    private lateinit var binding: CallbackDefaultLoadingBinding
 
-    private var launch: Job? = null
+    private var job: Job? = null
 
-    override fun getViewLayout() = R.layout.callback_default_loading
+    override fun onBuildView(context: Context): View {
+        binding = CallbackDefaultLoadingBinding.inflate(context.layoutInflater)
+        return binding.root
+    }
+
     override fun onViewCreated(context: Context, view: View) = Unit
     override fun onAttach(context: Context, view: View) {
-        progressIndicator = view.findViewById(R.id.lottie_view)
-        launch = GlobalScope.launchIO {
+        job = GlobalScope.launchIO {
             delay(2000)
             withMain {
-                progressIndicator.show()
+                binding.progressCircular.show()
             }
         }
     }
 
-//    override fun onReloadEvent(): View? {
-//        return null
-//    }
+    override fun onReloadEvent(): View {
+        return getRootView()
+    }
 
     override fun setVerticalPercentage(percentage: Float) {
-        progressIndicator.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        binding.progressCircular.updateLayoutParams<ConstraintLayout.LayoutParams> {
             verticalBias = percentage
         }
     }
 
     override fun setHorizontalPercentage(percentage: Float) {
-        progressIndicator.updateLayoutParams<ConstraintLayout.LayoutParams> {
+        binding.progressCircular.updateLayoutParams<ConstraintLayout.LayoutParams> {
             horizontalBias = percentage
         }
     }
 
     override fun onDetach(context: Context, view: View) {
-        if (launch != null && launch!!.isActive) {
-            launch!!.cancel()
-            launch = null
+        if (job != null && job!!.isActive) {
+            job!!.cancel()
+            job = null
         }
-        progressIndicator.hide()
+        binding.progressCircular.hide()
     }
-
-    override fun isEnableAnimation() = false
 }

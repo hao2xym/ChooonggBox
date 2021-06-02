@@ -9,14 +9,14 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import chooongg.box.ext.inVisible
 import chooongg.box.ext.resourcesInteger
 import chooongg.box.ext.visible
+import kotlin.reflect.KClass
 
 class SuccessCallback(
     view: View,
     context: Context,
-    onReloadListener: ((Class<out Callback>) -> Unit)?
+    onReloadListener: ((KClass<out Callback>) -> Unit)?
 ) : Callback(view, context, onReloadListener) {
 
-    override fun getViewLayout() = 0
     override fun onViewCreated(context: Context, view: View) = Unit
     override fun onAttach(context: Context, view: View) = Unit
     override fun onDetach(context: Context, view: View) = Unit

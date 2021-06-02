@@ -241,10 +241,4 @@ class BoxToolBar @JvmOverloads constructor(
         centerLogoView?.contentDescription = description
         super.setLogoDescription(description)
     }
-
-    override fun inflateMenu(resId: Int) {
-
-        super.inflateMenu(resId)
-    }
-
 }

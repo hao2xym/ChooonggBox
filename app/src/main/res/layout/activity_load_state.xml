@@ -7,24 +7,21 @@
     app:layoutDescription="@xml/activity_load_state_scene"
     app:motionDebug="SHOW_PATH">
 
-    <TextView
-        android:id="@+id/toolbar"
+    <chooongg.box.core.widget.BoxToolBar
+        android:id="@+id/box_toolbar"
+        style="?attr/toolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorAccent"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/contentMiddle"
-        android:text="\n测试标题\n测试标题\n测试标题\n测试标题\n测试标题\n测试标题\n"
-        android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?colorSurface"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="?actionBarSize"
+        app:title="测试标题">
+
+    </chooongg.box.core.widget.BoxToolBar>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/box_toolbar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
