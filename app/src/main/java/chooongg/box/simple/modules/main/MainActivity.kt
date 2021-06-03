@@ -19,6 +19,7 @@ import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.loadState.LoadStateActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
+import chooongg.box.simple.modules.permission.RequestPermissionActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
@@ -46,8 +47,15 @@ class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
         adapter.addData(modules)
         adapter.setOnItemClickListener { _, _, position ->
             when (modules[position].name) {
-                "App Bar: Top" -> startActivity(Intent(context, TopAppBarActivity::class.java))
-                "Load State" -> startActivity(Intent(context, LoadStateActivity::class.java))
+                "App Bar: Top" -> startActivity(
+                    Intent(context, TopAppBarActivity::class.java)
+                )
+                "Request Permissions" -> startActivity(
+                    Intent(context, RequestPermissionActivity::class.java)
+                )
+                "Load State" -> startActivity(
+                    Intent(context, LoadStateActivity::class.java)
+                )
                 else -> showToast("未实现功能")
             }
         }

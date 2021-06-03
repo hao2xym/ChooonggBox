@@ -11,12 +11,12 @@
 
     <application
         android:name=".App"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="LockedOrientationActivity"
+        tools:ignore="AllowBackup,LockedOrientationActivity"
         tools:replace="android:allowBackup">
 
         <meta-data
@@ -47,6 +47,9 @@
         <activity
             android:name=".modules.loadState.LoadStateActivity"
             android:label="Load State" />
+        <activity
+            android:name=".modules.permission.RequestPermissionActivity"
+            android:label="Request Permission" />
 
     </application>
 

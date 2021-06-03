@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/motion_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_load_state_scene"
-    app:motionDebug="SHOW_ALL">
+    app:layoutDescription="@xml/activity_load_state_scene">
 
     <chooongg.box.core.widget.BoxToolBar
         android:id="@+id/box_toolbar"
         style="?attr/toolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:title="测试标题">
-
-    </chooongg.box.core.widget.BoxToolBar>
+        app:title="测试标题" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -32,7 +30,8 @@
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/box_toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+            tools:listitem="@layout/item_main" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

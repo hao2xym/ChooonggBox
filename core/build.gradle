@@ -46,6 +46,14 @@ dependencies {
     api 'com.airbnb.android:lottie:3.6.1'
     api 'com.scwang.smart:refresh-layout-kernel:2.0.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    api 'com.mikepenz:fastadapter:5.4.1'
+    api 'com.mikepenz:fastadapter-extensions-expandable:5.4.1'
+    api 'com.mikepenz:fastadapter-extensions-binding:5.4.1' // view binding helpers
+    api 'com.mikepenz:fastadapter-extensions-diff:5.4.1' // diff util helpers
+    api 'com.mikepenz:fastadapter-extensions-drag:5.4.1' // drag support
+    api 'com.mikepenz:fastadapter-extensions-paged:5.4.1' // paging support
+    api 'com.mikepenz:fastadapter-extensions-scroll:5.4.1' // scroll helpers
+    api 'com.mikepenz:fastadapter-extensions-swipe:5.4.1' // swipe support
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'com.permissionx.guolindev:permissionx:1.4.0'
 }
