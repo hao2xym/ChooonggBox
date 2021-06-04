@@ -94,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/contentBig"
-            android:elevation="@dimen/d12"
+            android:elevation="@dimen/d2"
             app:layout_constraintBottom_toTopOf="@id/refresh_layout"
             app:layout_constraintDimensionRatio="h,1:1.5"
             app:layout_constraintStart_toStartOf="parent"

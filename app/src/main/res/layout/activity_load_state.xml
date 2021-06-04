@@ -17,6 +17,7 @@
     <chooongg.box.core.widget.BoxToolBar
         android:id="@+id/box_toolbar"
         style="?attr/toolbarStyle"
+        app:navigationIcon="@drawable/ic_app_bar_back"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@null"
