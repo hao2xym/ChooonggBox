@@ -18,7 +18,7 @@ class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
     private lateinit var loadService: LoadService<*>
 
     private val datas = arrayListOf(
-        "测试列表",
+        "加载中",
         "测试列表",
         "测试列表",
         "测试列表",

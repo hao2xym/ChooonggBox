@@ -7,20 +7,70 @@
     android:layout_height="match_parent"
     app:layoutDescription="@xml/activity_load_state_scene">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="?colorPrimary"
+        android:orientation="vertical" />
+
     <chooongg.box.core.widget.BoxToolBar
         android:id="@+id/box_toolbar"
         style="?attr/toolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:title="测试标题" />
+        android:background="@null"
+        android:elevation="@dimen/nullSize" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load State"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@id/tv_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_logo"
+        app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/contentMiddle"
+        android:text="状态切换预览"
+        android:textAppearance="?textAppearanceHeadline5"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_logo"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/contentBig"
+        android:background="?colorSurface"
+        android:elevation="@dimen/d12"
+        app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+        app:layout_constraintDimensionRatio="h,1:1.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/refresh_layout"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintWidth_percent="0.3"
+        app:shapeAppearance="@style/ShapeAppearanceImage.Rounded.8dp" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:elevation="@dimen/d4"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
         app:srlEnableNestedScrolling="false">
 
         <androidx.recyclerview.widget.RecyclerView

@@ -18,34 +18,89 @@
     <ConstraintSet android:id="@+id/start">
 
         <Constraint
-            android:id="@+id/box_toolbar"
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="300dp"
+            android:background="?colorPrimary"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/tv_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_logo"
+            app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Constraint
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/contentMiddle"
+            android:alpha="1.0"
+            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_logo"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <Constraint
+            android:id="@+id/iv_logo"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/box_toolbar" />
+            android:layout_marginStart="@dimen/contentBig"
+            android:elevation="@dimen/d12"
+            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintDimensionRatio="h,1:1.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/refresh_layout"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintWidth_percent="0.3" />
 
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
 
         <Constraint
-            android:id="@id/box_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@id/recycler_view"
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/box_toolbar" />
+            android:background="?colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/box_toolbar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/box_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.0"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_logo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/iv_logo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/contentBig"
+            android:elevation="@dimen/d12"
+            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintDimensionRatio="h,1:1.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/refresh_layout"
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintWidth_percent="0.3" />
 
     </ConstraintSet>
 

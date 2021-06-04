@@ -55,5 +55,5 @@ dependencies {
     api 'com.mikepenz:fastadapter-extensions-scroll:5.4.1' // scroll helpers
     api 'com.mikepenz:fastadapter-extensions-swipe:5.4.1' // swipe support
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
-    api 'com.permissionx.guolindev:permissionx:1.4.0'
+    api 'com.github.getActivity:XXPermissions:11.2'
 }
