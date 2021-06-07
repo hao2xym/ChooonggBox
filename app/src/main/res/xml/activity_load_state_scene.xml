@@ -10,8 +10,60 @@
             app:dragDirection="dragUp"
             app:moveWhenScrollAtTop="true"
             app:onTouchUp="autoComplete"
-            app:touchAnchorId="@+id/load_layout"
+            app:touchAnchorId="@+id/state_page_layout"
             app:touchAnchorSide="top" />
+
+        <KeyFrameSet>
+
+            <KeyAttribute
+                android:elevation="@dimen/d12"
+                app:framePosition="40"
+                app:motionTarget="@+id/iv_logo" />
+
+            <KeyAttribute
+                android:elevation="@dimen/d2"
+                app:framePosition="50"
+                app:motionTarget="@+id/iv_logo" />
+
+            <KeyAttribute
+                app:framePosition="40"
+                app:motionTarget="@+id/toolbar_layout">
+
+                <CustomAttribute
+                    app:attributeName="background"
+                    app:customColorDrawableValue="?colorPrimary" />
+
+            </KeyAttribute>
+
+            <KeyAttribute
+                app:framePosition="60"
+                app:motionTarget="@+id/toolbar_layout">
+
+                <CustomAttribute
+                    app:attributeName="background"
+                    app:customColorDrawableValue="?colorPrimaryVariant" />
+
+            </KeyAttribute>
+
+            <KeyPosition
+                app:framePosition="40"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@+id/iv_logo"
+                app:percentY="1.5" />
+
+            <KeyPosition
+                app:framePosition="60"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@+id/iv_logo"
+                app:percentY="0.9" />
+
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@+id/tv_title"
+                app:percentX="0.3"
+                app:percentY="0.7" />
+        </KeyFrameSet>
 
     </Transition>
 
@@ -39,8 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/contentMiddle"
-            android:alpha="1.0"
-            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_logo"
             app:layout_constraintTop_toBottomOf="@id/tv_title" />
@@ -51,11 +102,10 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/contentBig"
             android:elevation="@dimen/d12"
-            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_layout"
             app:layout_constraintDimensionRatio="h,1:1.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/refresh_layout"
-            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
             app:layout_constraintWidth_percent="0.3" />
 
     </ConstraintSet>
@@ -65,9 +115,9 @@
         <Constraint
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/contentMiddle"
             android:background="?colorPrimary"
-            app:layout_constraintBottom_toBottomOf="@+id/box_toolbar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
@@ -83,11 +133,10 @@
             android:id="@+id/tv_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0.0"
             app:layout_constraintBottom_toBottomOf="@id/toolbar_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_logo"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/box_toolbar" />
 
         <Constraint
             android:id="@+id/iv_logo"
@@ -95,11 +144,10 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/contentBig"
             android:elevation="@dimen/d2"
-            app:layout_constraintBottom_toTopOf="@id/refresh_layout"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar_layout"
             app:layout_constraintDimensionRatio="h,1:1.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/refresh_layout"
-            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
             app:layout_constraintWidth_percent="0.3" />
 
     </ConstraintSet>

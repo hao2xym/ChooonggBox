@@ -10,18 +10,16 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/toolbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="?colorPrimary"
-        android:orientation="vertical" />
+        android:layout_height="300dp" />
 
     <chooongg.box.core.widget.BoxToolBar
         android:id="@+id/box_toolbar"
         style="?attr/toolbarStyle"
-        app:navigationIcon="@drawable/ic_app_bar_back"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@null"
-        android:elevation="@dimen/nullSize" />
+        android:elevation="@dimen/nullSize"
+        app:navigationIcon="@drawable/ic_app_bar_back" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -29,12 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Load State"
         android:textAppearance="?textAppearanceHeadline6"
-        android:textColor="?colorOnPrimary"
-        app:layout_constraintBottom_toTopOf="@id/tv_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_logo"
-        app:layout_constraintTop_toBottomOf="@id/box_toolbar"
-        app:layout_constraintVertical_chainStyle="packed" />
+        android:textColor="?colorOnPrimary" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -43,47 +36,52 @@
         android:layout_marginTop="@dimen/contentMiddle"
         android:text="状态切换预览"
         android:textAppearance="?textAppearanceHeadline5"
-        android:textColor="?colorOnPrimary"
-        app:layout_constraintBottom_toTopOf="@id/refresh_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_logo"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        android:textColor="?colorOnPrimary" />
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/contentMiddle"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_layout" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_logo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/contentBig"
-        android:background="?colorSurface"
+        android:background="?colorError"
         android:elevation="@dimen/d12"
-        app:layout_constraintBottom_toTopOf="@id/refresh_layout"
-        app:layout_constraintDimensionRatio="h,1:1.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/refresh_layout"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintWidth_percent="0.3"
         app:shapeAppearance="@style/ShapeAppearanceImage.Rounded.8dp" />
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:id="@+id/refresh_layout"
+    <chooongg.box.core.statePage.StatePageLayout
+        android:id="@+id/state_page_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="?colorSurface"
         android:elevation="@dimen/d4"
-        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
-        app:srlEnableNestedScrolling="false">
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/box_toolbar"
-            tools:listitem="@layout/item_main" />
+            app:srlEnableNestedScrolling="false">
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/box_toolbar"
+                tools:listitem="@layout/item_main" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </chooongg.box.core.statePage.StatePageLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
