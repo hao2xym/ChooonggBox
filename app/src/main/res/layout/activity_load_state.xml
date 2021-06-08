@@ -5,7 +5,8 @@
     android:id="@+id/motion_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/activity_load_state_scene">
+    app:layoutDescription="@xml/activity_load_state_scene"
+    app:motionDebug="SHOW_PATH">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/toolbar_layout"
@@ -68,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            app:srlEnableNestedScrolling="true">
+            app:srlEnableNestedScrolling="false">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"

@@ -26,7 +26,7 @@ class RequestPermissionActivity : BoxVBActivity<ActivityPermissionBinding>() {
 
     private val datas = arrayListOf(
         Operate("请求单权限"),
-        Operate("请求多权限"),
+        Operate("请求多权限")
     )
 
     private val itemAdapter = ItemAdapter.items<GenericItem>()
