@@ -10,6 +10,8 @@
     <color name="color_primary_surface">@color/color_primary</color>
     <color name="color_secondary_surface">@color/color_secondary</color>
 
+    <color name="color_divider_primary_surface">@color/color_divider_primary</color>
+
     <color name="color_background">#FAFAFA</color>
     <color name="color_on_background">#000000</color>
     <color name="color_surface">#FFFFFF</color>

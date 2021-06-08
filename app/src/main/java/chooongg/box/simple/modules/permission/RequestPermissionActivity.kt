@@ -21,7 +21,6 @@ class RequestPermissionActivity : BoxVBActivity<ActivityPermissionBinding>() {
         override val type: Int get() = 0
         override fun bindView(binding: ItemMainBinding, payloads: List<Any>) {
             binding.tvName.text = name
-
         }
     }
 

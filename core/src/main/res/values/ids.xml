@@ -2,5 +2,5 @@
 <resources>
     <item name="box_toolbar" type="id" />
 
-    <item name="load_layout" type="id" />
+    <item name="state_page_layout" type="id" />
 </resources>
