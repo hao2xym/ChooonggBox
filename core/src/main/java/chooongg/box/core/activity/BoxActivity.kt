@@ -73,7 +73,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         if (contentLayoutId != null) {
             setContentView(contentLayoutId)
         }
-        HideKeyboardManager.init(this)
         onCreateToInitConfig(savedInstanceState)
         if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
     }

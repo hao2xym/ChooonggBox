@@ -1,12 +1,12 @@
 plugins {
-    id 'com.github.dcendents.android-maven'
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
+    id 'com.github.dcendents.android-maven'
 }
 
-group = 'com.github.chooongg.box.core'
+group = 'com.github.Chooongg.Box'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -61,5 +61,6 @@ dependencies {
     api 'com.mikepenz:fastadapter-extensions-swipe:5.4.1' // swipe support
     api 'com.github.fondesa:recycler-view-divider:3.5.0'
     api 'com.scwang.smart:refresh-layout-kernel:2.0.3'
+    api 'com.scwang.smart:refresh-header-classics:2.0.3'
     api 'com.github.getActivity:XXPermissions:11.2'
 }

@@ -44,8 +44,7 @@ android {
 dependencies {
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation project(path: ':core')
-    implementation project(path: ':http')
+    implementation project(path: ':all')
     // 友盟
     implementation 'com.umeng.umsdk:common:9.3.8'
     implementation 'com.umeng.umsdk:asms:1.2.2'
