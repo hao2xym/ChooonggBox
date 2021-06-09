@@ -2,9 +2,11 @@ plugins {
     id 'com.github.dcendents.android-maven'
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
 }
 
-group = 'com.github.chooongg.box.http'
+group = 'com.github.chooongg.box.all'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -15,13 +17,14 @@ android {
         targetSdkVersion target_sdk_version
         versionCode version_code
         versionName version_name
-        consumerProguardFiles "consumer-rules.pro"
+        vectorDrawables.useSupportLibrary true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
 
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
 
@@ -36,10 +39,8 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':box')
-    api 'io.coil-kt:coil:1.1.1'
-    api 'com.squareup.okhttp3:okhttp:4.9.0'
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    api 'org.ligboy.retrofit2:converter-fastjson-android:2.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api project(path: ':box')
+    api project(path: ':core')
+    api project(path: ':http')
 }

@@ -6,7 +6,7 @@ plugins {
     id 'kotlin-kapt'
 }
 
-group = 'chooongg.box'
+group = 'com.github.chooongg.box.core'
 
 android {
     compileSdkVersion compile_sdk_version
