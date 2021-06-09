@@ -4,7 +4,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
-import chooongg.box.core.activity.BoxVBActivity
+import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.core.adapter.BindingItem
 import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.core.statePage.state.LoadingHorizontalState
@@ -17,7 +17,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class LoadStateActivity : BoxVBActivity<ActivityLoadStateBinding>() {
+class LoadStateActivity : BoxBindingActivity<ActivityLoadStateBinding>() {
 
     private data class Item(val name: String) : BindingItem<ItemMainBinding>() {
         override val type: Int get() = 0

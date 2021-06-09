@@ -3,7 +3,7 @@ package chooongg.box.simple.modules
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import chooongg.box.core.activity.BoxVBActivity
+import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.ext.getScreenHeight
 import chooongg.box.ext.withMain
 import chooongg.box.simple.BuildConfig
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-open class SplashActivity : BoxVBActivity<ActivitySplashBinding>() {
+open class SplashActivity : BoxBindingActivity<ActivitySplashBinding>() {
 
     private var job: Job? = null
 

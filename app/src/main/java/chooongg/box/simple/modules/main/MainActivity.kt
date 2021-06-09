@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import chooongg.box.core.activity.BoxVBVMActivity
+import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
@@ -24,7 +24,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class MainActivity : BoxVBVMActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top"),

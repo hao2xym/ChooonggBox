@@ -11,7 +11,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * BoxActivity of Bind ViewModel
  */
-abstract class BoxVMActivity<VM : ViewModel> : BoxActivity {
+abstract class BoxModelActivity<VM : ViewModel> : BoxActivity {
 
     constructor() : super()
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)

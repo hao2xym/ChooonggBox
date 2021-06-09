@@ -11,7 +11,7 @@ import chooongg.box.core.interfaces.BoxInit
 
 abstract class BoxFragment : Fragment, BoxInit {
 
-    constructor() : super()
+    internal constructor() : super()
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     protected val boxActivity get() = if (activity is BoxActivity) activity as BoxActivity else null
@@ -21,9 +21,21 @@ abstract class BoxFragment : Fragment, BoxInit {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
-        initConfig(savedInstanceState)
+        val view = boxCreateView(inflater, container, savedInstanceState)
+        onCreateViewToInitConfig(savedInstanceState)
         return view
+    }
+
+    open fun boxCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    protected open fun onCreateViewToInitConfig(savedInstanceState: Bundle?) {
+        initConfig(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

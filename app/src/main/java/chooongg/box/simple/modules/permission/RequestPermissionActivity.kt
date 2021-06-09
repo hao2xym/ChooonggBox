@@ -2,7 +2,7 @@ package chooongg.box.simple.modules.permission
 
 import android.os.Bundle
 import android.view.View
-import chooongg.box.core.activity.BoxVBActivity
+import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.core.adapter.BindingItem
 import chooongg.box.ext.showToast
 import chooongg.box.simple.databinding.ActivityPermissionBinding
@@ -15,7 +15,7 @@ import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class RequestPermissionActivity : BoxVBActivity<ActivityPermissionBinding>() {
+class RequestPermissionActivity : BoxBindingActivity<ActivityPermissionBinding>() {
 
     private data class Operate(val name: String) : BindingItem<ItemMainBinding>() {
         override val type: Int get() = 0
