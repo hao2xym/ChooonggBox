@@ -38,7 +38,7 @@ object BoxLogInterceptor : Interceptor {
         val requestLog = ArrayList<Any?>()
         requestLog.add(
             LogEntity(
-                "[${request.method.toUpperCase(Locale.ROOT)}]", buildString {
+                "[${request.method.uppercase(Locale.ROOT)}]", buildString {
                     val url = request.url
                     append("host: ${url.host}")
                     append(BoxHttpLog.config.formatter.separator())
@@ -92,7 +92,7 @@ object BoxLogInterceptor : Interceptor {
         val responseLog = ArrayList<Any?>()
         responseLog.add(
             LogEntity(
-                "[${request.method.toUpperCase(Locale.ROOT)} ${response.code} ${response.message}]}",
+                "[${request.method.uppercase(Locale.ROOT)} ${response.code} ${response.message}]}",
                 buildString {
                     append("method: ${request.method}")
                     append(BoxHttpLog.config.formatter.separator())

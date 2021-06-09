@@ -144,6 +144,7 @@ object EncodeUtils {
      * @param input The input.
      * @return the string of decode html-encode string
      */
+    @Suppress("DEPRECATION")
     fun htmlDecode(input: String?): CharSequence? {
         if (input == null || input.isEmpty()) return ""
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -163,7 +164,7 @@ object EncodeUtils {
         if (input == null || input.isEmpty()) return ""
         val sb = StringBuilder()
         for (i in input.toCharArray()) {
-            sb.append(Integer.toBinaryString(i.toInt())).append(" ")
+            sb.append(Integer.toBinaryString(i.code)).append(" ")
         }
         return sb.deleteCharAt(sb.length - 1).toString()
     }

@@ -17,6 +17,9 @@ buildscript {
     ext.appcompat_version = "1.4.0-alpha01"
 
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/mavenCentral' }
         google()
         mavenCentral()
         jcenter()
@@ -39,8 +42,9 @@ buildscript {
 
 allprojects {
     repositories {
-//        maven { url 'https://maven.aliyun.com/repository/google' }
-//        maven { url 'https://maven.aliyun.com/repository/mavenCentral' }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/mavenCentral' }
         maven { url 'https://repo1.maven.org/maven2/' }
         maven { url 'https://jitpack.io' }
         google()
