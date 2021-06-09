@@ -8,7 +8,6 @@ import java.io.*
 import java.lang.reflect.Method
 import java.util.*
 
-
 object RomUtils {
     private val ROM_HUAWEI = arrayOf("huawei")
     private val ROM_VIVO = arrayOf("vivo")
@@ -153,7 +152,7 @@ object RomUtils {
         try {
             val manufacturer = Build.MANUFACTURER
             if (!TextUtils.isEmpty(manufacturer)) {
-                return manufacturer.toLowerCase(Locale.ROOT)
+                return manufacturer.lowercase(Locale.ROOT)
             }
         } catch (ignore: Throwable) { /**/
         }
@@ -164,7 +163,7 @@ object RomUtils {
         try {
             val brand = Build.BRAND
             if (!TextUtils.isEmpty(brand)) {
-                return brand.toLowerCase(Locale.ROOT)
+                return brand.lowercase(Locale.ROOT)
             }
         } catch (ignore: Throwable) { /**/
         }
@@ -180,7 +179,7 @@ object RomUtils {
             try {
                 val display = Build.DISPLAY
                 if (!TextUtils.isEmpty(display)) {
-                    ret = display.toLowerCase(Locale.ROOT)
+                    ret = display.lowercase(Locale.ROOT)
                 }
             } catch (ignore: Throwable) { /**/
             }

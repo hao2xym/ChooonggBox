@@ -1,5 +1,6 @@
 package chooongg.box.utils
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -54,10 +55,11 @@ class DeviceUtils {
      *
      * @return `true`: yes<br></br>`false`: no
      */
+    @SuppressLint("QueryPermissionsNeeded")
     fun isEmulator(): Boolean {
         val checkProperty = (Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.toLowerCase().contains("vbox")
-                || Build.FINGERPRINT.toLowerCase().contains("test-keys")
+                || Build.FINGERPRINT.lowercase(Locale.getDefault()).contains("vbox")
+                || Build.FINGERPRINT.lowercase(Locale.getDefault()).contains("test-keys")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
                 || Build.MODEL.contains("Android SDK built for x86")
@@ -69,7 +71,7 @@ class DeviceUtils {
         val tm = APP.telephonyManager
         val name = tm.networkOperatorName
         if (name != null) operatorName = name
-        val checkOperatorName = operatorName.toLowerCase(Locale.ROOT) == "android"
+        val checkOperatorName = operatorName.lowercase(Locale.ROOT) == "android"
         if (checkOperatorName) return true
         val url = "tel:" + "123456"
         val intent = Intent()
