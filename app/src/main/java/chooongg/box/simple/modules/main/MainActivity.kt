@@ -16,7 +16,7 @@ import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
-import chooongg.box.simple.modules.loadState.LoadStateActivity
+import chooongg.box.simple.modules.loadState.StatePageActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import chooongg.box.simple.modules.permission.RequestPermissionActivity
@@ -29,7 +29,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
-        MainItemEntity("Load State")
+        MainItemEntity("State Page")
     )
 
     override fun isAutoShowNavigationIcon() = false
@@ -56,8 +56,8 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                     "Request Permissions" -> startActivity(
                         Intent(context, RequestPermissionActivity::class.java)
                     )
-                    "Load State" -> startActivity(
-                        Intent(context, LoadStateActivity::class.java)
+                    "State Page" -> startActivity(
+                        Intent(context, StatePageActivity::class.java)
                     )
                     else -> showToast("未实现功能")
                 }

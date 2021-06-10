@@ -11,13 +11,13 @@ import chooongg.box.core.statePage.state.LoadingHorizontalState
 import chooongg.box.core.statePage.state.LoadingState
 import chooongg.box.ext.showToast
 import chooongg.box.simple.R
-import chooongg.box.simple.databinding.ActivityLoadStateBinding
+import chooongg.box.simple.databinding.ActivityStatePageBinding
 import chooongg.box.simple.databinding.ItemMainBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class LoadStateActivity : BoxBindingActivity<ActivityLoadStateBinding>() {
+class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
 
     private data class Item(val name: String) : BindingItem<ItemMainBinding>() {
         override val type: Int get() = 0

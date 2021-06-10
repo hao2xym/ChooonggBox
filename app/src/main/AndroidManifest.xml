@@ -46,7 +46,7 @@
             android:name=".modules.appBarTop.TopAppBarActivity"
             android:label="AppBar: Top" />
         <activity
-            android:name=".modules.loadState.LoadStateActivity"
+            android:name=".modules.loadState.StatePageActivity"
             android:label="Load State" />
         <activity
             android:name=".modules.permission.RequestPermissionActivity"
