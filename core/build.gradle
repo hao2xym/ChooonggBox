@@ -46,11 +46,16 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     api project(path: ':box')
-    api 'androidx.constraintlayout:constraintlayout:2.1.0-beta02'
-    api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-    api 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
-    api 'com.airbnb.android:lottie:3.6.1'
+    api 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+
+    api 'com.github.getActivity:XXPermissions:11.2'
+
+    api 'com.github.dkzwm:srl-core:1.7.2.1'
+    api 'com.github.dkzwm:srl-ext-classics:1.7.2.1'
+    api 'com.github.fondesa:recycler-view-divider:3.5.0'
     api 'com.mikepenz:fastadapter:5.4.1'
     api 'com.mikepenz:fastadapter-extensions-expandable:5.4.1'
     api 'com.mikepenz:fastadapter-extensions-binding:5.4.1' // view binding helpers
@@ -59,8 +64,6 @@ dependencies {
     api 'com.mikepenz:fastadapter-extensions-paged:5.4.1' // paging support
     api 'com.mikepenz:fastadapter-extensions-scroll:5.4.1' // scroll helpers
     api 'com.mikepenz:fastadapter-extensions-swipe:5.4.1' // swipe support
-    api 'com.github.fondesa:recycler-view-divider:3.5.0'
-    api 'com.scwang.smart:refresh-layout-kernel:2.0.3'
-    api 'com.scwang.smart:refresh-header-classics:2.0.3'
-    api 'com.github.getActivity:XXPermissions:11.2'
+
+    api 'com.airbnb.android:lottie:3.6.1'
 }
