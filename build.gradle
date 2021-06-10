@@ -5,7 +5,7 @@ buildscript {
     // beta${num}  公测版
     // rc${num}    候选版
     // stable      正式版
-    ext.version_name = "0.0.7"
+    ext.version_name = "0.0.8"
 
     ext.compile_sdk_version = 30
     ext.build_tools_version = '30.0.3'
@@ -22,7 +22,6 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/mavenCentral' }
         google()
         mavenCentral()
-        jcenter()
     }
 
     dependencies {
