@@ -16,6 +16,8 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     protected val boxActivity get() = if (activity is BoxActivity) activity as BoxActivity else null
 
+    private var isLoaded = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,5 +42,20 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
+    }
+
+    abstract fun initContentByLazy()
+
+    override fun onResume() {
+        super.onResume()
+        if (!isLoaded && !isHidden) {
+            isLoaded = true
+            initContentByLazy()
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isLoaded = false
     }
 }
