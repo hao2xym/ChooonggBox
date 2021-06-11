@@ -45,30 +45,51 @@ fun Activity.isMainActivity(): Boolean {
     return false
 }
 
-fun Context.startActivity(
-    clazz: KClass<out Activity>,
-    block: (StartActivityConfig.() -> Unit)? = null
-) {
-    val intent = Intent(this, clazz.java)
-    val startActivityConfig = StartActivityConfig(this, intent)
-    block?.invoke(startActivityConfig)
-    startActivityConfig.start()
+fun Context.startActivity(clazz: KClass<out Activity>, block: (ActivityIntent.() -> Unit)? = null) {
+    val intent = ActivityIntent(this, clazz.java)
+    block?.invoke(intent)
+    startActivity(intent)
 }
 
-class StartActivityConfig(private val context: Context, private val intent: Intent) {
+fun Context.startActivity(
+    clazz: KClass<out Activity>,
+    option: Bundle,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(this, clazz.java)
+    block?.invoke(intent)
+    startActivity(intent, option)
+}
 
-    private var bundle: Bundle? = null
+fun Activity.startActivityForResult(
+    clazz: KClass<out Activity>,
+    resultCode: Int,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(this, clazz.java)
+    block?.invoke(intent)
+    startActivityForResult(intent, resultCode)
+}
+
+fun Activity.startActivityForResult(
+    clazz: KClass<out Activity>,
+    resultCode: Int,
+    option: Bundle,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(this, clazz.java)
+    block?.invoke(intent)
+    startActivityForResult(intent, resultCode, option)
+}
+
+class ActivityIntent(packageContext: Context, cls: Class<*>) : Intent(packageContext, cls) {
 
     /**
      * 新活动成为新任务的根，旧的活动都被结束
      */
     fun launchClearTask() {
-        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    }
-
-    fun launch() {
-
+        addFlags(FLAG_ACTIVITY_CLEAR_TASK)
+        addFlags(FLAG_ACTIVITY_NEW_TASK)
     }
 
     fun launchSingleTop() {
@@ -83,15 +104,7 @@ class StartActivityConfig(private val context: Context, private val intent: Inte
         addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
     }
 
-    fun addFlags(flags: Int) {
-        intent.addFlags(flags)
-    }
-
-    internal fun removeFlags() {
-        intent.flags = 0
-    }
-
-    internal fun start() {
-        context.startActivity(intent, bundle)
+    fun removeFlags() {
+        flags = 0
     }
 }
