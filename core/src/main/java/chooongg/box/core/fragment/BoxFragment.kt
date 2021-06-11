@@ -48,6 +48,8 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     abstract fun initContentByLazy()
 
+    open fun onReselected() = Unit
+
     override fun onResume() {
         super.onResume()
         if (!isLoaded && !isHidden) {
