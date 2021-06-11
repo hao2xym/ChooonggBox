@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="toolbarElevation">@dimen/d4</dimen>
+
+    <!--______________________________空______________________________-->
     <dimen name="nullSize">0dp</dimen>
 
     <!--______________________________内容边距规范______________________________-->
