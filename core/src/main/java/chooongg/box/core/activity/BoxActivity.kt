@@ -36,7 +36,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     open fun isShowActionBar() = true
 
-    protected open fun configToolBar(parentLayout: FitWindowsLinearLayout) = layoutInflater.inflate(
+    protected open fun getToolBar(parentLayout: FitWindowsLinearLayout) = layoutInflater.inflate(
         R.layout.box_activity_toolbar,
         parentLayout,
         false
@@ -52,18 +52,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         super.onCreate(savedInstanceState)
         BoxLog.d("${this::class.simpleName}: onCreate")
-        if (isShowActionBar()) {
-            val parentLayout = contentView.parent as FitWindowsLinearLayout
-            toolbar = configToolBar(parentLayout).apply {
-                id = R.id.box_toolbar
-            }
-            parentLayout.addView(toolbar, 0)
-            setSupportActionBar(toolbar)
-            if (isAutoShowNavigationIcon()) {
-                toolbar!!.setDefaultNavigation()
-            }
-            supportActionBar?.title = loadActivityLabel()
-        }
+        if (isShowActionBar()) configActionBar()
         initTransition()
         if (toolbar != null) initToolBar(toolbar!!)
         if (contentLayoutId != null) {
@@ -71,6 +60,19 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         }
         onCreateToInitConfig(savedInstanceState)
         if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
+    }
+
+    protected open fun configActionBar() {
+        val parentLayout = contentView.parent as FitWindowsLinearLayout
+        toolbar = getToolBar(parentLayout).apply {
+            id = R.id.box_toolbar
+        }
+        parentLayout.addView(toolbar, 0)
+        setSupportActionBar(toolbar)
+        if (isAutoShowNavigationIcon()) {
+            toolbar!!.setDefaultNavigation()
+        }
+        supportActionBar?.title = loadActivityLabel()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
