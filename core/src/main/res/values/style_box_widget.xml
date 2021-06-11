@@ -43,12 +43,4 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="PermissionDefaultDialog" parent="Base.BoxTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">true</item>
-    </style>
-
 </resources>

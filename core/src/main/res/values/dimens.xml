@@ -35,5 +35,6 @@
 
     <!--______________________________分割线规范______________________________-->
     <dimen name="divider">1dp</dimen>
+    <dimen name="divider_big">10dp</dimen>
 
 </resources>
