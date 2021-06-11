@@ -11,6 +11,8 @@ import chooongg.box.core.interfaces.BoxInit
 
 abstract class BoxFragment : Fragment, BoxInit {
 
+    var title: CharSequence? = null
+
     internal constructor() : super()
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 

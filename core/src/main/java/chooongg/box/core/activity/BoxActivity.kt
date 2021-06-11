@@ -14,9 +14,7 @@ import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
-import chooongg.box.ext.isNightMode
 import chooongg.box.ext.loadActivityLabel
-import chooongg.box.ext.resourcesDimension
 import chooongg.box.log.BoxLog
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import kotlin.reflect.full.findAnnotation
@@ -58,8 +56,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             val parentLayout = contentView.parent as FitWindowsLinearLayout
             toolbar = configToolBar(parentLayout).apply {
                 id = R.id.box_toolbar
-                elevation = if (isNightMode()) 0f
-                else resourcesDimension(R.dimen.design_appbar_elevation)
             }
             parentLayout.addView(toolbar, 0)
             setSupportActionBar(toolbar)
