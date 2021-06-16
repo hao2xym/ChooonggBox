@@ -1,22 +1,27 @@
 package chooongg.box.simple.api
 
-import chooongg.box.http.BaseUrl
+import chooongg.box.http.RetrofitManager
+import chooongg.box.http.ext.DefaultResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-@BaseUrl("https://wanandroid.com/maven_pom/")
 interface WanAndroidAPI {
+
+    companion object {
+        fun get() =
+            RetrofitManager.getAPI(WanAndroidAPI::class.java, "https://wanandroid.com/maven_pom/")
+    }
 
     /**
      * 获取所有包名
      */
     @GET("package/json")
-    suspend fun allPackage(): String
+    fun allPackage(): DefaultResponse<String>
 
     /**
      * 根据Key搜索包名信息
      */
-    @GET("search/json?k=viewpager2")
-    suspend fun searchPackage(@Query("k") key: String): String
+    @GET("search/json")
+    fun searchPackage(@Query("k") key: String): DefaultResponse<String>
 
 }

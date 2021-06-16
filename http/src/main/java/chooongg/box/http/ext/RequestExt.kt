@@ -15,6 +15,8 @@ fun <RESPONSE> CoroutineScope.retrofitDefault(dsl: DefaultRetrofitCoroutineDsl<R
     return retrofitCoroutineDsl.request(this)
 }
 
+typealias DefaultResponse<T> = Call<T?>
+
 abstract class RetrofitCoroutineDsl<RESPONSE, DATA> {
 
     lateinit var api: Call<RESPONSE?>

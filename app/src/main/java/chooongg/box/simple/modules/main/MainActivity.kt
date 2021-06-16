@@ -1,6 +1,5 @@
 package chooongg.box.simple.modules.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.transition.Explode
 import android.view.Menu
@@ -8,12 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
+import chooongg.box.ext.startActivity
+import chooongg.box.http.ext.retrofitDefault
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
+import chooongg.box.simple.api.WanAndroidAPI
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.loadState.StatePageActivity
@@ -29,7 +32,8 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
-        MainItemEntity("State Page")
+        MainItemEntity("State Page"),
+        MainItemEntity("Http Request")
     )
 
     override fun isAutoShowNavigationIcon() = false
@@ -50,15 +54,16 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         adapter.onClickListener =
             { _: View?, _: IAdapter<MainItemEntity>, mainItemEntity: MainItemEntity, i: Int ->
                 when (mainItemEntity.name) {
-                    "App Bar: Top" -> startActivity(
-                        Intent(context, TopAppBarActivity::class.java)
-                    )
-                    "Request Permissions" -> startActivity(
-                        Intent(context, RequestPermissionActivity::class.java)
-                    )
-                    "State Page" -> startActivity(
-                        Intent(context, StatePageActivity::class.java)
-                    )
+                    "App Bar: Top" -> startActivity(TopAppBarActivity::class)
+                    "Request Permissions" -> startActivity(RequestPermissionActivity::class)
+                    "State Page" -> startActivity(StatePageActivity::class)
+                    "Http Request" -> {
+                        lifecycleScope.retrofitDefault<String> {
+                            api = WanAndroidAPI.get().searchPackage("appcompat")
+                            onSuccess { showToast("请求成功") }
+                            onFailed { showToast("请求失败") }
+                        }
+                    }
                     else -> showToast("未实现功能")
                 }
                 false

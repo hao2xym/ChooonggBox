@@ -70,10 +70,8 @@ object BoxLogInterceptor : Interceptor {
                 requestLog.add(
                     LogEntity("Headers", buildString {
                         requestHeaders.forEachIndexed { index, pair ->
+                            if (index != 0) append(BoxHttpLog.config.formatter.separator())
                             append("${pair.first}: ${pair.second}")
-                            if (index != requestHeaders.size - 1) {
-                                append(BoxHttpLog.config.formatter.separator())
-                            }
                         }
                     }, false)
                 )
@@ -82,10 +80,10 @@ object BoxLogInterceptor : Interceptor {
         val requestBody = request.body
         if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.BODY) {
             if (requestBody != null) {
-                bodyToString(requestBody, request.headers)
+                requestLog.add(bodyToString(requestBody, request.headers))
             }
         }
-        BoxHttpLog.request(requestLog.toArray())
+        BoxHttpLog.request(*requestLog.toArray())
     }
 
     private fun printlnResponseLog(receivedMs: Long, response: Response, request: Request) {
@@ -112,7 +110,7 @@ object BoxLogInterceptor : Interceptor {
                 responseLog.add(
                     LogEntity("Headers", buildString {
                         responseHeaders.forEachIndexed { index, pair ->
-                            if (index == 0) append(BoxHttpLog.config.formatter.separator())
+                            if (index != 0) append(BoxHttpLog.config.formatter.separator())
                             append("${pair.first}: ${pair.second}")
                         }
                     }, false)
@@ -120,8 +118,12 @@ object BoxLogInterceptor : Interceptor {
             }
         }
         val responseBody = response.body
-
-        BoxHttpLog.response(responseLog.toArray())
+        if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.BODY) {
+            if (responseBody != null) {
+                responseLog.add(getResponseBody(response))
+            }
+        }
+        BoxHttpLog.response(*responseLog.toArray())
     }
 
     private fun getResponseBody(response: Response): String {
