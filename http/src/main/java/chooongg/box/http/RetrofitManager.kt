@@ -17,9 +17,9 @@ object RetrofitManager {
         this.defaultConfig = defaultConfig
     }
 
-    fun <T : Any> getAPI(clazz: KClass<T>, config: HttpConfig = defaultConfig): T {
+    fun <T : Any> getAPI(clazz: KClass<T>,baseUrl:String, config: HttpConfig = defaultConfig): T {
         val builder = Retrofit.Builder()
-            .baseUrl(getBaseUrlForAnnotation(clazz.java))
+            .baseUrl(baseUrl)
             .client(okHttpClientBuilder(config).build())
         config.converterFactories.forEach { builder.addConverterFactory(it) }
         config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }

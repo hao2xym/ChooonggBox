@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import chooongg.box.core.activity.BoxActivity
+import chooongg.box.core.annotation.Title
 import chooongg.box.core.interfaces.BoxInit
+import kotlin.reflect.full.findAnnotation
 
+@Title("未命名")
 abstract class BoxFragment : Fragment, BoxInit {
-
-    var title: CharSequence? = null
 
     internal constructor() : super()
     constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
@@ -62,4 +63,6 @@ abstract class BoxFragment : Fragment, BoxInit {
         super.onDestroyView()
         isLoaded = false
     }
+
+    fun getTitle() = this::class.findAnnotation<Title>()?.value ?: "未命名"
 }
