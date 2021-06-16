@@ -11,13 +11,23 @@ object LogcatPrinter : Printer {
 
     override fun printLog(@LogConfig.Level logLevel: Int, tag: String, log: String) {
         if (log.getByteUTF8Length() > MAX_LENGTH) {
-            val sp = log.split(LogConstant.BR)
+            val sp = ArrayList(log.split(LogConstant.BR))
             if (sp.size > 1) {
-                sp.forEachIndexed { index, s ->
-                    if (index == 0) {
-                        printLog(logLevel, tag, s)
+                var index = 0
+                var temp = ""
+                while (sp.size > 1) {
+                    temp += sp[0]
+                    sp.removeAt(0)
+                    if (sp.size > 1 && temp.getByteUTF8Length() <= MAX_LENGTH - sp[0].getByteUTF8Length()) {
+                        temp += LogConstant.BR
                     } else {
-                        printLog(logLevel, "", s)
+                        if (index == 0) {
+                            index++
+                            printLog(logLevel, tag, temp)
+                        } else {
+                            printLog(logLevel, "", temp)
+                        }
+                        temp = ""
                     }
                 }
             } else {
