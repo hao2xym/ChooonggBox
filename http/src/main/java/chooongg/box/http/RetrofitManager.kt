@@ -7,8 +7,6 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
-import kotlin.reflect.KClass
-import kotlin.reflect.full.findAnnotation
 
 object RetrofitManager {
 
@@ -18,24 +16,24 @@ object RetrofitManager {
         this.defaultConfig = defaultConfig
     }
 
-    fun <T : Any> getAPI(clazz: KClass<T>, config: HttpConfig = defaultConfig): T {
+    fun <T> getAPI(clazz: Class<T>, config: HttpConfig = defaultConfig): T {
         val builder = Retrofit.Builder()
             .baseUrl(getBaseUrlForAnnotation(clazz))
             .client(okHttpClientBuilder(config).build())
         config.converterFactories.forEach { builder.addConverterFactory(it) }
         config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
         val retrofit = builder.build()
-        return retrofit.create(clazz.java)
+        return retrofit.create(clazz)
     }
 
-    fun <T : Any> getAPI(clazz: KClass<T>, baseUrl: String, config: HttpConfig = defaultConfig): T {
+    fun <T> getAPI(clazz: Class<T>, baseUrl: String, config: HttpConfig = defaultConfig): T {
         val builder = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClientBuilder(config).build())
         config.converterFactories.forEach { builder.addConverterFactory(it) }
         config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
         val retrofit = builder.build()
-        return retrofit.create(clazz.java)
+        return retrofit.create(clazz)
     }
 
     private fun okHttpClientBuilder(config: HttpConfig = defaultConfig) =
@@ -51,9 +49,9 @@ object RetrofitManager {
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
         }
 
-    private fun <T : Any> getBaseUrlForAnnotation(clazz: KClass<T>): String {
-        val findAnnotation = clazz.findAnnotation<BaseUrl>()
-            ?: throw RuntimeException("unable to find BaseUrl from Annotation")
-        return findAnnotation.value
+    private fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
+        if (clazz.javaClass.isAnnotationPresent(BaseUrl::class.java)) {
+            return clazz.javaClass.getAnnotation(BaseUrl::class.java).value
+        } else throw RuntimeException("unable to find BaseUrl from Annotation")
     }
 }
