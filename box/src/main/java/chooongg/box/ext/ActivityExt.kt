@@ -12,6 +12,7 @@ import androidx.appcompat.widget.ContentFrameLayout
 import androidx.fragment.app.Fragment
 import kotlin.reflect.KClass
 
+
 inline val Activity.decorView: FrameLayout get() = window.decorView as FrameLayout
 inline val Activity.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 inline val Window.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
@@ -59,27 +60,6 @@ fun Context.startActivity(
     val intent = ActivityIntent(this, clazz.java)
     block?.invoke(intent)
     startActivity(intent, option)
-}
-
-fun Activity.startActivityForResult(
-    clazz: KClass<out Activity>,
-    resultCode: Int,
-    block: (ActivityIntent.() -> Unit)? = null
-) {
-    val intent = ActivityIntent(this, clazz.java)
-    block?.invoke(intent)
-    startActivityForResult(intent, resultCode)
-}
-
-fun Activity.startActivityForResult(
-    clazz: KClass<out Activity>,
-    resultCode: Int,
-    option: Bundle,
-    block: (ActivityIntent.() -> Unit)? = null
-) {
-    val intent = ActivityIntent(this, clazz.java)
-    block?.invoke(intent)
-    startActivityForResult(intent, resultCode, option)
 }
 
 class ActivityIntent(packageContext: Context, cls: Class<*>) : Intent(packageContext, cls) {
