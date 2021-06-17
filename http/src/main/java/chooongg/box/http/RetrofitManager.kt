@@ -16,20 +16,14 @@ object RetrofitManager {
         this.defaultConfig = defaultConfig
     }
 
-    fun <T> getAPI(clazz: Class<T>, config: HttpConfig = defaultConfig): T {
+    fun <T> getAPI(
+        clazz: Class<T>,
+        baseUrl: String? = null,
+        config: HttpConfig = defaultConfig
+    ): T {
         val builder = Retrofit.Builder()
-            .baseUrl(getBaseUrlForAnnotation(clazz))
             .client(okHttpClientBuilder(config).build())
-        config.converterFactories.forEach { builder.addConverterFactory(it) }
-        config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
-        val retrofit = builder.build()
-        return retrofit.create(clazz)
-    }
-
-    fun <T> getAPI(clazz: Class<T>, baseUrl: String, config: HttpConfig = defaultConfig): T {
-        val builder = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClientBuilder(config).build())
+        if (!baseUrl.isNullOrEmpty()) builder.baseUrl(baseUrl)
         config.converterFactories.forEach { builder.addConverterFactory(it) }
         config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
         val retrofit = builder.build()
