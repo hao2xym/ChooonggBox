@@ -17,7 +17,6 @@ import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.loadActivityLabel
 import chooongg.box.log.BoxLog
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
-import kotlin.reflect.full.findAnnotation
 
 abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
     AppCompatActivity(), BoxInit {
@@ -81,8 +80,9 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
     }
 
     private fun configThemeForAnnotation() {
-        val theme = this::class.findAnnotation<Theme>()
-        if (theme != null) setTheme(theme.value)
+        if (javaClass.isAnnotationPresent(Theme::class.java)){
+            setTheme(javaClass.getAnnotation(Theme::class.java).value)
+        }
     }
 
     protected open fun onCreateToInitConfig(savedInstanceState: Bundle?) {

@@ -14,7 +14,6 @@ import chooongg.box.ext.inVisible
 import chooongg.box.ext.resourcesInteger
 import chooongg.box.ext.visible
 import kotlin.reflect.KClass
-import kotlin.reflect.full.createInstance
 
 class StatePageLayout : FrameLayout, NestedScrollingChild2 {
 
@@ -138,7 +137,7 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
         return if (statePool.containsKey(clazz)) {
             statePool[clazz]
         } else {
-            val state = clazz.createInstance()
+            val state = clazz.java.newInstance()
             statePool[clazz] = state
             state
         }

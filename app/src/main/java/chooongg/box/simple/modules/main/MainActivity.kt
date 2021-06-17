@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxBindingModelActivity
@@ -13,7 +14,9 @@ import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
 import chooongg.box.ext.startActivity
-import chooongg.box.http.ext.retrofitDefault
+import chooongg.box.http.ext.ResponseData
+import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
+import chooongg.box.http.throws.HttpException
 import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.api.WanAndroidAPI
@@ -26,6 +29,9 @@ import chooongg.box.simple.modules.permission.RequestPermissionActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.launch
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -46,6 +52,37 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
     private val itemAdapter = ItemAdapter<MainItemEntity>()
     private val adapter = FastAdapter.with(itemAdapter)
 
+    @Keep
+    data class WanAndroidAPIResponse<DATA>(
+        val errorCode: Int,
+        val errorMsg: String?,
+        val data: DATA?
+    ) : ResponseData<DATA> {
+        override suspend fun checkData(): DATA {
+            if (errorCode == 0) {
+                if (data == null) throw HttpException(HttpException.Type.EMPTY)
+                return data
+            } else {
+                throw HttpException(
+                    errorCode.toString(),
+                    errorMsg ?: HttpException.Converter.convert(HttpException.Type.UN_KNOWN)
+                )
+            }
+        }
+    }
+
+    class RetrofitCoroutinesDsl<DATA> :
+        RetrofitCoroutinesSimpleDsl<WanAndroidAPIResponse<DATA>, DATA>()
+
+    @Suppress("DEPRECATION")
+    suspend fun <DATA> request(block: RetrofitCoroutinesDsl<DATA>.() -> Unit) {
+        val dsl = RetrofitCoroutinesDsl<DATA>()
+        block.invoke(dsl)
+        dsl.executeRequest()
+    }
+
+    private var job: Job? = null
+
     override fun initConfig(savedInstanceState: Bundle?) {
         BoxLog.e("isNightMode=${isNightMode()}")
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
@@ -58,16 +95,50 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                     "Request Permissions" -> startActivity(RequestPermissionActivity::class)
                     "State Page" -> startActivity(StatePageActivity::class)
                     "Http Request" -> {
-                        lifecycleScope.retrofitDefault<String> {
-                            api = WanAndroidAPI.get().searchPackage("appcompat")
-                            onSuccess { showToast("请求成功") }
-                            onFailed { showToast("请求失败") }
+                        job = lifecycleScope.launch {
+                            request<ArrayList<String>> {
+                                api { WanAndroidAPI.get().allPackage() }
+                                onStart {
+
+                                }
+                                onResponse {
+
+                                }
+                                onSuccess {
+                                    BoxLog.e(it)
+                                    requestss()
+                                }
+                                onFailed {
+                                    it.printStackTrace()
+                                }
+                                onEnd {
+
+                                }
+                            }
                         }
                     }
                     else -> showToast("未实现功能")
                 }
                 false
             }
+    }
+
+    suspend fun requestss() {
+        request<ArrayList<String>> {
+            api { WanAndroidAPI.get().allPackage() }
+            onStart {
+                job?.cancelAndJoin()
+            }
+            onSuccess {
+                BoxLog.e(it)
+            }
+            onFailed {
+                it.printStackTrace()
+            }
+            onEnd {
+
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -77,9 +77,9 @@ class HttpException : RuntimeException {
             this.messageCopy = e.messageCopy
         } else {
             this.type = when {
+                e is NullPointerException -> Type.EMPTY
                 !NetworkUtils.isNetworkConnected() -> Type.NETWORK
-                e is ConnectException
-                        || e is UnknownHostException -> Type.CONNECT
+                e is ConnectException || e is UnknownHostException -> Type.CONNECT
                 e is SocketTimeoutException -> Type.TIMEOUT
                 e is retrofit2.HttpException -> {
                     var tempType = Type.UN_KNOWN
@@ -102,7 +102,7 @@ class HttpException : RuntimeException {
         }
     }
 
-    override val message: String?
+    override val message: String
         get() = messageCopy
 
     enum class Type(val value: Int) {

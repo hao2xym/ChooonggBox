@@ -26,6 +26,7 @@ object BoxLogInterceptor : Interceptor {
         val request = chain.request()
         printlnRequestLog(request)
 
+
         val response = chain.proceed(request)
 
         // Response
@@ -90,16 +91,12 @@ object BoxLogInterceptor : Interceptor {
         val responseLog = ArrayList<Any?>()
         responseLog.add(
             LogEntity(
-                "[${request.method.uppercase(Locale.ROOT)} ${response.code} ${response.message}]}",
+                "[${request.method.uppercase(Locale.ROOT)} ${response.code} ${response.message} ${receivedMs}ms]",
                 buildString {
-                    append("method: ${request.method}")
-                    append(BoxHttpLog.config.formatter.separator())
                     val url = request.url
                     append("host: ${url.host}")
                     append(BoxHttpLog.config.formatter.separator())
                     append("url: $url")
-                    append(BoxHttpLog.config.formatter.separator())
-                    append("state code: ${receivedMs}ms")
                 },
                 false
             )

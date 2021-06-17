@@ -1,131 +1,92 @@
 package chooongg.box.http.ext
 
-import chooongg.box.ext.launchIO
+import chooongg.box.ext.withIO
 import chooongg.box.ext.withMain
 import chooongg.box.http.throws.HttpException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import retrofit2.Call
 
-fun <RESPONSE> CoroutineScope.retrofitDefault(dsl: DefaultRetrofitCoroutineDsl<RESPONSE>.() -> Unit): Job {
-    val retrofitCoroutineDsl = DefaultRetrofitCoroutineDsl<RESPONSE>()
-    retrofitCoroutineDsl.dsl()
-    return retrofitCoroutineDsl.request(this)
+interface ResponseData<DATA> {
+    suspend fun checkData(): DATA
 }
 
-typealias DefaultResponse<T> = Call<T?>
+@Suppress("DEPRECATION")
+suspend fun <RESPONSE : ResponseData<DATA>, DATA> requestSimple(block: RetrofitCoroutinesSimpleDsl<RESPONSE, DATA>.() -> Unit) {
+    val dsl = RetrofitCoroutinesSimpleDsl<RESPONSE, DATA>()
+    block.invoke(dsl)
+    dsl.executeRequest()
+}
 
-abstract class RetrofitCoroutineDsl<RESPONSE, DATA> {
+@Suppress("DEPRECATION")
+suspend fun <RESPONSE> requestDefault(block: RetrofitCoroutinesDefaultDsl<RESPONSE>.() -> Unit) {
+    val dsl = RetrofitCoroutinesDefaultDsl<RESPONSE>()
+    block.invoke(dsl)
+    dsl.executeRequest()
+}
 
-    lateinit var api: Call<RESPONSE?>
+open class RetrofitCoroutinesSimpleDsl<RESPONSE : ResponseData<DATA>, DATA> :
+    RetrofitCoroutinesDefaultDsl<RESPONSE>() {
 
-    var body: RESPONSE? = null
+    private var onSuccess: (suspend (DATA) -> Unit)? = null
 
-    private var onStart: (() -> Unit)? = null
-
-    protected var onResponse: ((RESPONSE) -> Unit)? = null
-
-    protected var onSuccess: ((DATA?) -> Unit)? = null
-
-    private var onFailed: ((HttpException) -> Unit)? = null
-
-    private var onEnd: ((Boolean) -> Unit)? = null
-
-    internal open fun clean() {
-        onStart = null
-        onResponse = null
-        onSuccess = null
-        onFailed = null
-        onEnd = null
-    }
-
-    fun onStart(block: () -> Unit) {
-        this.onStart = block
-    }
-
-    fun onResponse(block: (RESPONSE) -> Unit) {
-        this.onResponse = block
-    }
-
-    fun onSuccess(block: (data: DATA?) -> Unit) {
+    fun onSuccess(block: suspend (data: DATA) -> Unit) {
         this.onSuccess = block
     }
 
-    fun configFailed(error: Throwable) {
-        onFailed?.invoke(HttpException(error))
-    }
-
-    fun onFailed(block: (error: HttpException) -> Unit) {
-        this.onFailed = block
-    }
-
-    fun onEnd(block: (isSuccess: Boolean) -> Unit) {
-        this.onEnd = block
-    }
-
-    fun request(coroutineScope: CoroutineScope): Job {
-        return coroutineScope.launchIO {
-            withMain { onStart?.invoke() }
-            val work = async(Dispatchers.IO) {
-                try {
-                    api.execute()
-                } catch (e: Exception) {
-                    withMain { configFailed(e) }
-                    e.printStackTrace()
-                    null
-                }
-            }
-            work.invokeOnCompletion { _ ->
-                if (work.isCancelled) {
-                    api.cancel()
-                    clean()
-                }
-            }
-            try {
-                val response = work.await()
-                response?.let {
-                    if (response.isSuccessful) {
-                        val body = response.body()
-                        this@RetrofitCoroutineDsl.body = body
-                        if (body != null) {
-                            withMain {
-                                try {
-                                    onResponse?.invoke(body)
-                                    onEnd?.invoke(true)
-                                } catch (e: Exception) {
-                                    configFailed(e)
-                                    onEnd?.invoke(false)
-                                }
-                            }
-                        } else {
-                            withMain {
-                                configFailed(HttpException(HttpException.Type.EMPTY))
-                                onEnd?.invoke(false)
-                            }
-                        }
-                    } else {
-                        withMain {
-                            configFailed(HttpException(response.code()))
-                            onEnd?.invoke(false)
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withMain {
-                    configFailed(e)
-                    onEnd?.invoke(false)
-                }
-            }
-        }
+    override suspend fun processData(response: RESPONSE) {
+        val data = response.checkData()
+        withMain { onSuccess?.invoke(data) }
     }
 }
 
-class DefaultRetrofitCoroutineDsl<RESPONSE> : RetrofitCoroutineDsl<RESPONSE, RESPONSE>() {
-    init {
-        onResponse = {
-            onSuccess?.invoke(it)
+open class RetrofitCoroutinesDefaultDsl<RESPONSE> {
+
+    private var api: (suspend () -> RESPONSE)? = null
+
+    private var onStart: (suspend () -> Unit)? = null
+
+    private var onResponse: (suspend (RESPONSE) -> Unit)? = null
+
+    private var onFailed: (suspend (HttpException) -> Unit)? = null
+
+    private var onEnd: (suspend (Boolean) -> Unit)? = null
+
+    fun api(block: suspend () -> RESPONSE) {
+        this.api = block
+    }
+
+    fun onStart(block: suspend () -> Unit) {
+        this.onStart = block
+    }
+
+    fun onResponse(block: suspend (RESPONSE) -> Unit) {
+        this.onResponse = block
+    }
+
+    fun onFailed(block: suspend (error: HttpException) -> Unit) {
+        this.onFailed = block
+    }
+
+    fun onEnd(block: suspend (isSuccess: Boolean) -> Unit) {
+        this.onEnd = block
+    }
+
+    internal open suspend fun processData(response: RESPONSE) = Unit
+
+    @Suppress("ThrowableNotThrown")
+    @Deprecated("Calling this method will result in repeated calls, but you can call it when encapsulating the tool method")
+    suspend fun executeRequest() {
+        if (api == null) return
+        withMain { onStart?.invoke() }
+        withIO {
+            val isSuccess = try {
+                val response = api!!.invoke()
+                withMain { onResponse?.invoke(response) }
+                processData(response)
+                true
+            } catch (e: Throwable) {
+                withMain { onFailed?.invoke(HttpException(e)) }
+                false
+            }
+            withMain { onEnd?.invoke(isSuccess) }
         }
     }
 }

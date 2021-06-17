@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import chooongg.box.core.activity.BoxActivity
 import chooongg.box.core.annotation.Title
 import chooongg.box.core.interfaces.BoxInit
-import kotlin.reflect.full.findAnnotation
 
 @Title("未命名")
 abstract class BoxFragment : Fragment, BoxInit {
@@ -64,5 +63,7 @@ abstract class BoxFragment : Fragment, BoxInit {
         isLoaded = false
     }
 
-    fun getTitle() = this::class.findAnnotation<Title>()?.value ?: "未命名"
+    fun getTitle() = if (javaClass.isAnnotationPresent(Title::class.java)) {
+        javaClass.getAnnotation(Title::class.java).value
+    } else "未命名"
 }
