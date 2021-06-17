@@ -43,10 +43,12 @@ object LogcatPrinter : Printer {
                 }
             }
         } else {
-            val sp = ArrayList(log.split(LogConstant.BR))
-            sp.forEach {
-                printLog(logLevel, tag, it)
-            }
+            if (log.contains(LogConstant.BR)) {
+                val sp = ArrayList(log.split(LogConstant.BR))
+                sp.forEach {
+                    printLog(logLevel, tag, it)
+                }
+            } else printLog(logLevel, tag, log)
         }
     }
 
