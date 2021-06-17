@@ -13,30 +13,33 @@ object LogcatPrinter : Printer {
         if (log.getByteUTF8Length() > MAX_LENGTH) {
             val sp = ArrayList(log.split(LogConstant.BR))
             if (sp.size > 1) {
-                var index = 0
-                var temp = ""
-                while (sp.size > 1) {
-                    temp += sp[0]
-                    sp.removeAt(0)
-                    if (sp.size > 1 && temp.getByteUTF8Length() <= MAX_LENGTH - sp[0].getByteUTF8Length()) {
-                        temp += LogConstant.BR
-                    } else {
-                        if (index == 0) {
-                            index++
-                            printLog(logLevel, tag, temp)
-                        } else {
-                            printLog(logLevel, "", temp)
-                        }
-                        temp = ""
-                    }
+                sp.forEach {
+                    printLog(logLevel, tag, it)
                 }
+//                var index = 0
+//                var temp = ""
+//                while (sp.size > 1) {
+//                    temp += sp[0]
+//                    sp.removeAt(0)
+//                    if (sp.size > 1 && temp.getByteUTF8Length() <= MAX_LENGTH - sp[0].getByteUTF8Length()) {
+//                        temp += LogConstant.BR
+//                    } else {
+//                        if (index == 0) {
+//                            index++
+//                            printLog(logLevel, tag, temp)
+//                        } else {
+//                            printLog(logLevel, tag, temp)
+//                        }
+//                        temp = ""
+//                    }
+//                }
             } else {
                 var i = 0
                 while (i < log.length) {
                     if (i + MAX_LENGTH < log.length) {
                         if (i == 0) printLog(logLevel, tag, log.substring(i, i + MAX_LENGTH))
-                        else printLog(logLevel, "", log.substring(i, i + MAX_LENGTH))
-                    } else printLog(logLevel, "", log.substring(i, log.length))
+                        else printLog(logLevel, tag, log.substring(i, i + MAX_LENGTH))
+                    } else printLog(logLevel, tag, log.substring(i, log.length))
                     i += MAX_LENGTH
                 }
             }

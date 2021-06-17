@@ -52,7 +52,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         binding.recyclerView.adapter = adapter
         itemAdapter.setNewList(modules)
         adapter.onClickListener =
-            { _: View?, _: IAdapter<MainItemEntity>, mainItemEntity: MainItemEntity, i: Int ->
+            { _: View?, _: IAdapter<MainItemEntity>, mainItemEntity: MainItemEntity, _: Int ->
                 when (mainItemEntity.name) {
                     "App Bar: Top" -> startActivity(TopAppBarActivity::class)
                     "Request Permissions" -> startActivity(RequestPermissionActivity::class)

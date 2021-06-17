@@ -80,7 +80,7 @@ object BoxLogInterceptor : Interceptor {
         val requestBody = request.body
         if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.BODY) {
             if (requestBody != null) {
-                requestLog.add(bodyToString(requestBody, request.headers))
+                requestLog.add(LogEntity("Body", bodyToString(requestBody, request.headers), false))
             }
         }
         BoxHttpLog.request(*requestLog.toArray())
@@ -120,7 +120,7 @@ object BoxLogInterceptor : Interceptor {
         val responseBody = response.body
         if (BoxHttpLog.config.httpLogLevel == HttpLogLevel.BASIC || BoxHttpLog.config.httpLogLevel == HttpLogLevel.BODY) {
             if (responseBody != null) {
-                responseLog.add(getResponseBody(response))
+                responseLog.add(LogEntity("Body", getResponseBody(response), false))
             }
         }
         BoxHttpLog.response(*responseLog.toArray())
