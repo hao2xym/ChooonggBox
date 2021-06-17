@@ -1,6 +1,5 @@
 package chooongg.box.log.printer
 
-import android.util.Log
 import chooongg.box.ext.getByteUTF8Length
 import chooongg.box.log.LogConfig
 import chooongg.box.log.LogConstant
@@ -44,7 +43,10 @@ object LogcatPrinter : Printer {
                 }
             }
         } else {
-            Log.println(logLevel, tag, log)
+            val sp = ArrayList(log.split(LogConstant.BR))
+            sp.forEach {
+                printLog(logLevel, tag, it)
+            }
         }
     }
 
