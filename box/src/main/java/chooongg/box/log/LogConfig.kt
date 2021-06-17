@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
 import chooongg.box.Box
-import chooongg.box.BuildConfig
+import chooongg.box.ext.isAppDebug
 import chooongg.box.log.formatter.DefaultFormatter
 import chooongg.box.log.formatter.Formatter
 import chooongg.box.log.printer.LogcatPrinter
@@ -20,7 +20,7 @@ open class LogConfig {
     /**
      * 启用状态
      */
-    var enable = BuildConfig.DEBUG
+    var enable = isAppDebug()
 
     /**
      * 默认日志等级
@@ -31,12 +31,12 @@ open class LogConfig {
     /**
      * 是否显示线程信息
      */
-    var showThreadInfo = BuildConfig.DEBUG
+    var showThreadInfo = isAppDebug()
 
     /**
      * 是否显示堆栈信息
      */
-    var showStackInfo = BuildConfig.DEBUG
+    var showStackInfo = isAppDebug()
 
     /**
      * 堆栈深度
