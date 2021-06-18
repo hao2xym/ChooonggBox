@@ -2,7 +2,6 @@ package chooongg.box.log
 
 import android.util.Log
 import androidx.annotation.IntDef
-import androidx.annotation.IntRange
 import chooongg.box.Box
 import chooongg.box.ext.isAppDebug
 import chooongg.box.log.formatter.DefaultFormatter
@@ -40,14 +39,14 @@ open class LogConfig {
 
     /**
      * 堆栈深度
+     * 最低限制: 1
      */
-    @IntRange(from = 1)
     var stackDeep = 1
 
     /**
      * 堆栈指向偏移
+     * 最低限制: -LogConstant.DEFAULT_STACK_OFFSET
      */
-    @IntRange(from = 0L - LogConstant.DEFAULT_STACK_OFFSET)
     var stackOffset = 0
 
     /**

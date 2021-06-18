@@ -48,10 +48,10 @@ open class HttpConfig {
     /**
      * 扩展方法，可以进行OkHttpClient的特殊配置
      */
-    val okHttpClientBuilder: ((OkHttpClient.Builder) -> Unit)? = null
+    var okHttpClientBuilder: (OkHttpClient.Builder.() -> Unit)? = null
 
     /**
      * 扩展方法，可以进行Retrofit的特殊配置
      */
-    val retrofitBuilder: ((Retrofit.Builder) -> Unit)? = null
+    var retrofitBuilder: (Retrofit.Builder.() -> Unit)? = null
 }

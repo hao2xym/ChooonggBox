@@ -13,14 +13,14 @@ object BoxHttpLog {
     }
 
     fun request(vararg any: Any?) =
-        LogActuator.log(config, config.requestLevel, config.tag, "↗↗↗↗↗↗↗↗ Request", *any)
+        LogActuator.log(config, config.requestLevel, config.tag, "↗↗↗↗↗↗↗↗ Request ↗↗↗↗↗↗↗↗", *any)
 
     fun requestForConfig(config: HttpLogConfig, vararg any: Any?) =
-        LogActuator.log(config, config.requestLevel, config.tag, "↗↗↗↗↗↗↗↗ Request", *any)
+        LogActuator.log(config, config.requestLevel, config.tag, "↗↗↗↗↗↗↗↗ Request ↗↗↗↗↗↗↗↗", *any)
 
     fun response(vararg any: Any?) =
-        LogActuator.log(config, config.responseLevel, config.tag, "↙↙↙↙↙↙↙↙ Response", *any)
+        LogActuator.log(config, config.responseLevel, config.tag, "↘↘↘↘↘↘↘↘ Response ↘↘↘↘↘↘↘↘", *any)
 
     fun responseForConfig(config: HttpLogConfig, vararg any: Any?) =
-        LogActuator.log(config, config.responseLevel, config.tag, "↙↙↙↙↙↙↙↙ Response", *any)
+        LogActuator.log(config, config.responseLevel, config.tag, "↘↘↘↘↘↘↘↘ Response ↘↘↘↘↘↘↘↘", *any)
 }

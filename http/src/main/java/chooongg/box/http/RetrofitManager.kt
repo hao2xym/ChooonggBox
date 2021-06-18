@@ -26,6 +26,7 @@ object RetrofitManager {
         if (!baseUrl.isNullOrEmpty()) builder.baseUrl(baseUrl)
         config.converterFactories.forEach { builder.addConverterFactory(it) }
         config.callAdapterFactory.forEach { builder.addCallAdapterFactory(it) }
+        config.retrofitBuilder?.invoke(builder)
         val retrofit = builder.build()
         return retrofit.create(clazz)
     }
@@ -41,6 +42,7 @@ object RetrofitManager {
             config.interceptor.forEach { addInterceptor(it) }
             addInterceptor(BoxLogInterceptor)
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
+            config.okHttpClientBuilder?.invoke(this)
         }
 
     private fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
