@@ -1,5 +1,6 @@
 package chooongg.box.http
 
+import chooongg.box.http.logInterceptor.HttpLogConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
@@ -44,6 +45,8 @@ open class HttpConfig {
     )
 
     val callAdapterFactory = arrayListOf<CallAdapter.Factory>()
+
+    var logConfig: HttpLogConfig? = null
 
     /**
      * 扩展方法，可以进行OkHttpClient的特殊配置

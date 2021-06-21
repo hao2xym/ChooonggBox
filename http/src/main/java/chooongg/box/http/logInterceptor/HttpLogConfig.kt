@@ -4,10 +4,16 @@ import android.util.Log
 import chooongg.box.http.BoxHttp
 import chooongg.box.log.LogConfig
 
-class HttpLogConfig : LogConfig() {
+class HttpLogConfig : LogConfig {
 
     init {
         tag = BoxHttp.javaClass.simpleName
+    }
+
+    internal constructor()
+
+    constructor(block: HttpLogConfig.() -> Unit) {
+        block.invoke(this)
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-object BoxLogInterceptor : Interceptor {
+class BoxLogInterceptor(private val logConfig: HttpLogConfig?) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!BoxHttpLog.config.enable) return chain.proceed(chain.request())
@@ -84,7 +84,7 @@ object BoxLogInterceptor : Interceptor {
                 requestLog.add(LogEntity("Body", bodyToString(requestBody, request.headers), false))
             }
         }
-        BoxHttpLog.request(*requestLog.toArray())
+        BoxHttpLog.request(logConfig ?: BoxHttpLog.config, *requestLog.toArray())
     }
 
     private fun printlnResponseLog(receivedMs: Long, response: Response, request: Request) {
@@ -120,7 +120,7 @@ object BoxLogInterceptor : Interceptor {
                 responseLog.add(LogEntity("Body", getResponseBody(response), false))
             }
         }
-        BoxHttpLog.response(*responseLog.toArray())
+        BoxHttpLog.response(logConfig ?: BoxHttpLog.config, *responseLog.toArray())
     }
 
     private fun getResponseBody(response: Response): String {

@@ -12,8 +12,8 @@ object RetrofitManager {
 
     private var defaultConfig = HttpConfig()
 
-    fun setDefaultConfig(defaultConfig: HttpConfig) {
-        this.defaultConfig = defaultConfig
+    fun changeConfig(block: HttpConfig.() -> Unit) {
+        block.invoke(defaultConfig)
     }
 
     fun <T> getAPI(
@@ -31,7 +31,7 @@ object RetrofitManager {
         return retrofit.create(clazz)
     }
 
-    private fun okHttpClientBuilder(config: HttpConfig = defaultConfig) =
+    private fun okHttpClientBuilder(config: HttpConfig) =
         OkHttpClient.Builder().apply {
             connectTimeout(config.connectTimeout, TimeUnit.SECONDS)
             writeTimeout(config.writeTimeout, TimeUnit.SECONDS)
@@ -40,7 +40,7 @@ object RetrofitManager {
             cache(Cache(APP.cacheDir, config.cacheSize))
             cookieJar(CookieManager(APP))
             config.interceptor.forEach { addInterceptor(it) }
-            addInterceptor(BoxLogInterceptor)
+            addInterceptor(BoxLogInterceptor(config.logConfig))
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
             config.okHttpClientBuilder?.invoke(this)
         }

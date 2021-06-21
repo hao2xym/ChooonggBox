@@ -77,16 +77,15 @@ open class RetrofitCoroutinesDefaultDsl<RESPONSE> {
         if (api == null) return
         withMain { onStart?.invoke() }
         withIO {
-            val isSuccess = try {
+            try {
                 val response = api!!.invoke()
                 withMain { onResponse?.invoke(response) }
                 processData(response)
-                true
+                withMain { onEnd?.invoke(true) }
             } catch (e: Throwable) {
                 withMain { onFailed?.invoke(HttpException(e)) }
-                false
+                withMain { onEnd?.invoke(false) }
             }
-            withMain { onEnd?.invoke(isSuccess) }
         }
     }
 }
