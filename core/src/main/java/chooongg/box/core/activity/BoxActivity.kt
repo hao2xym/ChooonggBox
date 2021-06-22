@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.Window
-import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ContentFrameLayout
@@ -46,7 +45,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     protected open fun isAutoShowNavigationIcon() = true
 
-    @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         configThemeForAnnotation()
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
@@ -76,7 +74,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         supportActionBar?.title = loadActivityLabel()
     }
 
-    @CallSuper
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         onPostCreateToInitContent(savedInstanceState)
@@ -96,7 +93,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         initContent(savedInstanceState)
     }
 
-    @CallSuper
     override fun onBackPressed() {
         super.onBackPressed()
         BoxLog.d("${this::class.simpleName}: OnBackPressed")
