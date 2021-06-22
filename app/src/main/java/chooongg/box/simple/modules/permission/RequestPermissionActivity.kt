@@ -24,6 +24,10 @@ class RequestPermissionActivity : BoxBindingActivity<ActivityPermissionBinding>(
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     private val datas = arrayListOf(
         Operate("请求单权限"),
         Operate("请求多权限")

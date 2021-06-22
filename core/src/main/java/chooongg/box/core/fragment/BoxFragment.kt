@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import chooongg.box.core.activity.BoxActivity
@@ -20,6 +21,7 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     private var isLoaded = false
 
+    @CallSuper
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +52,7 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     open fun onReselected() = Unit
 
+    @CallSuper
     override fun onResume() {
         super.onResume()
         if (!isLoaded && !isHidden) {
@@ -58,6 +61,7 @@ abstract class BoxFragment : Fragment, BoxInit {
         }
     }
 
+    @CallSuper
     override fun onDestroyView() {
         super.onDestroyView()
         isLoaded = false
