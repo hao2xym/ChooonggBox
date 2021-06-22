@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <item name="box_toolbar" type="id" />
 
     <item name="state_page_layout" type="id" />
+
 </resources>

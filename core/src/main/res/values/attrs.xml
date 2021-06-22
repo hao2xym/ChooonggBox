@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--工具栏是否居中标题-->
     <attr name="toolbarCenterTitle" format="boolean" />
 
