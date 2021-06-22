@@ -18,8 +18,9 @@ inline val Activity.contentView: ContentFrameLayout get() = findViewById(Window.
 inline val Window.contentView: ContentFrameLayout get() = findViewById(Window.ID_ANDROID_CONTENT)
 
 fun Fragment.loadActivityLabel() = activity?.loadActivityLabel()
-fun Activity.loadActivityLabel(): CharSequence {
-    val activityInfo = packageManager.getActivityInfo(ComponentName(this, javaClass), 0)
+fun Context.loadActivityLabel(): CharSequence {
+    val activity = getActivity() ?: return ""
+    val activityInfo = packageManager.getActivityInfo(ComponentName(this, activity.javaClass), 0)
     return activityInfo.loadLabel(packageManager)
 }
 
@@ -58,6 +59,25 @@ fun Context.startActivity(
     block: (ActivityIntent.() -> Unit)? = null
 ) {
     val intent = ActivityIntent(this, clazz.java)
+    block?.invoke(intent)
+    startActivity(intent, option)
+}
+
+fun Fragment.startActivity(
+    clazz: KClass<out Activity>,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(requireContext(), clazz.java)
+    block?.invoke(intent)
+    startActivity(intent)
+}
+
+fun Fragment.startActivity(
+    clazz: KClass<out Activity>,
+    option: Bundle,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(requireContext(), clazz.java)
     block?.invoke(intent)
     startActivity(intent, option)
 }
