@@ -2,7 +2,8 @@ package chooongg.box.http
 
 import chooongg.box.ext.APP
 import chooongg.box.http.cookie.CookieManager
-import chooongg.box.http.logInterceptor.BoxLogInterceptor
+import chooongg.box.manager.StethoManager
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -38,16 +39,12 @@ object RetrofitManager {
             readTimeout(config.readTimeout, TimeUnit.SECONDS)
             retryOnConnectionFailure(true)
             cache(Cache(APP.cacheDir, config.cacheSize))
-            cookieJar(CookieManager(APP))
+            cookieJar(CookieManager)
             config.interceptor.forEach { addInterceptor(it) }
-            addInterceptor(BoxLogInterceptor(config.logConfig))
+            if (StethoManager.isEnable()) {
+                addNetworkInterceptor(StethoInterceptor())
+            }
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
             config.okHttpClientBuilder?.invoke(this)
         }
-
-    private fun <T> getBaseUrlForAnnotation(clazz: Class<T>): String {
-        if (clazz.javaClass.isAnnotationPresent(BaseUrl::class.java)) {
-            return clazz.javaClass.getAnnotation(BaseUrl::class.java).value
-        } else throw RuntimeException("unable to find BaseUrl from Annotation")
-    }
 }

@@ -1,6 +1,5 @@
 package chooongg.box.http
 
-import chooongg.box.http.logInterceptor.HttpLogConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
@@ -39,22 +38,26 @@ open class HttpConfig {
      */
     val networkInterceptor = LinkedList<Interceptor>()
 
+    /**
+     * Retrofit 转换器列表
+     */
     val converterFactories = arrayListOf<Converter.Factory>(
         FastJsonConverterFactory.create(),
         ScalarsConverterFactory.create()
     )
 
+    /**
+     * Retrofit 请求适配器列表
+     */
     val callAdapterFactory = arrayListOf<CallAdapter.Factory>()
 
-    var logConfig: HttpLogConfig? = null
-
     /**
-     * 扩展方法，可以进行OkHttpClient的特殊配置
+     * 扩展方法，可以进行 OkHttpClient 的特殊配置
      */
     var okHttpClientBuilder: (OkHttpClient.Builder.() -> Unit)? = null
 
     /**
-     * 扩展方法，可以进行Retrofit的特殊配置
+     * 扩展方法，可以进行 Retrofit 的特殊配置
      */
     var retrofitBuilder: (Retrofit.Builder.() -> Unit)? = null
 }

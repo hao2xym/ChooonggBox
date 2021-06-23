@@ -17,8 +17,11 @@ import kotlin.collections.HashMap
 //将持久化的cookies缓存到内存中 即map cookies
 class PersistentCookieStore(context: Context) {
 
-    private val LOG_TAG = "PersistentCookieStore"
-    private val COOKIE_PREFS = "Cookies_Prefs"
+    companion object {
+        private const val LOG_TAG = "PersistentCookieStore"
+        private const val COOKIE_PREFS = "Cookies_Prefs"
+    }
+
 
     private var cookies: MutableMap<String, ConcurrentHashMap<String, Cookie>> = HashMap()
     private val cookiePrefs: SharedPreferences = context.getSharedPreferences(COOKIE_PREFS, 0)

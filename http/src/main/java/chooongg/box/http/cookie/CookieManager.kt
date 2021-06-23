@@ -1,14 +1,14 @@
 package chooongg.box.http.cookie
 
-import android.content.Context
+import chooongg.box.ext.APP
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 
 
-class CookieManager(context: Context) : CookieJar {
+object CookieManager : CookieJar {
 
-    private val cookieStore: PersistentCookieStore = PersistentCookieStore(context)
+    private val cookieStore: PersistentCookieStore = PersistentCookieStore(APP)
 
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
         if (cookies.isNotEmpty()) {
@@ -20,5 +20,9 @@ class CookieManager(context: Context) : CookieJar {
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
         return cookieStore[url]
+    }
+
+    fun removeAll() {
+        cookieStore.removeAll()
     }
 }
