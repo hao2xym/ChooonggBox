@@ -27,8 +27,9 @@ class HttpException : RuntimeException {
     var type: Type
         private set(value) {
             field = value
-            code = type.value.toString()
-            messageCopy = Converter.convert(type)
+            if (code == "") code = type.value.toString()
+            if (messageCopy == "") messageCopy = Converter.convert(type)
+
         }
     var code: String = ""
         private set
@@ -89,6 +90,10 @@ class HttpException : RuntimeException {
                             break
                         }
                     }
+                    if (tempType == Type.UN_KNOWN) {
+                        this.code = e.code().toString()
+                        this.messageCopy = e.message()
+                    }
                     tempType
                 }
                 e is com.alibaba.fastjson.JSONException
@@ -112,6 +117,7 @@ class HttpException : RuntimeException {
         SSL(-6),
         EMPTY(-7),
         CONNECT(-8),
+        HTTP302(302),
         HTTP400(400),
         HTTP401(401),
         HTTP403(403),
@@ -145,6 +151,7 @@ class HttpException : RuntimeException {
             Type.PARSE -> "数据出现异常"
             Type.SSL -> "验证失败"
             Type.EMPTY -> "没有数据"
+            Type.HTTP302 -> "链接重定向"
             Type.HTTP400, Type.HTTP401, Type.HTTP403, Type.HTTP404, Type.HTTP405, Type.HTTP406, Type.HTTP407, Type.HTTP408,
             Type.HTTP409, Type.HTTP410, Type.HTTP411, Type.HTTP412, Type.HTTP413, Type.HTTP414, Type.HTTP415, Type.HTTP416,
             Type.HTTP417 -> "请求出现错误"
@@ -160,6 +167,7 @@ class HttpException : RuntimeException {
             Type.PARSE -> "请求实体解析失败"
             Type.SSL -> "SSL证书验证失败"
             Type.EMPTY -> "Body为空"
+            Type.HTTP302 -> "302:服务器要求重定向"
             Type.HTTP400 -> "400:服务器不理解请求的语法"
             Type.HTTP401 -> "401:请求要求身份验证"
             Type.HTTP403 -> "403:服务器拒绝请求"
