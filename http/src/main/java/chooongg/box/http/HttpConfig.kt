@@ -1,5 +1,6 @@
 package chooongg.box.http
 
+import com.alibaba.fastjson.parser.Feature
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
@@ -42,8 +43,10 @@ open class HttpConfig {
      * Retrofit 转换器列表
      */
     val converterFactories = arrayListOf<Converter.Factory>(
-        FastJsonConverterFactory.create(),
-        ScalarsConverterFactory.create()
+        ScalarsConverterFactory.create(),
+        FastJsonConverterFactory.create().apply {
+            parserFeatures = arrayOf(Feature.IgnoreNotMatch)
+        }
     )
 
     /**
