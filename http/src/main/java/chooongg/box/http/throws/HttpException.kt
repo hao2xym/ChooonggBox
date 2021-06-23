@@ -56,19 +56,19 @@ class HttpException : RuntimeException {
     }
 
     constructor(code: String, message: String) : super(message) {
-        this.type = Type.CUSTOM
         this.code = code
         this.messageCopy = message
+        this.type = Type.CUSTOM
     }
 
     constructor(message: String) : super(message) {
-        this.type = Type.CUSTOM
         this.messageCopy = message
+        this.type = Type.CUSTOM
     }
 
     constructor(message: String, cause: Throwable) : super(message, cause) {
-        this.type = Type.CUSTOM
         this.messageCopy = message
+        this.type = Type.CUSTOM
     }
 
     constructor(e: Throwable) : super(e.toString(), e) {
