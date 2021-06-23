@@ -1,5 +1,6 @@
 package chooongg.box.http
 
+import chooongg.box.http.logInterceptor.HttpLogConfig
 import com.alibaba.fastjson.parser.Feature
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -38,6 +39,8 @@ open class HttpConfig {
      * 网络层拦截器
      */
     val networkInterceptor = LinkedList<Interceptor>()
+
+    var httpLogConfig: HttpLogConfig? = null
 
     /**
      * Retrofit 转换器列表

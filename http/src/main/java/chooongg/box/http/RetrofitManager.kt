@@ -2,6 +2,7 @@ package chooongg.box.http
 
 import chooongg.box.ext.APP
 import chooongg.box.http.cookie.CookieManager
+import chooongg.box.http.logInterceptor.BoxLogInterceptor
 import chooongg.box.manager.StethoManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.Cache
@@ -41,10 +42,9 @@ object RetrofitManager {
             cache(Cache(APP.cacheDir, config.cacheSize))
             cookieJar(CookieManager)
             config.interceptor.forEach { addInterceptor(it) }
-            if (StethoManager.isEnable()) {
-                addNetworkInterceptor(StethoInterceptor())
-            }
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
+            if (StethoManager.isEnable()) addNetworkInterceptor(StethoInterceptor())
+            addNetworkInterceptor(BoxLogInterceptor(config.httpLogConfig))
             config.okHttpClientBuilder?.invoke(this)
         }
 }
