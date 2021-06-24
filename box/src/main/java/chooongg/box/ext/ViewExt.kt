@@ -6,6 +6,9 @@ import android.graphics.Canvas
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewParent
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.MaterialShapeUtils
 
 const val CLICK_INTERVAL = 600L
 
@@ -103,4 +106,20 @@ fun View.toBitmap(): Bitmap {
     canvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
     draw(canvas)
     return screenshot
+}
+
+fun View.enableElevationOverlay() {
+    if (background is MaterialShapeDrawable) return
+    var absoluteElevation = 0f
+    var viewParent: ViewParent = parent
+    while (viewParent is View) {
+        absoluteElevation += (viewParent as View).elevation
+        viewParent = viewParent.getParent()
+    }
+    val shapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(context, absoluteElevation)
+    background = shapeDrawable
+}
+
+fun View.updateElevationOverlay() {
+    MaterialShapeUtils.setParentAbsoluteElevation(this)
 }
