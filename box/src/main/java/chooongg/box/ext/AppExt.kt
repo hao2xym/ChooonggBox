@@ -2,15 +2,14 @@ package chooongg.box.ext
 
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.tencent.mmkv.BuildConfig
 
 /**
- * 全局Application常量
+ * 全局 Application 常量
  */
 inline val APP get() = chooongg.box.manager.AppManager.getApplication()
 
 /**
- * 判断是否是Debug版本
+ * 判断是否是 Debug 版本
  *
  * @param packageName 包名-默认本App包名
  */
@@ -26,8 +25,15 @@ fun isAppDebug(packageName: String = APP.packageName): Boolean {
 }
 
 /**
- * Debug才运行的代码块
+ * Debug 才运行的代码块
  */
 fun debug(init: () -> Unit) {
-    if (BuildConfig.DEBUG) init()
+    if (isAppDebug()) init()
+}
+
+/**
+ * Release 才运行的代码块
+ */
+fun release(init: () -> Unit) {
+    if (!isAppDebug()) init()
 }
