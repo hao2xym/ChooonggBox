@@ -31,4 +31,12 @@ abstract class BoxModelFragment<VM : ViewModel> : BoxFragment() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
 }

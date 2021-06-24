@@ -36,4 +36,8 @@ abstract class BoxBindingModelActivity<VB : ViewBinding, VM : ViewModel> : BoxBi
             }
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
 }

@@ -34,4 +34,11 @@ abstract class BoxBindingModelFragment<VB : ViewBinding, VM : ViewModel> :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
 }

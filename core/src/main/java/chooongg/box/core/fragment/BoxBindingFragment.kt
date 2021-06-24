@@ -30,4 +30,11 @@ abstract class BoxBindingFragment<VB : ViewBinding> : BoxFragment() {
         } else null
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
 }

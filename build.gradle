@@ -5,7 +5,7 @@ buildscript {
     // beta${num}  公测版
     // rc${num}    候选版
     // stable      正式版
-    ext.version_name = "0.0.37"
+    ext.version_name = "0.0.38"
 
     ext.compile_sdk_version = 30
     ext.build_tools_version = '30.0.3'
