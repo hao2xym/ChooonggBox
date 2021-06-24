@@ -5,6 +5,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 
 fun Context.resourcesString(@StringRes id: Int) = resources.getString(id)
 fun Context.resourcesString(@StringRes id: Int, vararg format: Any?) = resources.getString(id, *format)
@@ -22,3 +23,20 @@ fun Context.resourcesBoolean(@BoolRes id: Int) = resources.getBoolean(id)
 fun Context.resourcesInteger(@IntegerRes id: Int) = resources.getInteger(id)
 fun Context.resourcesOpenRaw(@RawRes id: Int) = resources.openRawResource(id)
 fun Context.resourcesAnimation(@AnimRes id: Int): Animation = AnimationUtils.loadAnimation(this, id)
+
+fun Fragment.resourcesString(@StringRes id: Int) = requireContext().resourcesString(id)
+fun Fragment.resourcesString(@StringRes id: Int, vararg format: Any?) = requireContext().resourcesString(id, format)
+fun Fragment.resourcesText(@StringRes id: Int) = requireContext().resourcesText(id)
+fun Fragment.resourcesTextArray(@ArrayRes id: Int) = requireContext().resourcesTextArray(id)
+fun Fragment.resourcesStringArray(@ArrayRes id: Int) = requireContext().resourcesStringArray(id)
+fun Fragment.resourcesIntArray(@ArrayRes id: Int) = requireContext().resourcesIntArray(id)
+fun Fragment.resourcesDimension(@DimenRes id: Int) = requireContext().resourcesDimension(id)
+fun Fragment.resourcesDimensionPixelOffset(@DimenRes id: Int) = requireContext().resourcesDimensionPixelOffset(id)
+fun Fragment.resourcesDimensionPixelSize(@DimenRes id: Int) = requireContext().resourcesDimensionPixelSize(id)
+fun Fragment.resourcesDrawable(@DrawableRes id: Int) = requireContext().resourcesDrawable(id)
+fun Fragment.resourcesColor(@ColorRes id: Int) = requireContext().resourcesColor(id)
+fun Fragment.resourcesColorStateList(@ColorRes id: Int) = requireContext().resourcesColorStateList(id)
+fun Fragment.resourcesBoolean(@BoolRes id: Int) = requireContext().resourcesBoolean(id)
+fun Fragment.resourcesInteger(@IntegerRes id: Int) = requireContext().resourcesInteger(id)
+fun Fragment.resourcesOpenRaw(@RawRes id: Int) = requireContext().resourcesOpenRaw(id)
+fun Fragment.resourcesAnimation(@AnimRes id: Int): Animation = requireContext().resourcesAnimation(id)
