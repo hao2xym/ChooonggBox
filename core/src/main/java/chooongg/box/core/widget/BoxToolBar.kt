@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import chooongg.box.core.R
+import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.ext.*
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textview.MaterialTextView
@@ -50,6 +51,12 @@ class BoxToolBar @JvmOverloads constructor(
         if (a.hasValue(R.styleable.Toolbar_subtitleTextColor)) {
             mSubtitleTextColor = a.getColorStateList(R.styleable.Toolbar_subtitleTextColor)
         }
+        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
+            title = context.loadActivityLabel()
+        }
+        if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
+            setDefaultNavigation()
+        }
         a.recycle()
         configCenter()
     }
@@ -64,7 +71,6 @@ class BoxToolBar @JvmOverloads constructor(
         contentInsetEndWithActions = 0
         contentInsetStartWithNavigation = 0
         if (isCenterTitle) {
-            setContentInsetsRelative(0, 0)
             setContentInsetsRelative(0, 0)
             if (centerTitleLayout == null) {
                 centerTitleLayout = LinearLayout(context).apply {

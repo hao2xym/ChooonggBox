@@ -8,6 +8,8 @@
     <declare-styleable name="BoxToolBar">
         <!-- 是否是居中标题 -->
         <attr name="isCenterTitle" format="boolean" />
+        <attr name="loadActivityLabel" format="boolean" />
+        <attr name="defaultNavigation" format="boolean" />
     </declare-styleable>
 
     <!--自动文字大小调整-->
