@@ -22,6 +22,7 @@
         <attr name="autofit_sizeToFit" format="boolean" />
     </declare-styleable>
 
+    <!--正方形布局-->
     <declare-styleable name="SquareLayout">
         <attr name="basisAxis">
             <enum name="basisWidth" value="0" />
@@ -29,9 +30,28 @@
         </attr>
     </declare-styleable>
 
+    <!--蒙版输入框-->
     <declare-styleable name="MaskEditText">
         <!--占位格式 #为占位符-->
         <attr name="met_mask" format="string" />
+    </declare-styleable>
+
+    <!--验证码输入框-->
+    <declare-styleable name="PinEntryEditText">
+        <attr name="pinAnimationType" format="enum">
+            <enum name="popIn" value="0" />
+            <enum name="fromBottom" value="1" />
+            <enum name="none" value="-1" />
+        </attr>
+        <attr name="pinCharacterMask" format="string" />
+        <attr name="pinRepeatedHint" format="string" />
+        <attr name="pinLineStroke" format="dimension" />
+        <attr name="pinLineStrokeSelected" format="dimension" />
+        <attr name="pinCharacterSpacing" format="dimension" />
+        <attr name="pinTextBottomPadding" format="dimension" />
+        <attr name="pinLineColors" format="color" />
+        <attr name="pinBackgroundDrawable" format="reference" />
+        <attr name="pinBackgroundIsSquare" format="boolean" />
     </declare-styleable>
 
 </resources>

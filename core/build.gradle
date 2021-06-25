@@ -50,20 +50,11 @@ dependencies {
     api 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     api 'androidx.navigation:navigation-ui-ktx:2.3.5'
     api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
-
     api 'com.github.getActivity:XXPermissions:11.2'
 
     api 'com.github.dkzwm:srl-core:1.7.2.1'
     api 'com.github.dkzwm:srl-ext-classics:1.7.2.1'
-    api 'com.github.fondesa:recycler-view-divider:3.5.0'
-    api 'com.mikepenz:fastadapter:5.4.1'
-    api 'com.mikepenz:fastadapter-extensions-expandable:5.4.1'
-    api 'com.mikepenz:fastadapter-extensions-binding:5.4.1' // view binding helpers
-    api 'com.mikepenz:fastadapter-extensions-diff:5.4.1' // diff util helpers
-    api 'com.mikepenz:fastadapter-extensions-drag:5.4.1' // drag support
-    api 'com.mikepenz:fastadapter-extensions-paged:5.4.1' // paging support
-    api 'com.mikepenz:fastadapter-extensions-scroll:5.4.1' // scroll helpers
-    api 'com.mikepenz:fastadapter-extensions-swipe:5.4.1' // swipe support
+    api 'com.github.angcyo:DslAdapter:2.6.1'
 
     api 'com.airbnb.android:lottie:3.6.1'
 }
