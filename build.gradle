@@ -5,7 +5,7 @@ buildscript {
     // beta${num}  公测版
     // rc${num}    候选版
     // stable      正式版
-    ext.version_name = "0.0.39"
+    ext.version_name = "0.0.40"
 
     ext.compile_sdk_version = 30
     ext.build_tools_version = '30.0.3'
@@ -13,7 +13,7 @@ buildscript {
     ext.target_sdk_version = 30
     ext.version_code = 1
 
-    ext.kotlin_version = "1.5.10"
+    ext.kotlin_version = "1.5.20"
     ext.appcompat_version = "1.4.0-alpha01"
 
     repositories {

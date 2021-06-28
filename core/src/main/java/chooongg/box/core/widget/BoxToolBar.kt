@@ -52,7 +52,7 @@ class BoxToolBar @JvmOverloads constructor(
             mSubtitleTextColor = a.getColorStateList(R.styleable.Toolbar_subtitleTextColor)
         }
         if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
-            title = context.loadActivityLabel()
+            title = context.getActivity()?.loadActivityLabel()
         }
         if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
             setDefaultNavigation()
