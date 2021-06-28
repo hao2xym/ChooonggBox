@@ -114,7 +114,7 @@ fun View.enableElevationOverlay() {
     var viewParent: ViewParent = parent
     while (viewParent is View) {
         absoluteElevation += (viewParent as View).elevation
-        viewParent = viewParent.getParent()
+        viewParent = (viewParent as View).parent
     }
     val shapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(context, absoluteElevation)
     background = shapeDrawable
