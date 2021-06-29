@@ -6,7 +6,6 @@ import android.graphics.Canvas
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewParent
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.MaterialShapeUtils
 
@@ -110,14 +109,9 @@ fun View.toBitmap(): Bitmap {
 
 fun View.enableElevationOverlay() {
     if (background is MaterialShapeDrawable) return
-    var absoluteElevation = 0f
-    var viewParent: ViewParent = parent
-    while (viewParent is View) {
-        absoluteElevation += (viewParent as View).elevation
-        viewParent = (viewParent as View).parent
-    }
-    val shapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(context, absoluteElevation)
+    val shapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(context)
     background = shapeDrawable
+    updateElevationOverlay()
 }
 
 fun View.updateElevationOverlay() {
