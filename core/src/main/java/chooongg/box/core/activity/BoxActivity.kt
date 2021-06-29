@@ -66,8 +66,10 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     protected open fun configActionBar() {
         val parentLayout = contentView.parent as FitWindowsLinearLayout
-        toolbar = getToolBar(parentLayout).apply { id = R.id.box_toolbar }
-        toolbar!!.elevation = resourcesDimension(R.dimen.toolbarElevation)
+        toolbar = getToolBar(parentLayout).apply {
+            id = R.id.box_toolbar
+            elevation = resourcesDimension(R.dimen.toolbarElevation)
+        }
         parentLayout.addView(toolbar, 0)
         setSupportActionBar(toolbar)
         if (isAutoShowNavigationIcon()) {
