@@ -20,7 +20,8 @@ inline val Window.contentView: ContentFrameLayout get() = findViewById(Window.ID
 fun Fragment.loadActivityLabel() = activity?.loadActivityLabel()
 fun Context.loadActivityLabel(): CharSequence {
     val activity = getActivity() ?: return ""
-    val activityInfo = packageManager.getActivityInfo(ComponentName(this, activity.javaClass), 0)
+    val activityInfo =
+        packageManager.getActivityInfo(ComponentName(activity, activity.javaClass), 0)
     return activityInfo.loadLabel(packageManager)
 }
 

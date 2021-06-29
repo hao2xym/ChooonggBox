@@ -15,6 +15,8 @@ import chooongg.box.core.R
 import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.ext.*
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.elevation.ElevationOverlayProvider
+import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.textview.MaterialTextView
 
 @SuppressLint("CustomViewStyleable")
@@ -51,14 +53,15 @@ class BoxToolBar @JvmOverloads constructor(
         if (a.hasValue(R.styleable.Toolbar_subtitleTextColor)) {
             mSubtitleTextColor = a.getColorStateList(R.styleable.Toolbar_subtitleTextColor)
         }
-        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
-            title = context.loadActivityLabel()
-        }
         if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
             setDefaultNavigation()
         }
-        a.recycle()
         configCenter()
+        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
+            val string = context.loadActivityLabel()
+            title = string
+        }
+        a.recycle()
     }
 
     fun changeCenterTitle(isCenterTitle: Boolean) {
@@ -246,5 +249,17 @@ class BoxToolBar @JvmOverloads constructor(
     override fun setLogoDescription(description: CharSequence?) {
         centerLogoView?.contentDescription = description
         super.setLogoDescription(description)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        super.setBackground(background)
+        if (background != null && background is MaterialShapeDrawable) {
+            val elevationOverlayProvider = ElevationOverlayProvider(context)
+            val color = elevationOverlayProvider.compositeOverlayIfNeeded(
+                background.fillColor?.defaultColor ?: elevationOverlayProvider.themeSurfaceColor,
+                elevation
+            )
+            context.getActivity()?.window?.statusBarColor = color
+        }
     }
 }

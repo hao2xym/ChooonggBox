@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.transition.Explode
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
-import chooongg.box.ext.startActivity
 import chooongg.box.http.ext.ResponseData
 import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
 import chooongg.box.http.throws.HttpException
@@ -21,26 +18,18 @@ import chooongg.box.log.BoxLog
 import chooongg.box.simple.R
 import chooongg.box.simple.api.WanAndroidAPI
 import chooongg.box.simple.databinding.ActivityMainBinding
-import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
-import chooongg.box.simple.modules.loadState.StatePageActivity
-import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
-import chooongg.box.simple.modules.permission.RequestPermissionActivity
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.launch
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
-    private val modules = arrayListOf(
-        MainItemEntity("App Bar: Top"),
-        MainItemEntity("Request Permissions"),
-        MainItemEntity("State Page"),
-        MainItemEntity("Http Request")
-    )
+//    private val modules = arrayListOf(
+//        MainItemEntity("App Bar: Top"),
+//        MainItemEntity("Request Permissions"),
+//        MainItemEntity("State Page"),
+//        MainItemEntity("Http Request")
+//    )
 
     override fun isAutoShowNavigationIcon() = false
 
@@ -49,8 +38,8 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         window.enterTransition = Explode()
     }
 
-    private val itemAdapter = ItemAdapter<MainItemEntity>()
-    private val adapter = FastAdapter.with(itemAdapter)
+//    private val itemAdapter = ItemAdapter<MainItemEntity>()
+//    private val adapter = FastAdapter.with(itemAdapter)
 
     @Keep
     data class WanAndroidAPIResponse<DATA>(
@@ -86,41 +75,41 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
     override fun initConfig(savedInstanceState: Bundle?) {
         BoxLog.e("isNightMode=${isNightMode()}")
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
-        binding.recyclerView.adapter = adapter
-        itemAdapter.setNewList(modules)
-        adapter.onClickListener =
-            { _: View?, _: IAdapter<MainItemEntity>, mainItemEntity: MainItemEntity, _: Int ->
-                when (mainItemEntity.name) {
-                    "App Bar: Top" -> startActivity(TopAppBarActivity::class)
-                    "Request Permissions" -> startActivity(RequestPermissionActivity::class)
-                    "State Page" -> startActivity(StatePageActivity::class)
-                    "Http Request" -> {
-                        job = lifecycleScope.launch {
-                            request<ArrayList<String>> {
-                                api { WanAndroidAPI.get().allPackage() }
-                                onStart {
-
-                                }
-                                onResponse {
-
-                                }
-                                onSuccess {
-                                    BoxLog.e(it)
-                                    requestss()
-                                }
-                                onFailed {
-                                    it.printStackTrace()
-                                }
-                                onEnd {
-
-                                }
-                            }
-                        }
-                    }
-                    else -> showToast("未实现功能")
-                }
-                false
-            }
+//        binding.recyclerView.adapter = adapter
+//        itemAdapter.setNewList(modules)
+//        adapter.onClickListener =
+//            { _: View?, _: IAdapter<MainItemEntity>, mainItemEntity: MainItemEntity, _: Int ->
+//                when (mainItemEntity.name) {
+//                    "App Bar: Top" -> startActivity(TopAppBarActivity::class)
+//                    "Request Permissions" -> startActivity(RequestPermissionActivity::class)
+//                    "State Page" -> startActivity(StatePageActivity::class)
+//                    "Http Request" -> {
+//                        job = lifecycleScope.launch {
+//                            request<ArrayList<String>> {
+//                                api { WanAndroidAPI.get().allPackage() }
+//                                onStart {
+//
+//                                }
+//                                onResponse {
+//
+//                                }
+//                                onSuccess {
+//                                    BoxLog.e(it)
+//                                    requestss()
+//                                }
+//                                onFailed {
+//                                    it.printStackTrace()
+//                                }
+//                                onEnd {
+//
+//                                }
+//                            }
+//                        }
+//                    }
+//                    else -> showToast("未实现功能")
+//                }
+//                false
+//            }
     }
 
     suspend fun requestss() {
