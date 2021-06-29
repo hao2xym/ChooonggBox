@@ -2,7 +2,7 @@
 <resources>
 
     <style name="BoxTheme.Surface" parent="BoxTheme">
-        <item name="colorPrimaryDark">@color/color_surface</item>
+        <item name="android:statusBarColor">@color/color_surface</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.Surface</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

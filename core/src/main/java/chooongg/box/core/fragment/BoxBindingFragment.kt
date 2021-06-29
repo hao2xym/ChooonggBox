@@ -25,7 +25,7 @@ abstract class BoxBindingFragment<VB : ViewBinding> : BoxFragment() {
         return if (type is ParameterizedType) {
             val clazz = type.actualTypeArguments[0] as Class<*>
             val method = clazz.getMethod("inflate", LayoutInflater::class.java)
-            binding = method.invoke(null, layoutInflater) as VB
+            binding = method.invoke(null, LayoutInflater.from(context)) as VB
             binding.root
         } else null
     }

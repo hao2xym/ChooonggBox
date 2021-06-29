@@ -26,7 +26,7 @@ abstract class BoxBindingActivity<VB : ViewBinding> : BoxActivity() {
             try {
                 val clazz = type.actualTypeArguments[0] as Class<*>
                 val method = clazz.getMethod("inflate", LayoutInflater::class.java)
-                binding = method.invoke(null, layoutInflater) as VB
+                binding = method.invoke(null, LayoutInflater.from(this)) as VB
                 setContentView(binding.root)
             } catch (e: Exception) {
                 BoxLog.e(
