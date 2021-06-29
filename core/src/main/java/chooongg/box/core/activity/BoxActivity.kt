@@ -16,7 +16,6 @@ import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.loadActivityLabel
-import chooongg.box.ext.resourcesDimension
 import chooongg.box.log.BoxLog
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 
@@ -68,14 +67,11 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         val parentLayout = contentView.parent as FitWindowsLinearLayout
         toolbar = getToolBar(parentLayout).apply {
             id = R.id.box_toolbar
-            elevation = resourcesDimension(R.dimen.toolbarElevation)
+            title = loadActivityLabel()
+            if (isAutoShowNavigationIcon()) setDefaultNavigation()
         }
         parentLayout.addView(toolbar, 0)
         setSupportActionBar(toolbar)
-        if (isAutoShowNavigationIcon()) {
-            toolbar!!.setDefaultNavigation()
-        }
-        supportActionBar?.title = loadActivityLabel()
     }
 
     @CallSuper
