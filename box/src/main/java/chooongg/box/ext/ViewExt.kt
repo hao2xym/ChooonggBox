@@ -110,8 +110,9 @@ fun View.toBitmap(): Bitmap {
 fun View.enableElevationOverlay() {
     if (background is MaterialShapeDrawable) return
     val shapeDrawable = MaterialShapeDrawable.createWithElevationOverlay(context)
+    shapeDrawable.elevation = elevation
+    shapeDrawable.translationZ = translationZ
     background = shapeDrawable
-    updateElevationOverlay()
 }
 
 fun View.updateElevationOverlay() {
