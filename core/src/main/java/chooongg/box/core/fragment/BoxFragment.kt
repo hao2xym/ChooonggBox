@@ -69,6 +69,6 @@ abstract class BoxFragment : Fragment, BoxInit {
     }
 
     fun getTitle() = if (javaClass.isAnnotationPresent(Title::class.java)) {
-        javaClass.getAnnotation(Title::class.java).value
+        javaClass.getAnnotation(Title::class.java)!!.value
     } else "未命名"
 }
