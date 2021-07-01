@@ -57,6 +57,7 @@ dependencies {
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     api 'com.github.simplepeng:ItemDecor:v1.0.2'
 
-    api 'io.coil-kt:coil:1.1.1'
+    api 'io.coil-kt:coil:1.2.2'
+    api 'io.coil-kt:coil-gif:1.2.2'
     api 'com.airbnb.android:lottie:3.6.1'
 }
