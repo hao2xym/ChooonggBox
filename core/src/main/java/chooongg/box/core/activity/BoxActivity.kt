@@ -66,7 +66,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
     protected open fun configActionBar() {
         val parentLayout = contentView.parent as FitWindowsLinearLayout
         toolbar = getToolBar(parentLayout).apply {
-            id = R.id.box_toolbar
+            id = R.id.activity_box_toolbar
             title = loadActivityLabel()
             if (isAutoShowNavigationIcon()) setDefaultNavigation()
         }

@@ -20,6 +20,7 @@ fun ImageView.loadAnyDefault(
     builder: ImageRequest.Builder.() -> Unit = {}
 ): Disposable = loadAny(any) {
     crossfade(true)
+    fallback(R.drawable.layer_placeholder_image_error)
     placeholder(R.drawable.layer_placeholder_image_loading)
     error(R.drawable.layer_placeholder_image_error)
     builder(this)

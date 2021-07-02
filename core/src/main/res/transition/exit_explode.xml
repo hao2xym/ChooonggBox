@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    <explode>
+<!--        <target android:excludeId="@android:id/statusBarBackground" />-->
+<!--        <target android:excludeId="@+id/activity_box_toolbar" />-->
+<!--        <target android:excludeId="@+id/navigation_view" />-->
+<!--        <target android:excludeId="@android:id/navigationBarBackground" />-->
+    </explode>
+</transitionSet>

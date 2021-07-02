@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Build
 import android.util.Log
 import androidx.annotation.Keep
+import androidx.transition.Explode
 import chooongg.box.Box
 import chooongg.box.core.permission.PermissionInterceptor
 import chooongg.box.ext.isAppDebug
