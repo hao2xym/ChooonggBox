@@ -32,19 +32,29 @@
         <item name="colorOnSurface">@color/color_on_surface</item>
         <item name="colorError">@color/color_error</item>
         <item name="colorOnError">@color/color_on_error</item>
+        <item name="android:windowAnimationStyle">@style/BoxWindowAnimation</item>
+        <item name="android:configChanges">keyboardHidden|orientation|screenSize</item>
         <!-- 工具栏配置 -->
         <item name="statusBarScrim">@android:color/transparent</item>
         <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
         <item name="toolbarCenterTitle">false</item>
         <!-- 添加支持Transations -->
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowActivityTransitions">true</item>
-        <!-- 前后两个页面是同步执行还是顺序执行, true为同步 -->
-        <item name="android:windowAllowEnterTransitionOverlap">false</item>
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <item name="android:windowEnterTransition">@transition/enter_slide_end</item>
-        <item name="android:windowExitTransition">@transition/exit_explode</item>
+        <!--        <item name="android:windowContentTransitions">true</item>-->
+        <!--        <item name="android:windowActivityTransitions">true</item>-->
+        <!--        &lt;!&ndash; 前后两个页面是同步执行还是顺序执行, true为同步 &ndash;&gt;-->
+        <!--        <item name="android:windowAllowEnterTransitionOverlap">true</item>-->
+        <!--        <item name="android:windowAllowReturnTransitionOverlap">true</item>-->
+        <!--        <item name="android:windowEnterTransition">@transition/enter_slide_end</item>-->
+        <!--        <item name="android:windowExitTransition">@transition/exit_explode</item>-->
+    </style>
+
+    <style name="BoxWindowAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/parallax_horizontal_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/parallax_horizontal_open_exit</item>
+        <item name="android:activityCloseExitAnimation">@anim/parallax_horizontal_close_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/parallax_horizontal_close_enter
+        </item>
     </style>
 
     <style name="BoxToolBarNavigationButton" parent="Widget.AppCompat.Toolbar.Button.Navigation">

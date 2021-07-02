@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.FrameLayout
 import androidx.appcompat.widget.ContentFrameLayout
-import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import kotlin.reflect.KClass
 
@@ -52,11 +51,7 @@ fun Activity.isMainActivity(): Boolean {
 fun Context.startActivity(clazz: KClass<out Activity>, block: (ActivityIntent.() -> Unit)? = null) {
     val intent = ActivityIntent(this, clazz.java)
     block?.invoke(intent)
-    val activity = getActivity()
-    if (activity == null) startActivity(intent) else startActivity(
-        intent,
-        ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle()
-    )
+    startActivity(intent)
 }
 
 fun Context.startActivity(
@@ -75,11 +70,7 @@ fun Fragment.startActivity(
 ) {
     val intent = ActivityIntent(requireContext(), clazz.java)
     block?.invoke(intent)
-    val activityTemp = activity
-    if (activityTemp == null) startActivity(intent) else startActivity(
-        intent,
-        ActivityOptionsCompat.makeSceneTransitionAnimation(activityTemp).toBundle()
-    )
+    startActivity(intent)
 }
 
 fun Fragment.startActivity(

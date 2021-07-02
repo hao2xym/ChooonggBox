@@ -17,7 +17,6 @@ import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.loadActivityLabel
 import chooongg.box.log.BoxLog
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 
 abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
     AppCompatActivity(), BoxInit {
@@ -49,8 +48,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         configThemeForAnnotation()
-        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         super.onCreate(savedInstanceState)
         BoxLog.d("${this::class.simpleName}: onCreate")
         if (isShowActionBar()) configActionBar()
