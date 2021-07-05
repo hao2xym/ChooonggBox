@@ -31,10 +31,6 @@ fun Context.isLandscape() =
 fun Context.isPortrait() =
     resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
-fun Activity.setScreenOrientation() {
-    requestedOrientation = Configuration.ORIENTATION_PORTRAIT
-}
-
 /**
  * 获取状态栏高度
  */
