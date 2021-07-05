@@ -3,6 +3,11 @@ package chooongg.box.core.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.transition.Fade
+import android.transition.Slide
+import android.transition.Transition
+import android.transition.TransitionSet
+import android.view.Gravity
 import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
@@ -17,6 +22,8 @@ import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
 import chooongg.box.ext.loadActivityLabel
 import chooongg.box.log.BoxLog
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
     AppCompatActivity(), BoxInit {
@@ -28,8 +35,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
     inline val activity: Activity get() = this
 
     protected open fun isAutoHideKeyBoard() = true
-
-    protected open fun initTransition() = Unit
 
     protected var toolbar: Toolbar? = null
 
@@ -50,8 +55,15 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         configThemeForAnnotation()
         super.onCreate(savedInstanceState)
         BoxLog.d("${this::class.simpleName}: onCreate")
+        window.enterTransition = initEnterTransition()
+        window.exitTransition = initExitTransition()
+        window.returnTransition = initReturnTransition()
+        window.reenterTransition = initReenterTransition()
+        window.sharedElementEnterTransition = initEnterTransition()
+        window.sharedElementExitTransition = initExitTransition()
+        window.sharedElementReturnTransition = initReturnTransition()
+        window.sharedElementReenterTransition = initReenterTransition()
         if (isShowActionBar()) configActionBar()
-        initTransition()
         if (toolbar != null) initToolBar(toolbar!!)
         if (contentLayoutId != null) {
             setContentView(contentLayoutId)
@@ -89,6 +101,52 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     protected open fun onPostCreateToInitContent(savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
+    }
+
+    // 启动时-进入动画
+    protected open fun initEnterTransition(): Transition = TransitionSet().apply {
+        addTransition(Fade().apply {
+            excludeChildren(android.R.id.content, true)
+        })
+        addTransition(Slide(Gravity.END).apply {
+            excludeTarget(android.R.id.statusBarBackground, true)
+            excludeTarget(android.R.id.navigationBarBackground, true)
+            excludeTarget(BottomNavigationView::class.java, true)
+            excludeTarget(MaterialToolbar::class.java, true)
+            excludeTarget(Toolbar::class.java, true)
+        })
+    }
+
+    // 启动时-退出动画
+    protected open fun initExitTransition(): Transition = Fade().apply {
+        excludeChildren(android.R.id.content, true)
+        excludeTarget(android.R.id.statusBarBackground, true)
+        excludeTarget(android.R.id.navigationBarBackground, true)
+        excludeTarget(MaterialToolbar::class.java, true)
+        excludeTarget(Toolbar::class.java, true)
+    }
+
+    // 退出时-退出动画
+    protected open fun initReturnTransition(): Transition = TransitionSet().apply {
+        addTransition(Fade().apply {
+            excludeChildren(android.R.id.content, true)
+        })
+        addTransition(Slide(Gravity.END).apply {
+            excludeTarget(android.R.id.statusBarBackground, true)
+            excludeTarget(android.R.id.navigationBarBackground, true)
+            excludeTarget(BottomNavigationView::class.java, true)
+            excludeTarget(MaterialToolbar::class.java, true)
+            excludeTarget(Toolbar::class.java, true)
+        })
+    }
+
+    // 退出时-进入动画
+    protected open fun initReenterTransition(): Transition = Fade().apply {
+        excludeChildren(android.R.id.content, true)
+        excludeTarget(android.R.id.statusBarBackground, true)
+        excludeTarget(android.R.id.navigationBarBackground, true)
+        excludeTarget(MaterialToolbar::class.java, true)
+        excludeTarget(Toolbar::class.java, true)
     }
 
     @CallSuper

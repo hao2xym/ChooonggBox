@@ -6,9 +6,13 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.widget.FrameLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.widget.ContentFrameLayout
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import kotlin.reflect.KClass
 
@@ -49,14 +53,30 @@ fun Activity.isMainActivity(): Boolean {
 }
 
 fun Context.startActivity(clazz: KClass<out Activity>, block: (ActivityIntent.() -> Unit)? = null) {
-    val intent = ActivityIntent(this, clazz.java)
-    block?.invoke(intent)
-    startActivity(intent)
+    startActivity(clazz, getActivityOption(getActivity())?.toBundle(), block)
 }
 
 fun Context.startActivity(
     clazz: KClass<out Activity>,
-    option: Bundle,
+    view: View,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    startActivity(
+        clazz, getActivityOption(getActivity(), Pair.create(view, "view"))?.toBundle(), block
+    )
+}
+
+fun Context.startActivity(
+    clazz: KClass<out Activity>,
+    vararg sharedElements: Pair<View, String>,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    startActivity(clazz, getActivityOption(getActivity(), *sharedElements)?.toBundle(), block)
+}
+
+fun Context.startActivity(
+    clazz: KClass<out Activity>,
+    option: Bundle?,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
     val intent = ActivityIntent(this, clazz.java)
@@ -68,19 +88,84 @@ fun Fragment.startActivity(
     clazz: KClass<out Activity>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
-    val intent = ActivityIntent(requireContext(), clazz.java)
-    block?.invoke(intent)
-    startActivity(intent)
+    startActivity(clazz, getActivityOption(activity)?.toBundle(), block)
 }
 
 fun Fragment.startActivity(
     clazz: KClass<out Activity>,
-    option: Bundle,
+    view: View,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    startActivity(clazz, getActivityOption(activity, Pair.create(view, "view"))?.toBundle(), block)
+}
+
+fun Fragment.startActivity(
+    clazz: KClass<out Activity>,
+    vararg sharedElements: Pair<View, String>,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    startActivity(clazz, getActivityOption(activity, *sharedElements)?.toBundle(), block)
+}
+
+fun Fragment.startActivity(
+    clazz: KClass<out Activity>,
+    option: Bundle?,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
     val intent = ActivityIntent(requireContext(), clazz.java)
     block?.invoke(intent)
     startActivity(intent, option)
+}
+
+fun ActivityResultLauncher<Intent>.launch(
+    context: Context,
+    clazz: KClass<out Activity>,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    launch(context, clazz, getActivityOption(context.getActivity()))
+}
+
+fun ActivityResultLauncher<Intent>.launch(
+    context: Context,
+    clazz: KClass<out Activity>,
+    view: View,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    launch(context, clazz, getActivityOption(context.getActivity(), Pair.create(view, "view")))
+}
+
+fun ActivityResultLauncher<Intent>.launch(
+    context: Context,
+    clazz: KClass<out Activity>,
+    vararg sharedElements: Pair<View, String>,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    launch(context, clazz, getActivityOption(context.getActivity(), *sharedElements))
+}
+
+fun ActivityResultLauncher<Intent>.launch(
+    context: Context,
+    clazz: KClass<out Activity>,
+    option: ActivityOptionsCompat?,
+    block: (ActivityIntent.() -> Unit)? = null
+) {
+    val intent = ActivityIntent(context, clazz.java)
+    block?.invoke(intent)
+    launch(intent, option)
+}
+
+fun getActivityOption(
+    activity: Activity?,
+    vararg sharedElements: Pair<View, String>
+): ActivityOptionsCompat? {
+    return if (activity != null) {
+        if (sharedElements.size == 1) {
+            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                activity,
+                Pair.create(sharedElements[0].first, sharedElements[0].second)
+            )
+        } else ActivityOptionsCompat.makeSceneTransitionAnimation(activity, *sharedElements)
+    } else null
 }
 
 class ActivityIntent(packageContext: Context, cls: Class<*>) : Intent(packageContext, cls) {

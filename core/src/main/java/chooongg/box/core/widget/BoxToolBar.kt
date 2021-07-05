@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -259,7 +260,9 @@ class BoxToolBar @JvmOverloads constructor(
                 background.fillColor?.defaultColor ?: elevationOverlayProvider.themeSurfaceColor,
                 elevation
             )
-            context.getActivity()?.window?.statusBarColor = color
+            if (Color.alpha(color) == 255) {
+                context.getActivity()?.window?.statusBarColor = color
+            }
         }
     }
 }

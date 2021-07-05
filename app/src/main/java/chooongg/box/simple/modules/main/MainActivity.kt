@@ -36,6 +36,18 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
         MainItemEntity("State Page"),
+        MainItemEntity("Http Request"),
+        MainItemEntity("App Bar: Top"),
+        MainItemEntity("Request Permissions"),
+        MainItemEntity("State Page"),
+        MainItemEntity("Http Request"),
+        MainItemEntity("App Bar: Top"),
+        MainItemEntity("Request Permissions"),
+        MainItemEntity("State Page"),
+        MainItemEntity("Http Request"),
+        MainItemEntity("App Bar: Top"),
+        MainItemEntity("Request Permissions"),
+        MainItemEntity("State Page"),
         MainItemEntity("Http Request")
     )
 
@@ -79,11 +91,11 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         supportActionBar?.setLogo(R.mipmap.ic_launcher)
         binding.recyclerView.adapter = adapter
         adapter.setNewInstance(modules)
-        adapter.setOnItemClickListener { _, _, position ->
+        adapter.setOnItemClickListener { _, view, position ->
             when (modules[position].name) {
-                "App Bar: Top" -> startActivity(TopAppBarActivity::class)
+                "App Bar: Top" -> startActivity(TopAppBarActivity::class, view)
                 "Request Permissions" -> startActivity(RequestPermissionActivity::class)
-                "State Page" -> startActivity(StatePageActivity::class)
+                "State Page" -> startActivity(StatePageActivity::class, view)
                 "Http Request" -> {
                     job = lifecycleScope.launch {
                         request<ArrayList<String>> {

@@ -39,14 +39,12 @@
         <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
         <item name="toolbarCenterTitle">false</item>
-        <!-- 添加支持Transations -->
-        <!--        <item name="android:windowContentTransitions">true</item>-->
-        <!--        <item name="android:windowActivityTransitions">true</item>-->
-        <!--        &lt;!&ndash; 前后两个页面是同步执行还是顺序执行, true为同步 &ndash;&gt;-->
-        <!--        <item name="android:windowAllowEnterTransitionOverlap">true</item>-->
-        <!--        <item name="android:windowAllowReturnTransitionOverlap">true</item>-->
-        <!--        <item name="android:windowEnterTransition">@transition/enter_slide_end</item>-->
-        <!--        <item name="android:windowExitTransition">@transition/exit_explode</item>-->
+        <!-- 添加 Transitions 支持 -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <!-- 前后两个页面是同步执行还是顺序执行, true为同步 -->
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
     </style>
 
     <style name="BoxWindowAnimation" parent="@android:style/Animation.Activity">
