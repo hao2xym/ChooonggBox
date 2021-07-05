@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import chooongg.box.core.R
+import chooongg.box.ext.isPortrait
 import com.google.android.material.card.MaterialCardView
 
 @SuppressLint("CustomViewStyleable")
@@ -34,7 +35,11 @@ class SquareCardView @JvmOverloads constructor(
             getDefaultSize(0, heightMeasureSpec)
         )
         val size = MeasureSpec.makeMeasureSpec(
-            if (basisAxis == 0) measuredWidth else measuredHeight, MeasureSpec.EXACTLY
+            when (basisAxis) {
+                1 -> measuredWidth
+                2 -> measuredHeight
+                else -> if (context.isPortrait()) measuredWidth else measuredHeight
+            }, MeasureSpec.EXACTLY
         )
         super.onMeasure(size, size)
     }

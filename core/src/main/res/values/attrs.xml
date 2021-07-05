@@ -25,8 +25,9 @@
     <!--正方形布局-->
     <declare-styleable name="SquareLayout">
         <attr name="basisAxis">
-            <enum name="basisWidth" value="0" />
-            <enum name="basisHeight" value="1" />
+            <enum name="anto" value="0"/>
+            <enum name="basisWidth" value="1" />
+            <enum name="basisHeight" value="2" />
         </attr>
     </declare-styleable>
 
