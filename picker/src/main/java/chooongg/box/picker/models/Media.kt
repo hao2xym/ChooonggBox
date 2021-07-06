@@ -5,11 +5,13 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Media @JvmOverloads constructor(
-    override var id: Long = 0,
-    override var name: String,
-    override var path: Uri,
+    override val id: Long = 0,
+    override val name: String,
+    override var uri: Uri? = null,
+    override var url: String? = null,
+    override var mimeType: String = "",
     var mediaType: Int = 0
-) : BaseFile(id, name, path)
+) : BaseFile(id, name, uri, url, mimeType)
 
 
 

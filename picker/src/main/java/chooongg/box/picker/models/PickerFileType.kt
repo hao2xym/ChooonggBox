@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class FileType constructor(
+class PickerFileType constructor(
     var title: String,
     var extensions: Array<String>,
     @DrawableRes var drawable: Int
