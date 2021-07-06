@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="BoxTheme.Picker" parent="BoxTheme" />
+
+    <style name="BoxTheme.PrimarySurface.Picker" parent="BoxTheme.PrimarySurface" />
+
+    <style name="BoxTheme.Surface.Picker" parent="BoxTheme.Surface" />
+
+</resources>

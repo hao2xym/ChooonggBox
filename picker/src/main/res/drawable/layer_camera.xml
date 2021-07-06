@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/contentMiddle"
+        android:drawable="@drawable/ic_camera"
+        android:left="@dimen/contentMiddle"
+        android:right="@dimen/contentMiddle"
+        android:top="@dimen/contentMiddle" />
+    <item android:drawable="@color/color_divider" />
+</layer-list>

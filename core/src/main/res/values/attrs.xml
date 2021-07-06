@@ -25,7 +25,7 @@
     <!--正方形布局-->
     <declare-styleable name="SquareLayout">
         <attr name="basisAxis">
-            <enum name="anto" value="0"/>
+            <enum name="anto" value="0" />
             <enum name="basisWidth" value="1" />
             <enum name="basisHeight" value="2" />
         </attr>
@@ -35,6 +35,16 @@
     <declare-styleable name="MaskEditText">
         <!--占位格式 #为占位符-->
         <attr name="met_mask" format="string" />
+    </declare-styleable>
+
+    <!--带动画CheckBox-->
+    <declare-styleable name="SmoothCheckBox">
+        <attr name="duration" format="integer" />
+        <attr name="stroke_width" format="dimension" />
+        <attr name="color_tick" format="color" />
+        <attr name="color_checked" format="color" />
+        <attr name="color_unchecked" format="color" />
+        <attr name="color_unchecked_stroke" format="color" />
     </declare-styleable>
 
 </resources>
