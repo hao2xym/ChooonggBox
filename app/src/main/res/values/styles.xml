@@ -2,7 +2,6 @@
 
     <style name="AppTheme" parent="BoxTheme.PrimarySurface">
         <item name="actionBarSize">48dp</item>
-        <item name="toolbarCenterTitle">true</item>
     </style>
 
     <style name="AppTheme.Splash" parent="BoxTheme.Surface">

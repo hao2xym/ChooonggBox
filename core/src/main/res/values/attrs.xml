@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--工具栏是否居中标题-->
-    <attr name="toolbarCenterTitle" format="boolean" />
-
     <!--框架中的工具栏-->
     <declare-styleable name="BoxToolBar">
-        <!-- 是否是居中标题 -->
-        <attr name="isCenterTitle" format="boolean" />
         <attr name="loadActivityLabel" format="boolean" />
         <attr name="defaultNavigation" format="boolean" />
     </declare-styleable>
@@ -25,9 +20,8 @@
     <!--正方形布局-->
     <declare-styleable name="SquareLayout">
         <attr name="basisAxis">
-            <enum name="anto" value="0" />
-            <enum name="basisWidth" value="1" />
-            <enum name="basisHeight" value="2" />
+            <enum name="basisWidth" value="0" />
+            <enum name="basisHeight" value="1" />
         </attr>
     </declare-styleable>
 

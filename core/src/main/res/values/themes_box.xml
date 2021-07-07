@@ -38,7 +38,8 @@
         <item name="statusBarScrim">@android:color/transparent</item>
         <item name="toolbarNavigationButtonStyle">@style/BoxToolBarNavigationButton</item>
         <item name="toolbarStyle">@style/BoxWidget.Toolbar.PrimarySurface</item>
-        <item name="toolbarCenterTitle">false</item>
+        <item name="titleCentered">true</item>
+        <item name="subtitleCentered">true</item>
         <!-- 添加 Transitions 支持 -->
         <item name="android:windowContentTransitions">false</item>
         <item name="android:windowActivityTransitions">false</item>

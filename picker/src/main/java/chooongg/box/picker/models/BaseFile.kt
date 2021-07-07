@@ -12,6 +12,7 @@ open class BaseFile(
     open var uri: Uri? = null,
     open var url: String? = null,
     open var mimeType: String = "",
+    open var isSelected: Boolean = false,
     @Status open var status: Int = STATUS_NORMAL
 ) : Parcelable {
 

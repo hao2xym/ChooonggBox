@@ -6,23 +6,35 @@ import android.net.Uri
 import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
-import android.text.TextUtils
+import android.webkit.MimeTypeMap
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import chooongg.box.ext.APP
 import chooongg.box.ext.withIO
+import chooongg.box.picker.FilePickerManager
 import chooongg.box.picker.models.Document
 import chooongg.box.picker.models.PickerFileType
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
+import kotlin.collections.HashMap
 
 class DocumentPickerViewModel() : ViewModel() {
 
+    private val _documentData = MutableLiveData<HashMap<PickerFileType, List<Document>>>()
+
+    val documentData: MutableLiveData<HashMap<PickerFileType, List<Document>>> get() = _documentData
+
     fun getDocuments(fileTypes: List<PickerFileType>, comparator: Comparator<Document>?) {
         viewModelScope.launch {
-            queryDocuments(fileTypes, comparator)
+            try {
+                val queryDocuments = queryDocuments(fileTypes, comparator)
+                _documentData.postValue(queryDocuments)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -30,6 +42,7 @@ class DocumentPickerViewModel() : ViewModel() {
         fileTypes: List<PickerFileType>,
         comparator: Comparator<Document>?
     ): HashMap<PickerFileType, List<Document>> {
+        var data = HashMap<PickerFileType, List<Document>>()
         withIO {
             val cursor = APP.contentResolver.query(
                 MediaStore.Files.getContentUri("external"),
@@ -46,13 +59,33 @@ class DocumentPickerViewModel() : ViewModel() {
                 MediaStore.Files.FileColumns.DATE_ADDED + " DESC"
             )
             if (cursor != null) {
-                when (cursor.moveToNext()) {
-
-                }
+                data = createDocumentType(fileTypes, comparator, getDocumentFromCursor(cursor))
                 cursor.close()
             }
         }
-        return HashMap<PickerFileType, List<Document>>()
+        return data
+    }
+
+    @WorkerThread
+    private fun createDocumentType(
+        fileTypes: List<PickerFileType>,
+        comparator: Comparator<Document>?,
+        documents: MutableList<Document>
+    ): HashMap<PickerFileType, List<Document>> {
+        val documentMap = HashMap<PickerFileType, List<Document>>()
+        for (fileType in fileTypes) {
+            val documentListFilteredByType = documents.filter { document ->
+                containsFileTypes(
+                    fileType.extensions, document.mimeType
+                )
+            }
+            comparator?.let {
+                documentListFilteredByType.sortedWith(comparator)
+            }
+            documentMap[fileType] = documentListFilteredByType
+        }
+
+        return documentMap
     }
 
     @WorkerThread
@@ -64,7 +97,7 @@ class DocumentPickerViewModel() : ViewModel() {
             val title =
                 data.getString(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.TITLE))
             if (path != null) {
-                val fileType = getFileType(PickerManager.getFileTypes(), path)
+                val fileType = getFileType(FilePickerManager.getFileTypes(), path)
                 val file = File(path)
                 val contentUri = ContentUris.withAppendedId(
                     MediaStore.Files.getContentUri("external"),
@@ -81,13 +114,9 @@ class DocumentPickerViewModel() : ViewModel() {
                         } else contentUri
                     )
                     document.fileType = fileType
-                    val mimeType =
+                    document.mimeType =
                         data.getString(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE))
-                    if (mimeType != null && !TextUtils.isEmpty(mimeType)) {
-                        document.mimeType = mimeType
-                    } else {
-                        document.mimeType = ""
-                    }
+                            ?: ""
                     document.size =
                         data.getString(data.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE))
                     if (!documents.contains(document)) documents.add(document)
@@ -104,5 +133,14 @@ class DocumentPickerViewModel() : ViewModel() {
             }
         }
         return null
+    }
+
+    fun containsFileTypes(types: Array<String>, mimeType: String?): Boolean {
+        for (type in types) {
+            if (MimeTypeMap.getSingleton().getMimeTypeFromExtension(type) == mimeType) {
+                return true
+            }
+        }
+        return false
     }
 }

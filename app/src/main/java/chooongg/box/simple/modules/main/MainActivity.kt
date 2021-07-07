@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
@@ -16,6 +15,8 @@ import chooongg.box.http.ext.ResponseData
 import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
 import chooongg.box.http.throws.HttpException
 import chooongg.box.log.BoxLog
+import chooongg.box.picker.FilePicker
+import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
 import chooongg.box.simple.api.WanAndroidAPI
 import chooongg.box.simple.databinding.ActivityMainBinding
@@ -28,7 +29,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.launch
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -36,6 +36,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
         MainItemEntity("State Page"),
+        MainItemEntity("Media Picker"),
         MainItemEntity("Http Request"),
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
@@ -88,7 +89,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
 
     override fun initConfig(savedInstanceState: Bundle?) {
         BoxLog.e("isNightMode=${isNightMode()}")
-        supportActionBar?.setLogo(R.mipmap.ic_launcher)
+        supportActionBar?.subtitle = BuildConfig.VERSION_NAME
         binding.recyclerView.adapter = adapter
         adapter.setNewInstance(modules)
         adapter.setOnItemClickListener { _, view, position ->
@@ -96,29 +97,9 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                 "App Bar: Top" -> startActivity(TopAppBarActivity::class, view)
                 "Request Permissions" -> startActivity(RequestPermissionActivity::class)
                 "State Page" -> startActivity(StatePageActivity::class, view)
-                "Http Request" -> {
-                    job = lifecycleScope.launch {
-                        request<ArrayList<String>> {
-                            api { WanAndroidAPI.get().allPackage() }
-                            onStart {
-
-                            }
-                            onResponse {
-
-                            }
-                            onSuccess {
-                                BoxLog.e(it)
-                                requestss()
-                            }
-                            onFailed {
-                                it.printStackTrace()
-                            }
-                            onEnd {
-
-                            }
-                        }
-                    }
-                }
+                "Media Picker" -> FilePicker.Builder()
+                    .setMaxCount(2)
+                    .pickMedia(context)
                 else -> showToast("未实现功能")
             }
         }

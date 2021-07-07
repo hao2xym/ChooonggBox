@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <chooongg.box.core.widget.BoxToolBar
+        style="?toolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:defaultNavigation="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_folder"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="全部照片"
+            android:textAppearance="?textAppearanceHeadline6"
+            android:textColor="?colorControlNormal"
+            app:icon="@drawable/ic_picker_folder"
+            app:iconGravity="end"
+            app:iconSize="@dimen/d16"
+            app:iconTint="?colorControlNormal" />
+
+    </chooongg.box.core.widget.BoxToolBar>
+
+    <chooongg.box.core.statePage.StatePageLayout
+        android:id="@+id/state_page_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:listitem="@layout/item_picker_photo" />
+
+    </chooongg.box.core.statePage.StatePageLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorSurface"
+        android:elevation="@dimen/d4">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/contentSmall"
+            android:layout_marginEnd="@dimen/contentMiddle"
+            android:layout_marginBottom="@dimen/contentSmall"
+            android:text="完成" />
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

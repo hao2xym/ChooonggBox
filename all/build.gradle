@@ -42,4 +42,5 @@ dependencies {
     api project(path: ':box')
     api project(path: ':core')
     api project(path: ':http')
+    api project(path: ':picker')
 }

@@ -1,8 +1,10 @@
 package chooongg.box.core.widget
 
 import android.animation.ValueAnimator
+import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
@@ -10,20 +12,13 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.Checkable
 import chooongg.box.core.R
-import chooongg.box.ext.attrColor
 import chooongg.box.ext.dp2px
-import chooongg.box.ext.resourcesColor
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.round
 import kotlin.math.sqrt
 
-class SmoothCheckBox @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-    defStyleRes: Int = 0
-) : View(context, attrs, defStyleAttr, defStyleRes), Checkable {
+class SmoothCheckBox : View, Checkable {
 
     private var mPaint: Paint? = null
     private var mTickPaint: Paint? = null
@@ -47,23 +42,33 @@ class SmoothCheckBox @JvmOverloads constructor(
     private var mTickDrawing: Boolean = false
     private var mListener: OnCheckedChangeListener? = null
 
-    init {
+    @JvmOverloads
+    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        init(attrs)
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
+        context,
+        attrs,
+        defStyleAttr,
+        defStyleRes
+    ) {
+        init(attrs)
+    }
+
+    private fun init(attrs: AttributeSet?) {
 
         val ta = context.obtainStyledAttributes(attrs, R.styleable.SmoothCheckBox)
-        val tickColor = ta.getColor(
-            R.styleable.SmoothCheckBox_color_tick,
-            context.attrColor(R.attr.colorOnSecondary, COLOR_TICK)
-        )
+        val tickColor = ta.getColor(R.styleable.SmoothCheckBox_color_tick, COLOR_TICK)
         mAnimDuration = ta.getInt(R.styleable.SmoothCheckBox_duration, DEF_ANIM_DURATION)
         mFloorColor =
-            ta.getColor(
-                R.styleable.SmoothCheckBox_color_unchecked_stroke,
-                context.attrColor(R.attr.colorControlNormal, COLOR_FLOOR_UNCHECKED)
-            )
-        mCheckedColor = ta.getColor(
-            R.styleable.SmoothCheckBox_color_checked,
-            context.attrColor(R.attr.colorPrimary, context.resourcesColor(R.color.color_secondary))
-        )
+            ta.getColor(R.styleable.SmoothCheckBox_color_unchecked_stroke, COLOR_FLOOR_UNCHECKED)
+        mCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_checked, COLOR_CHECKED)
         mUnCheckedColor = ta.getColor(R.styleable.SmoothCheckBox_color_unchecked, COLOR_UNCHECKED)
         mStrokeWidth = ta.getDimensionPixelSize(
             R.styleable.SmoothCheckBox_stroke_width,
@@ -203,8 +208,8 @@ class SmoothCheckBox @JvmOverloads constructor(
         mTickPoints!![2].y = round(measuredHeight.toFloat() / 30 * 10).toInt()
 
         mLeftLineDistance = sqrt(
-            (mTickPoints!![1].x - mTickPoints!![0].x).toDouble().pow(2.0)
-                    + (mTickPoints!![1].y - mTickPoints!![0].y).toDouble().pow(2.0)
+            (mTickPoints!![1].x - mTickPoints!![0].x).toDouble().pow(2.0) +
+                    (mTickPoints!![1].y - mTickPoints!![0].y).toDouble().pow(2.0)
         ).toFloat()
         mRightLineDistance = sqrt(
             (mTickPoints!![2].x - mTickPoints!![1].x).toDouble().pow(2.0)
@@ -356,9 +361,10 @@ class SmoothCheckBox @JvmOverloads constructor(
     companion object {
         private const val KEY_INSTANCE_STATE = "InstanceState"
         private const val COLOR_TICK = Color.WHITE
-        private const val COLOR_UNCHECKED = Color.TRANSPARENT
-        private const val COLOR_FLOOR_UNCHECKED = 0xDFDFDF
-        private const val DEF_DRAW_SIZE = 24
+        private const val COLOR_UNCHECKED = Color.WHITE
+        private val COLOR_CHECKED = Color.parseColor("#FB4846")
+        private val COLOR_FLOOR_UNCHECKED = Color.parseColor("#DFDFDF")
+        private const val DEF_DRAW_SIZE = 25
         private const val DEF_ANIM_DURATION = 300
 
         private fun getGradientColor(startColor: Int, endColor: Int, percent: Float): Int {

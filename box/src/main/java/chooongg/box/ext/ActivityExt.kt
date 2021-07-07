@@ -29,6 +29,11 @@ fun Context.loadActivityLabel(): CharSequence {
     return activityInfo.loadLabel(packageManager)
 }
 
+/**
+ * Activity是否活动
+ */
+ fun Activity?.isLive() = this != null && !isFinishing && !isDestroyed
+
 @SuppressLint("QueryPermissionsNeeded")
 fun Context.getActivityForMain(`package`: CharSequence = packageName): Class<*>? {
     if (`package`.isEmpty()) return null
