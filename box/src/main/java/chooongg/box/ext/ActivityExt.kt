@@ -32,7 +32,7 @@ fun Context.loadActivityLabel(): CharSequence {
 /**
  * Activity是否活动
  */
- fun Activity?.isLive() = this != null && !isFinishing && !isDestroyed
+fun Activity?.isLive() = this != null && !isFinishing && !isDestroyed
 
 @SuppressLint("QueryPermissionsNeeded")
 fun Context.getActivityForMain(`package`: CharSequence = packageName): Class<*>? {
@@ -57,12 +57,12 @@ fun Activity.isMainActivity(): Boolean {
     return false
 }
 
-fun Context.startActivity(clazz: KClass<out Activity>, block: (ActivityIntent.() -> Unit)? = null) {
+fun Context.startActivity(clazz: KClass<out Any>, block: (ActivityIntent.() -> Unit)? = null) {
     startActivity(clazz, getActivityOption(getActivity())?.toBundle(), block)
 }
 
 fun Context.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     view: View,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -72,7 +72,7 @@ fun Context.startActivity(
 }
 
 fun Context.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     vararg sharedElements: Pair<View, String>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -80,7 +80,7 @@ fun Context.startActivity(
 }
 
 fun Context.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     option: Bundle?,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -90,14 +90,14 @@ fun Context.startActivity(
 }
 
 fun Fragment.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
     startActivity(clazz, getActivityOption(activity)?.toBundle(), block)
 }
 
 fun Fragment.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     view: View,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -105,7 +105,7 @@ fun Fragment.startActivity(
 }
 
 fun Fragment.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     vararg sharedElements: Pair<View, String>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -113,7 +113,7 @@ fun Fragment.startActivity(
 }
 
 fun Fragment.startActivity(
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     option: Bundle?,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -124,7 +124,7 @@ fun Fragment.startActivity(
 
 fun ActivityResultLauncher<Intent>.launch(
     context: Context,
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
     launch(context, clazz, getActivityOption(context.getActivity()))
@@ -132,7 +132,7 @@ fun ActivityResultLauncher<Intent>.launch(
 
 fun ActivityResultLauncher<Intent>.launch(
     context: Context,
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     view: View,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -141,7 +141,7 @@ fun ActivityResultLauncher<Intent>.launch(
 
 fun ActivityResultLauncher<Intent>.launch(
     context: Context,
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     vararg sharedElements: Pair<View, String>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
@@ -150,7 +150,7 @@ fun ActivityResultLauncher<Intent>.launch(
 
 fun ActivityResultLauncher<Intent>.launch(
     context: Context,
-    clazz: KClass<out Activity>,
+    clazz: KClass<out Any>,
     option: ActivityOptionsCompat?,
     block: (ActivityIntent.() -> Unit)? = null
 ) {

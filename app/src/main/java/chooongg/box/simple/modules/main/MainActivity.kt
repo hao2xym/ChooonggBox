@@ -15,7 +15,6 @@ import chooongg.box.http.ext.ResponseData
 import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
 import chooongg.box.http.throws.HttpException
 import chooongg.box.log.BoxLog
-import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
 import chooongg.box.simple.api.WanAndroidAPI
@@ -97,9 +96,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                 "App Bar: Top" -> startActivity(TopAppBarActivity::class, view)
                 "Request Permissions" -> startActivity(RequestPermissionActivity::class)
                 "State Page" -> startActivity(StatePageActivity::class, view)
-                "Media Picker" -> FilePicker.Builder()
-                    .setMaxCount(2)
-                    .pickMedia(context)
+//                "Media Picker" -> Unit
                 else -> showToast("未实现功能")
             }
         }

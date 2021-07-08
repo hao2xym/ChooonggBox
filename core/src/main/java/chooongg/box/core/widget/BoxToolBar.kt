@@ -18,7 +18,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 class BoxToolBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = R.attr.toolbarStyle,
     defStyleRes: Int = R.style.BoxWidget_Toolbar_PrimarySurface
 ) : MaterialToolbar(context, attrs, defStyleAttr) {
 

@@ -1,83 +1,22 @@
 package chooongg.box.picker
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
+import android.app.Activity
 import androidx.fragment.app.Fragment
-import chooongg.box.picker.activity.FilePickerMediaActivity
-import chooongg.box.picker.models.sort.SortingTypes
-import com.hjq.permissions.Permission
-import com.hjq.permissions.XXPermissions
-import java.util.*
+import java.lang.ref.WeakReference
 
-object FilePicker {
+class FilePicker private constructor(activity: Activity?, fragment: Fragment?) {
 
-    private val mPickerOptionsBundle: Bundle = Bundle()
+    private val activity: WeakReference<Activity> = WeakReference(activity)
+    private val fragment: WeakReference<Fragment> = WeakReference(fragment)
 
-    class Builder() {
-
-        init {
-            mPickerOptionsBundle.clear()
-            FilePickerManager.reset()
-        }
-
-        fun setImageSizeLimit(fileSize: Int) = apply {
-            FilePickerManager.imageFileSize = fileSize
-        }
-
-        fun setVideoSizeLimit(fileSize: Int) = apply {
-            FilePickerManager.videoFileSize = fileSize
-        }
-
-        fun setMaxCount(maxCount: Int) = apply {
-            FilePickerManager.maxCount = maxCount
-        }
-
-        fun setActivityTheme(theme: Int) = apply {
-            FilePickerManager.theme = theme
-        }
-
-        fun setSelectedFiles(selectedPhotos: ArrayList<Uri>) = apply {
-            mPickerOptionsBundle.putParcelableArrayList(
-                FilePickerConst.KEY_SELECTED_MEDIA,
-                selectedPhotos
-            )
-        }
-
-        fun enableVideoPicker(status: Boolean) = apply {
-            FilePickerManager.isShowVideos = status
-        }
-
-        fun showGifs(status: Boolean) = apply {
-            FilePickerManager.isShowGif = status
-        }
-
-        fun showFolderView(status: Boolean) = apply {
-            FilePickerManager.isShowFolderView = status
-        }
-
-        fun sortDocumentsBy(type: SortingTypes) = apply {
-            FilePickerManager.sortingType = type
-        }
-
-        fun pickMedia(context: Context) {
-            XXPermissions.with(context).permission(Permission.Group.STORAGE)
-                .request { permissions, all ->
-                    if (!all) return@request
-                    context.startActivity(
-                        Intent(
-                            context, FilePickerMediaActivity::class.java
-                        ).apply {
-                            putExtras(mPickerOptionsBundle)
-                        })
-                }
-        }
-
-        fun pickMedia(fragment: Fragment) {
-        }
-
-        fun pickDocument(context: Context) {
-        }
+    companion object {
+        fun from(activity: Activity) = FilePicker(activity, null)
+        fun from(fragment: Fragment) = FilePicker(fragment.activity, fragment)
     }
+
+    internal fun getActivity() = activity.get()
+    internal fun getFragment() = fragment.get()
+
+    fun chooseFile() = FilePickerSelectFileCreator(this)
+    fun chooseMedia() = FilePickerSelectMediaCreator(this)
 }

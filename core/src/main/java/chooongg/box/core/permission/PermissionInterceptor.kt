@@ -1,11 +1,16 @@
 package chooongg.box.core.permission
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import chooongg.box.core.R
+import chooongg.box.core.databinding.ItemDialogPermissionBinding
+import chooongg.box.ext.resourcesDrawable
 import chooongg.box.ext.showToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hjq.permissions.IPermissionInterceptor
@@ -17,36 +22,36 @@ import java.util.*
 class PermissionInterceptor : IPermissionInterceptor {
 
     override fun requestPermissions(
-        activity: FragmentActivity?,
-        callback: OnPermissionCallback?,
-        permissions: MutableList<String>?
+        activity: Activity,
+        callback: OnPermissionCallback,
+        permissions: MutableList<String>
     ) {
         super.requestPermissions(activity, callback, permissions)
     }
 
     override fun grantedPermissions(
-        activity: FragmentActivity?,
-        callback: OnPermissionCallback?,
-        permissions: MutableList<String>?,
+        activity: Activity,
+        callback: OnPermissionCallback,
+        permissions: MutableList<String>,
         all: Boolean
     ) {
         super.grantedPermissions(activity, callback, permissions, all)
     }
 
     override fun deniedPermissions(
-        activity: FragmentActivity?,
-        callback: OnPermissionCallback?,
-        permissions: MutableList<String>?,
+        activity: Activity,
+        callback: OnPermissionCallback,
+        permissions: MutableList<String>,
         never: Boolean
     ) {
         // 回调授权失败的方法
-        callback!!.onDenied(permissions, never)
+        callback.onDenied(permissions, never)
         if (never) {
-            showPermissionDialog(activity!!, permissions)
+            showPermissionDialog(activity, permissions)
             return
         }
 
-        if (permissions!!.size == 1 && Permission.ACCESS_BACKGROUND_LOCATION == permissions[0]) {
+        if (permissions.size == 1 && Permission.ACCESS_BACKGROUND_LOCATION == permissions[0]) {
             showToast(R.string.common_permission_fail_4, Toast.LENGTH_LONG)
             return
         }
@@ -56,25 +61,46 @@ class PermissionInterceptor : IPermissionInterceptor {
     /**
      * 显示授权对话框
      */
-    protected fun showPermissionDialog(activity: FragmentActivity, permissions: List<String?>?) {
+    protected fun showPermissionDialog(activity: Activity, permissions: List<String?>) {
         // 这里的 Dialog 只是示例，没有用 DialogFragment 来处理 Dialog 生命周期
+        val permissionHintList = getPermissionHintList(activity, permissions)
         MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.common_permission_alert)
-            .setCancelable(false)
-            .setMessage(getPermissionHint(activity, permissions))
+            .setTitle(R.string.common_permission_fail_2_list)
+            .setIcon(R.drawable.ic_dialog_permission)
+            .setPositiveButtonIcon(activity.resourcesDrawable(R.drawable.ic_dialog_permission_setting))
+            .setAdapter(object : BaseAdapter() {
+                override fun getCount() = permissionHintList.size
+                override fun getItem(position: Int) = permissionHintList[position]
+                override fun getItemId(position: Int) = position.toLong()
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                    var holder = if (convertView == null) {
+                        val binding = ItemDialogPermissionBinding.inflate(
+                            activity.layoutInflater,
+                            parent,
+                            false
+                        )
+                        convertView = binding.root
+                        ViewHolder(binding).apply {
+                            convertView.tag = this
+                        }
+                    } else convertView.tag as ViewHolder
+                }
+
+                private inner class ViewHolder(binding: ItemDialogPermissionBinding)
+            }, null)
             .setPositiveButton(R.string.common_permission_goto) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
                 XXPermissions.startPermissionActivity(activity, permissions)
             }.show()
     }
 
-    /**
-     * 根据权限获取提示
-     */
     @Suppress("DEPRECATION")
-    protected fun getPermissionHint(context: Context, permissions: List<String?>?): String {
-        if (permissions == null || permissions.isEmpty()) {
-            return context.getString(R.string.common_permission_fail_2)
+    private fun getPermissionHintList(
+        context: Context,
+        permissions: List<String?>
+    ): Array<String> {
+        if (permissions.isEmpty()) {
+            return arrayOf()
         }
         val hints: MutableList<String> = ArrayList()
         for (permission in permissions) {
@@ -197,18 +223,6 @@ class PermissionInterceptor : IPermissionInterceptor {
                 else -> Unit
             }
         }
-        if (hints.isNotEmpty()) {
-            val builder = StringBuilder()
-            for (text in hints) {
-                if (builder.isEmpty()) {
-                    builder.append(text)
-                } else {
-                    builder.append("、").append(text)
-                }
-            }
-            builder.append(" ")
-            return context.getString(R.string.common_permission_fail_3, builder.toString())
-        }
-        return context.getString(R.string.common_permission_fail_2)
+        return hints.toTypedArray()
     }
 }

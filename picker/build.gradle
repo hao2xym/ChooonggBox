@@ -42,5 +42,6 @@ android {
 }
 
 dependencies {
+    api project(path: ':box')
     api project(path: ':core')
 }
