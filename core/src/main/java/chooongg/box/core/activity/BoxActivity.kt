@@ -8,6 +8,7 @@ import android.transition.Slide
 import android.transition.Transition
 import android.transition.TransitionSet
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
@@ -16,11 +17,9 @@ import androidx.appcompat.widget.ContentFrameLayout
 import androidx.appcompat.widget.FitWindowsLinearLayout
 import androidx.appcompat.widget.Toolbar
 import chooongg.box.core.R
-import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
-import chooongg.box.ext.loadActivityLabel
 import chooongg.box.log.BoxLog
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -76,11 +75,13 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         val parentLayout = contentView.parent as FitWindowsLinearLayout
         toolbar = getToolBar(parentLayout).apply {
             id = R.id.activity_box_toolbar
-            title = loadActivityLabel()
-            if (isAutoShowNavigationIcon()) setDefaultNavigation()
         }
         parentLayout.addView(toolbar, 0)
         setSupportActionBar(toolbar)
+        if (isAutoShowNavigationIcon()) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_app_bar_back)
+        }
     }
 
     @CallSuper
@@ -149,9 +150,11 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         excludeTarget(Toolbar::class.java, true)
     }
 
-    @CallSuper
-    override fun onBackPressed() {
-        super.onBackPressed()
-        BoxLog.d("${this::class.simpleName}: OnBackPressed")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (isShowActionBar() && item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import androidx.annotation.DimenRes
 import chooongg.box.core.R
 import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.ext.getActivity
@@ -13,6 +14,7 @@ import chooongg.box.ext.loadActivityLabel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.elevation.ElevationOverlayProvider
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.MaterialShapeUtils
 
 @SuppressLint("CustomViewStyleable")
 class BoxToolBar @JvmOverloads constructor(
@@ -25,10 +27,10 @@ class BoxToolBar @JvmOverloads constructor(
     init {
         val a =
             context.obtainStyledAttributes(attrs, R.styleable.BoxToolBar, defStyleAttr, defStyleRes)
-        if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
+        if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, true)) {
             setDefaultNavigation()
         }
-        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
+        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, true)) {
             val string = context.loadActivityLabel()
             title = string
         }
@@ -54,5 +56,21 @@ class BoxToolBar @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    /**
+     * 适配黑夜模式的高度覆盖层模式
+     */
+    fun setOElevationOverlayMode(elevation: Float) {
+        this.elevation = 0f
+        MaterialShapeUtils.setElevation(this, elevation)
+    }
+
+    /**
+     * 适配黑夜模式的高度覆盖层模式
+     */
+    fun setOElevationOverlayMode(@DimenRes resId: Int) {
+        this.elevation = 0f
+        MaterialShapeUtils.setElevation(this, resources.getDimension(resId))
     }
 }

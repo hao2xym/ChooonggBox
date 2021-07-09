@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <chooongg.box.core.widget.BoxToolBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/toolbarStyle"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:elevation="@dimen/toolbarElevation"
+    app:defaultNavigation="false"
+    app:loadActivityLabel="false"
     tools:viewBindingIgnore="true" />

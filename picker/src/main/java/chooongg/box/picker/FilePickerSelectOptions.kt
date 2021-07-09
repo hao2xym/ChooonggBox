@@ -7,27 +7,50 @@ import chooongg.box.picker.model.FilePickerSortType
 
 object FilePickerSelectOptions {
 
+    @StyleRes
+    var themeId = -1
+
     @IntRange(from = 1)
     var maxCount = 9
     val isSingle get() = maxCount == 1
 
 
+    var onSelectFileListener: (() -> Unit)? = null
     var fileTypes: Array<out String> = arrayOf()
     var sortType = FilePickerSortType.NAME_ASC
     var commonlyDirectory = ArrayList<CommonlyDirectory>()
     var onlyShowCommonly = false
+        set(value) {
+            field = value
+            if (field) onlyShowBrowser = false
+        }
     var onlyShowBrowser = false
+        set(value) {
+            field = value
+            if (field) onlyShowCommonly = false
+        }
 
+
+    var onSelectMediaListener: (() -> Unit)? = null
     var enableCamera = true
+    var showGif = false
     var onlyShowImages = false
+        set(value) {
+            field = value
+            if (field) onlyShowVideos = false
+        }
     var onlyShowVideos = false
+        set(value) {
+            field = value
+            if (field) onlyShowImages = false
+        }
     var compressImage = true
 
-    @StyleRes
-    var themeId = -1
-
     fun reset() {
+        themeId = -1
         maxCount = 9
+
+        onSelectFileListener = null
         fileTypes = arrayOf()
         sortType = FilePickerSortType.NAME_ASC
         commonlyDirectory = arrayListOf(
@@ -51,10 +74,10 @@ object FilePickerSelectOptions {
         onlyShowCommonly = false
         onlyShowBrowser = false
 
+        onSelectMediaListener = null
         enableCamera = true
         onlyShowImages = false
         onlyShowVideos = false
         compressImage = true
-        themeId = -1
     }
 }

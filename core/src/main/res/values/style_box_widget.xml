@@ -4,16 +4,19 @@
     <style name="BoxWidget.Toolbar.Primary" parent="@style/Widget.MaterialComponents.Toolbar.Primary">
         <item name="subtitleTextAppearance">?attr/textAppearanceCaption</item>
         <item name="maxButtonHeight">?attr/actionBarSize</item>
+        <item name="elevation">@dimen/toolbarElevation</item>
     </style>
 
     <style name="BoxWidget.Toolbar.Surface" parent="@style/Widget.MaterialComponents.Toolbar.Surface">
         <item name="subtitleTextAppearance">?attr/textAppearanceCaption</item>
         <item name="maxButtonHeight">?attr/actionBarSize</item>
+        <item name="elevation">@dimen/toolbarElevation</item>
     </style>
 
     <style name="BoxWidget.Toolbar.PrimarySurface" parent="@style/Widget.MaterialComponents.Toolbar.PrimarySurface">
         <item name="subtitleTextAppearance">?attr/textAppearanceCaption</item>
         <item name="maxButtonHeight">?attr/actionBarSize</item>
+        <item name="elevation">@dimen/toolbarElevation</item>
     </style>
 
     <style name="ShapeAppearanceImage" />

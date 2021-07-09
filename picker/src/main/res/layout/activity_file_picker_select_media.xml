@@ -7,23 +7,44 @@
     android:orientation="vertical">
 
     <chooongg.box.core.widget.BoxToolBar
+        android:id="@+id/box_toolbar"
+        style="?toolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:defaultNavigation="true">
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/toolbarElevation"
+        app:defaultNavigation="true"
+        app:loadActivityLabel="false"
+        app:subtitleCentered="false"
+        app:titleCentered="false">
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/btn_folder"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="全部照片"
-            android:textAppearance="?textAppearanceHeadline6"
-            android:textColor="?colorControlNormal"
-            app:icon="@drawable/ic_picker_folder"
-            app:iconGravity="end"
-            app:iconSize="@dimen/d16"
-            app:iconTint="?colorControlNormal" />
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="center_horizontal"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:paddingStart="@dimen/contentMiddle"
+            android:paddingEnd="@dimen/contentMiddle">
+
+            <TextView
+                android:id="@+id/tv_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textAppearance="?textAppearanceHeadline6"
+                android:textColor="?colorControlNormal"
+                tools:text="全部" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ic_folder"
+                android:layout_width="@dimen/d24"
+                android:layout_height="@dimen/d24"
+                android:layout_marginStart="@dimen/d4"
+                android:alpha="0.0"
+                app:srcCompat="@drawable/ic_picker_arrow_down" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </chooongg.box.core.widget.BoxToolBar>
 
@@ -50,20 +71,12 @@
         android:background="?colorSurface"
         android:elevation="@dimen/d4">
 
-        <TextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/contentMiddle"
-            android:textColor="?colorOnSurface"
-            tools:text="0/30" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginStart="@dimen/contentMiddle"
             android:layout_marginTop="@dimen/contentSmall"
             android:layout_marginEnd="@dimen/contentMiddle"
             android:layout_marginBottom="@dimen/contentSmall"

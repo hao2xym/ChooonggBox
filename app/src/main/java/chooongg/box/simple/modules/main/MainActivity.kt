@@ -15,6 +15,7 @@ import chooongg.box.http.ext.ResponseData
 import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
 import chooongg.box.http.throws.HttpException
 import chooongg.box.log.BoxLog
+import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
 import chooongg.box.simple.api.WanAndroidAPI
@@ -35,20 +36,12 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         MainItemEntity("App Bar: Top"),
         MainItemEntity("Request Permissions"),
         MainItemEntity("State Page"),
-        MainItemEntity("Media Picker"),
-        MainItemEntity("Http Request"),
-        MainItemEntity("App Bar: Top"),
-        MainItemEntity("Request Permissions"),
-        MainItemEntity("State Page"),
-        MainItemEntity("Http Request"),
-        MainItemEntity("App Bar: Top"),
-        MainItemEntity("Request Permissions"),
-        MainItemEntity("State Page"),
-        MainItemEntity("Http Request"),
-        MainItemEntity("App Bar: Top"),
-        MainItemEntity("Request Permissions"),
-        MainItemEntity("State Page"),
-        MainItemEntity("Http Request")
+        MainItemEntity("File Picker"),
+        MainItemEntity("Media Picker Single"),
+        MainItemEntity("Media Picker Multiple"),
+        MainItemEntity("Media Picker All"),
+        MainItemEntity("Media Picker Image"),
+        MainItemEntity("Media Picker Video"),
     )
 
     override fun isAutoShowNavigationIcon() = false
@@ -96,7 +89,21 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                 "App Bar: Top" -> startActivity(TopAppBarActivity::class, view)
                 "Request Permissions" -> startActivity(RequestPermissionActivity::class)
                 "State Page" -> startActivity(StatePageActivity::class, view)
-//                "Media Picker" -> Unit
+                "File Picker" -> FilePicker.from(this).chooseFile().start { }
+                "Media Picker Single" -> FilePicker.from(this).chooseMedia()
+                    .singleChoose()
+                    .start { }
+                "Media Picker Multiple" -> FilePicker.from(this).chooseMedia()
+                    .maxCount(9)
+                    .start { }
+                "Media Picker All" -> FilePicker.from(this).chooseMedia()
+                    .start { }
+                "Media Picker Image" -> FilePicker.from(this).chooseMedia()
+                    .onlyShowImages()
+                    .start { }
+                "Media Picker Video" -> FilePicker.from(this).chooseMedia()
+                    .onlyShowVideos()
+                    .start { }
                 else -> showToast("未实现功能")
             }
         }

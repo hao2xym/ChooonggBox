@@ -38,8 +38,4 @@ abstract class BoxModelActivity<VM : ViewModel> : BoxActivity {
             }
         }
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
 }

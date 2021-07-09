@@ -4,14 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.Toast
+import android.widget.SimpleAdapter
 import chooongg.box.core.R
-import chooongg.box.core.databinding.ItemDialogPermissionBinding
-import chooongg.box.ext.resourcesDrawable
-import chooongg.box.ext.showToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hjq.permissions.IPermissionInterceptor
 import com.hjq.permissions.OnPermissionCallback
@@ -50,12 +44,6 @@ class PermissionInterceptor : IPermissionInterceptor {
             showPermissionDialog(activity, permissions)
             return
         }
-
-        if (permissions.size == 1 && Permission.ACCESS_BACKGROUND_LOCATION == permissions[0]) {
-            showToast(R.string.common_permission_fail_4, Toast.LENGTH_LONG)
-            return
-        }
-        showToast(R.string.common_permission_fail_1, Toast.LENGTH_LONG)
     }
 
     /**
@@ -63,31 +51,18 @@ class PermissionInterceptor : IPermissionInterceptor {
      */
     protected fun showPermissionDialog(activity: Activity, permissions: List<String?>) {
         // 这里的 Dialog 只是示例，没有用 DialogFragment 来处理 Dialog 生命周期
-        val permissionHintList = getPermissionHintList(activity, permissions)
         MaterialAlertDialogBuilder(activity)
-            .setTitle(R.string.common_permission_fail_2_list)
             .setIcon(R.drawable.ic_dialog_permission)
-            .setPositiveButtonIcon(activity.resourcesDrawable(R.drawable.ic_dialog_permission_setting))
-            .setAdapter(object : BaseAdapter() {
-                override fun getCount() = permissionHintList.size
-                override fun getItem(position: Int) = permissionHintList[position]
-                override fun getItemId(position: Int) = position.toLong()
-                override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                    var holder = if (convertView == null) {
-                        val binding = ItemDialogPermissionBinding.inflate(
-                            activity.layoutInflater,
-                            parent,
-                            false
-                        )
-                        convertView = binding.root
-                        ViewHolder(binding).apply {
-                            convertView.tag = this
-                        }
-                    } else convertView.tag as ViewHolder
-                }
-
-                private inner class ViewHolder(binding: ItemDialogPermissionBinding)
-            }, null)
+            .setTitle(R.string.common_permission_fail_2_list)
+            .setAdapter(
+                SimpleAdapter(
+                    activity,
+                    getPermissionHintList(activity, permissions),
+                    R.layout.item_dialog_permission,
+                    arrayOf("name", "icon"),
+                    intArrayOf(R.id.tv_title, R.id.iv_icon)
+                ), null
+            )
             .setPositiveButton(R.string.common_permission_goto) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
                 XXPermissions.startPermissionActivity(activity, permissions)
@@ -98,31 +73,37 @@ class PermissionInterceptor : IPermissionInterceptor {
     private fun getPermissionHintList(
         context: Context,
         permissions: List<String?>
-    ): Array<String> {
+    ): MutableList<Map<String, Any>> {
         if (permissions.isEmpty()) {
-            return arrayOf()
+            return mutableListOf()
         }
-        val hints: MutableList<String> = ArrayList()
+        val hints: MutableList<Map<String, Any>> = ArrayList()
         for (permission in permissions) {
             when (permission) {
                 Permission.READ_EXTERNAL_STORAGE,
                 Permission.WRITE_EXTERNAL_STORAGE,
                 Permission.MANAGE_EXTERNAL_STORAGE -> {
                     val hint = context.getString(R.string.common_permission_storage)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_storage
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.CAMERA -> {
                     val hint = context.getString(R.string.common_permission_camera)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_camera
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.RECORD_AUDIO -> {
                     val hint = context.getString(R.string.common_permission_microphone)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_microphone
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.ACCESS_FINE_LOCATION,
@@ -135,8 +116,10 @@ class PermissionInterceptor : IPermissionInterceptor {
                     } else {
                         context.getString(R.string.common_permission_location)
                     }
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_location
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.READ_PHONE_STATE,
@@ -146,44 +129,62 @@ class PermissionInterceptor : IPermissionInterceptor {
                 Permission.READ_PHONE_NUMBERS,
                 Permission.ANSWER_PHONE_CALLS -> {
                     val hint = context.getString(R.string.common_permission_phone)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_phone
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.GET_ACCOUNTS,
                 Permission.READ_CONTACTS,
                 Permission.WRITE_CONTACTS -> {
                     val hint = context.getString(R.string.common_permission_contacts)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_contact
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.READ_CALENDAR,
                 Permission.WRITE_CALENDAR -> {
                     val hint = context.getString(R.string.common_permission_calendar)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_calendar
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.READ_CALL_LOG,
                 Permission.WRITE_CALL_LOG,
                 Permission.PROCESS_OUTGOING_CALLS -> {
-                    val hint =
-                        context.getString(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) R.string.common_permission_call_log else R.string.common_permission_phone)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val hint: String
+                    val drawableRes: Int
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        hint = context.getString(R.string.common_permission_call_log)
+                        drawableRes = R.drawable.ic_permission_call_log
+                    } else {
+                        hint = context.getString(R.string.common_permission_phone)
+                        drawableRes = R.drawable.ic_permission_phone
+                    }
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.BODY_SENSORS -> {
                     val hint = context.getString(R.string.common_permission_sensors)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_sensors
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.ACTIVITY_RECOGNITION -> {
                     val hint = context.getString(R.string.common_permission_activity_recognition)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_recognition
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.SEND_SMS,
@@ -192,37 +193,56 @@ class PermissionInterceptor : IPermissionInterceptor {
                 Permission.RECEIVE_WAP_PUSH,
                 Permission.RECEIVE_MMS -> {
                     val hint = context.getString(R.string.common_permission_sms)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_sms
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.REQUEST_INSTALL_PACKAGES -> {
                     val hint = context.getString(R.string.common_permission_install)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_install
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.NOTIFICATION_SERVICE -> {
                     val hint = context.getString(R.string.common_permission_notification)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_notification
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.SYSTEM_ALERT_WINDOW -> {
                     val hint = context.getString(R.string.common_permission_window)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_window
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 Permission.WRITE_SETTINGS -> {
                     val hint = context.getString(R.string.common_permission_setting)
-                    if (!hints.contains(hint)) {
-                        hints.add(hint)
+                    val drawableRes = R.drawable.ic_permission_setting
+                    val map = mapOf<String, Any>(Pair("name", hint), Pair("icon", drawableRes))
+                    if (!isContains(hints, map)) {
+                        hints.add(map)
                     }
                 }
                 else -> Unit
             }
         }
-        return hints.toTypedArray()
+        return hints
+    }
+
+    private fun isContains(dataList: List<Map<String, Any>>, data: Map<String, Any>): Boolean {
+        dataList.forEach {
+            if (it["name"] == data["name"]) {
+                return true
+            }
+        }
+        return false
     }
 }

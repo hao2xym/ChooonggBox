@@ -9,7 +9,7 @@
     <string name="common_permission_alert">授权提醒</string>
     <string name="common_permission_fail_1">授权失败，请正确授予权限</string>
     <string name="common_permission_fail_2">获取权限失败，请手动授予权限</string>
-    <string name="common_permission_fail_2_list">获取权限失败，请手动授予以下权限</string>
+    <string name="common_permission_fail_2_list">获取权限失败\n请手动授予以下权限</string>
     <string name="common_permission_fail_3">获取权限失败，请手动授予%s</string>
     <string name="common_permission_fail_4">没有授予后台定位权限，请您选择"始终允许"</string>
 

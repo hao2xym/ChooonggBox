@@ -1,14 +1,29 @@
 package chooongg.box.picker
 
-import android.app.Activity
-import androidx.fragment.app.Fragment
+import androidx.annotation.IntRange
+import androidx.annotation.StyleRes
 import chooongg.box.ext.startActivity
 import chooongg.box.picker.activity.FilePickerSelectFileActivity
 import chooongg.box.picker.model.FilePickerSortType
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
 
 class FilePickerSelectFileCreator(
     filePicker: FilePicker
 ) : FilePickerSelectCreator(filePicker) {
+
+    fun setTheme(@StyleRes themeId: Int) = apply {
+        FilePickerSelectOptions.themeId = themeId
+    }
+
+    fun maxCount(@IntRange(from = 1) maxCount: Int) = apply {
+        FilePickerSelectOptions.maxCount = maxCount
+    }
+
+    fun singleChoose() = apply {
+        FilePickerSelectOptions.maxCount = 1
+    }
+
 
     fun onlyShowCommonly() = apply {
         FilePickerSelectOptions.onlyShowCommonly = true
@@ -18,17 +33,25 @@ class FilePickerSelectFileCreator(
         FilePickerSelectOptions.onlyShowBrowser = true
     }
 
-    fun setFileTypes(vararg fileType: String) = apply {
+    fun fileTypes(vararg fileType: String) = apply {
         FilePickerSelectOptions.fileTypes = fileType
     }
 
-    fun setSortType(sortType: FilePickerSortType) = apply {
+    fun sortType(sortType: FilePickerSortType) = apply {
         FilePickerSelectOptions.sortType = sortType
     }
 
-    override fun onStartActivity(activity: Activity?, fragment: Fragment?) {
-        fragment?.startActivity(FilePickerSelectFileActivity::class)
-            ?: activity?.startActivity(FilePickerSelectFileActivity::class)
+    fun start(listener: () -> Unit) {
+        val permission =
+            if (filePicker.getActivity() != null) XXPermissions.with(filePicker.getActivity())
+            else XXPermissions.with(filePicker.getFragment())
+        permission.permission(Permission.MANAGE_EXTERNAL_STORAGE)
+            .request { _, all ->
+                if (!all) return@request
+                filePicker.getFragment()?.startActivity(FilePickerSelectFileActivity::class)
+                    ?: filePicker.getActivity()?.startActivity(FilePickerSelectFileActivity::class)
+
+            }
     }
 
 }

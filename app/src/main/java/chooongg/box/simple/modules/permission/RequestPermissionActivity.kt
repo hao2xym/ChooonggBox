@@ -51,11 +51,10 @@ class RequestPermissionActivity : BoxBindingActivity<ActivityPermissionBinding>(
                 }
                 "请求多权限" -> {
                     XXPermissions.with(this)
-                        .permission(
-                            Permission.ACCESS_FINE_LOCATION,
-                            Permission.ACCESS_COARSE_LOCATION,
-                            Permission.ACCESS_BACKGROUND_LOCATION,
-                        )
+                        .permission(Permission.CAMERA)
+                        .permission(Permission.Group.STORAGE)
+                        .permission(Permission.ACCESS_COARSE_LOCATION)
+                        .permission(Permission.ACCESS_FINE_LOCATION)
                         .request(object : OnPermissionCallback {
                             override fun onGranted(
                                 permissions: MutableList<String>?,
