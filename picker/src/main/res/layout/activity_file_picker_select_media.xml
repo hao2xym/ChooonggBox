@@ -25,23 +25,26 @@
             android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
             android:paddingStart="@dimen/contentMiddle"
-            android:paddingEnd="@dimen/contentMiddle">
+            android:paddingEnd="@dimen/contentMiddle"
+            android:visibility="gone">
 
-            <TextView
+            <chooongg.box.core.widget.autofit.AutofitTextView
                 android:id="@+id/tv_folder"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:singleLine="true"
                 android:textAppearance="?textAppearanceHeadline6"
                 android:textColor="?colorControlNormal"
+                app:autofit_minTextSize="16sp"
+                app:autofit_sizeToFit="true"
                 tools:text="全部" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_folder"
+                android:id="@+id/iv_folder"
                 android:layout_width="@dimen/d24"
                 android:layout_height="@dimen/d24"
                 android:layout_marginStart="@dimen/d4"
-                android:alpha="0.0"
                 app:srcCompat="@drawable/ic_picker_arrow_down" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
