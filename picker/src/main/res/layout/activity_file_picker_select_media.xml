@@ -10,7 +10,7 @@
         android:id="@+id/box_toolbar"
         style="?toolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?actionBarSize"
         android:elevation="@dimen/toolbarElevation"
         app:defaultNavigation="true"
         app:loadActivityLabel="false"
@@ -33,6 +33,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:singleLine="true"
                 android:textAppearance="?textAppearanceHeadline6"
                 android:textColor="?colorControlNormal"
@@ -63,7 +64,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
-            tools:listitem="@layout/item_picker_photo" />
+            tools:listitem="@layout/item_picker_media" />
 
     </chooongg.box.core.statePage.StatePageLayout>
 

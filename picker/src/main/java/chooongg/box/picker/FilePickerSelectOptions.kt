@@ -4,6 +4,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.StyleRes
 import chooongg.box.picker.model.CommonlyDirectory
 import chooongg.box.picker.model.FilePickerSortType
+import chooongg.box.picker.model.MediaItem
 
 object FilePickerSelectOptions {
 
@@ -31,8 +32,11 @@ object FilePickerSelectOptions {
         }
 
 
-    var onSelectMediaListener: (() -> Unit)? = null
-    var enableCamera = true
+    var onSelectMediaListener: ((ArrayList<MediaItem>) -> Unit)? = null
+    var isNumberSelect = true
+    var needPreview = true
+    var needCamera = false
+    var needCrop = false
     var showGif = false
     var onlyShowImages = false
         set(value) {
@@ -75,7 +79,10 @@ object FilePickerSelectOptions {
         onlyShowBrowser = false
 
         onSelectMediaListener = null
-        enableCamera = true
+        isNumberSelect = true
+        needPreview = true
+        needCamera = false
+        needCrop = false
         onlyShowImages = false
         onlyShowVideos = false
         compressImage = true

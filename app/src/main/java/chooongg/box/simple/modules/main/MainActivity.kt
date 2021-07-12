@@ -18,7 +18,6 @@ import chooongg.box.log.BoxLog
 import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
-import chooongg.box.simple.api.WanAndroidAPI
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.loadState.StatePageActivity
@@ -28,7 +27,6 @@ import chooongg.box.simple.modules.permission.RequestPermissionActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -97,6 +95,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                     .maxCount(9)
                     .start { }
                 "Media Picker All" -> FilePicker.from(this).chooseMedia()
+                    .needCamera(true)
                     .start { }
                 "Media Picker Image" -> FilePicker.from(this).chooseMedia()
                     .onlyShowImages()
@@ -105,24 +104,6 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                     .onlyShowVideos()
                     .start { }
                 else -> showToast("未实现功能")
-            }
-        }
-    }
-
-    suspend fun requestss() {
-        request<ArrayList<String>> {
-            api { WanAndroidAPI.get().allPackage() }
-            onStart {
-                job?.cancelAndJoin()
-            }
-            onSuccess {
-                BoxLog.e(it)
-            }
-            onFailed {
-                it.printStackTrace()
-            }
-            onEnd {
-
             }
         }
     }

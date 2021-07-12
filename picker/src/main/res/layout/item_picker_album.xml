@@ -7,7 +7,7 @@
     android:backgroundTint="?colorSurface">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_photo"
+        android:id="@+id/iv_cover"
         android:layout_width="@dimen/d56"
         android:layout_height="@dimen/d56"
         android:layout_marginStart="@dimen/contentMiddle"
@@ -18,7 +18,7 @@
         app:shapeAppearance="@style/ShapeAppearanceImage.Rounded.4dp" />
 
     <TextView
-        android:id="@+id/tv_file_count"
+        android:id="@+id/tv_media_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/contentMiddle"
@@ -31,7 +31,7 @@
         tools:text="123" />
 
     <TextView
-        android:id="@+id/tv_folder_name"
+        android:id="@+id/tv_album_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/contentSmall"
@@ -42,8 +42,8 @@
         android:textAppearance="?textAppearanceCaption"
         android:textColor="?colorOnSurface"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_file_count"
-        app:layout_constraintStart_toEndOf="@id/iv_photo"
+        app:layout_constraintEnd_toStartOf="@id/tv_media_count"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="全部照片" />
 

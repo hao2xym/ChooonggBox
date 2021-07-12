@@ -4,6 +4,7 @@ import androidx.annotation.IntRange
 import androidx.annotation.StyleRes
 import chooongg.box.ext.startActivity
 import chooongg.box.picker.activity.FilePickerSelectMediaActivity
+import chooongg.box.picker.model.MediaItem
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 
@@ -23,9 +24,20 @@ class FilePickerSelectMediaCreator(
         FilePickerSelectOptions.maxCount = 1
     }
 
+    fun isNumberSelect(isNumberSelect: Boolean) = apply {
+        FilePickerSelectOptions.isNumberSelect = isNumberSelect
+    }
 
-    fun enableCamera(enable: Boolean) = apply {
-        FilePickerSelectOptions.enableCamera = enable
+    fun needPreview(isNeed: Boolean) = apply {
+        FilePickerSelectOptions.needPreview = isNeed
+    }
+
+    fun needCamera(isNeed: Boolean) = apply {
+        FilePickerSelectOptions.needCamera = isNeed
+    }
+
+    fun needCrop(isNeed: Boolean) = apply {
+        FilePickerSelectOptions.needCrop = isNeed
     }
 
     fun showGif(enable: Boolean) = apply {
@@ -44,13 +56,14 @@ class FilePickerSelectMediaCreator(
         FilePickerSelectOptions.compressImage = enable
     }
 
-    fun start(listener: () -> Unit) {
+    fun start(listener: (ArrayList<MediaItem>) -> Unit) {
         val permission =
             if (filePicker.getActivity() != null) XXPermissions.with(filePicker.getActivity())
             else XXPermissions.with(filePicker.getFragment())
         permission.permission(Permission.MANAGE_EXTERNAL_STORAGE)
             .request { _, all ->
                 if (!all) return@request
+                FilePickerSelectOptions.onSelectMediaListener = listener
                 filePicker.getFragment()?.startActivity(FilePickerSelectMediaActivity::class)
                     ?: filePicker.getActivity()?.startActivity(FilePickerSelectMediaActivity::class)
 

@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.core.view.updateLayoutParams
-import chooongg.box.core.ext.loadDefault
+import chooongg.box.core.ext.load
 import chooongg.box.ext.*
 import chooongg.box.picker.R
 import chooongg.box.picker.databinding.ItemPickerAlbumBinding
@@ -19,12 +19,15 @@ class AlbumPopupWindowManager(
     private val context: Activity,
     private val btnView: View,
     private val textView: TextView,
-    private val arrowImage: ImageView
+    private val arrowImage: ImageView,
+    private val onItemClickListener: (Long?) -> Unit
 ) {
 
     private val adapter = Adapter()
 
     private var data = ArrayList<AlbumDirector>()
+
+    private var selectBucketId: Long? = null
 
     private val listPopupWindow by lazy {
         ListPopupWindow(context, null, R.attr.listPopupWindowStyle).apply {
@@ -37,8 +40,17 @@ class AlbumPopupWindowManager(
                 arrowImage.animate().rotation(0f)
             }
             btnView.setOnTouchListener(createDragToOpenListener(btnView))
+            setOnItemClickListener { _, _, position, _ ->
+                selectBucketId = data[position].id
+                textView.text = data[position].name
+                dismiss()
+                setSelection(position)
+                onItemClickListener(selectBucketId)
+            }
         }
     }
+
+    fun getSelectBucketId() = selectBucketId
 
     fun setData(data: ArrayList<AlbumDirector>?) {
         if (data.isNullOrEmpty()) {
@@ -48,19 +60,28 @@ class AlbumPopupWindowManager(
             this.data = data
             adapter.notifyDataSetChanged()
             if (textView.text.isNullOrEmpty()) {
+                selectBucketId = data[0].id
                 textView.text = data[0].name
             } else {
                 var isEquals = false
                 for (i in 0 until data.size) {
-                    if (textView.text == data[i].name) {
+                    if (selectBucketId == data[i].id) {
                         isEquals = true
                         break
                     }
                 }
                 if (!isEquals) {
+                    selectBucketId = data[0].id
                     textView.text = data[0].name
                 }
             }
+            for (i in 0 until data.size) {
+                if (selectBucketId == data[i].id) {
+                    listPopupWindow.setSelection(i)
+                    break
+                }
+            }
+
         }
     }
 
@@ -102,12 +123,16 @@ class AlbumPopupWindowManager(
                 view = convertView
                 holder = view.tag as ViewHolder
             }
-            holder.binding.ivPhoto.loadDefault(data[position].coverUri)
-            holder.binding.tvFolderName.text = data[position].name
-            holder.binding.tvFileCount.text = data[position].count.toString()
+            holder.binding.tvAlbumName.text = data[position].name
+            holder.binding.tvMediaCount.text = data[position].count.toString()
+            holder.binding.ivCover.load(data[position].coverPath)
             return view
         }
 
         private inner class ViewHolder(val binding: ItemPickerAlbumBinding)
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick()
     }
 }

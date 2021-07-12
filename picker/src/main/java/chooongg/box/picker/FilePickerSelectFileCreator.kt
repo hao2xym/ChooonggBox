@@ -48,6 +48,7 @@ class FilePickerSelectFileCreator(
         permission.permission(Permission.MANAGE_EXTERNAL_STORAGE)
             .request { _, all ->
                 if (!all) return@request
+                FilePickerSelectOptions.onSelectFileListener = listener
                 filePicker.getFragment()?.startActivity(FilePickerSelectFileActivity::class)
                     ?: filePicker.getActivity()?.startActivity(FilePickerSelectFileActivity::class)
 

@@ -33,14 +33,26 @@
         app:layout_constraintWidth_percent="0.3"
         app:srcCompat="@drawable/ic_picker_player" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/checkbox"
-        android:layout_width="@dimen/d36"
-        android:layout_height="@dimen/d36"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/d4"
-        android:src="@drawable/ic_picker_check_checked"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/contentSmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/d32"
+            android:background="@drawable/shape_picker_check_checked"
+            android:gravity="center"
+            android:minWidth="@dimen/d32"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </FrameLayout>
 
 </chooongg.box.core.widget.square.SquareConstraintLayout>
