@@ -127,7 +127,7 @@ fun ActivityResultLauncher<Intent>.launch(
     clazz: KClass<out Any>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
-    launch(context, clazz, getActivityOption(context.getActivity()))
+    launch(context, clazz, getActivityOption(context.getActivity()), block)
 }
 
 fun ActivityResultLauncher<Intent>.launch(
@@ -136,7 +136,12 @@ fun ActivityResultLauncher<Intent>.launch(
     view: View,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
-    launch(context, clazz, getActivityOption(context.getActivity(), Pair.create(view, "view")))
+    launch(
+        context,
+        clazz,
+        getActivityOption(context.getActivity(), Pair.create(view, "view")),
+        block
+    )
 }
 
 fun ActivityResultLauncher<Intent>.launch(
@@ -145,7 +150,7 @@ fun ActivityResultLauncher<Intent>.launch(
     vararg sharedElements: Pair<View, String>,
     block: (ActivityIntent.() -> Unit)? = null
 ) {
-    launch(context, clazz, getActivityOption(context.getActivity(), *sharedElements))
+    launch(context, clazz, getActivityOption(context.getActivity(), *sharedElements), block)
 }
 
 fun ActivityResultLauncher<Intent>.launch(
@@ -184,15 +189,15 @@ class ActivityIntent(packageContext: Context, cls: Class<*>) : Intent(packageCon
     }
 
     fun launchSingleTop() {
-        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        addFlags(FLAG_ACTIVITY_SINGLE_TOP)
     }
 
     fun launchNewTask() {
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        addFlags(FLAG_ACTIVITY_NEW_TASK)
     }
 
     fun launchNoHistory() {
-        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        addFlags(FLAG_ACTIVITY_NO_HISTORY)
     }
 
     fun removeFlags() {
