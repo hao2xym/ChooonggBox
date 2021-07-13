@@ -1,10 +1,20 @@
 package chooongg.box.simple
 
 import chooongg.box.BoxApplication
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.ClassicsHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
 
 class App : BoxApplication() {
+
+    companion object {
+        init {
+            SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, _ -> ClassicsHeader(context) }
+            SmartRefreshLayout.setDefaultRefreshFooterCreator { context, _ -> ClassicsFooter(context) }
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
