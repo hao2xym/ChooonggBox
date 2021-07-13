@@ -1,17 +1,16 @@
 package chooongg.box.core.statePage
 
+import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
 import android.widget.FrameLayout
 import androidx.core.view.NestedScrollingChild2
 import androidx.core.view.NestedScrollingChildHelper
 import chooongg.box.core.statePage.state.MultiState
 import chooongg.box.core.statePage.state.SuccessState
 import chooongg.box.ext.inVisible
-import chooongg.box.ext.resourcesInteger
 import chooongg.box.ext.visible
 import kotlin.reflect.KClass
 
@@ -91,16 +90,22 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
             //如果上次展示的是SuccessState则跳过
             if (lastState != SuccessState::class) {
                 originTargetView?.visible()
-                if (enableAnimation && lastState != null && !lastState!!.isShowSuccessView()) {
-                    originTargetView?.startAnimation()
-                }
-                onStateChangeListener?.invoke(multiState)
+                originTargetView?.animate()?.alpha(1f)?.scaleX(1f)?.scaleY(1f)?.setListener(null)
             }
         } else {
             if (multiState.isShowSuccessView()) {
                 originTargetView?.visible()
+                originTargetView?.animate()?.alpha(1f)?.scaleX(1f)?.scaleY(1f)?.setListener(null)
             } else {
-                originTargetView?.inVisible()
+                originTargetView?.animate()?.alpha(0f)?.scaleX(0.8f)?.scaleY(0.8f)
+                    ?.setListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator?) = Unit
+                        override fun onAnimationRepeat(animation: Animator?) = Unit
+                        override fun onAnimationCancel(animation: Animator?) = Unit
+                        override fun onAnimationEnd(animation: Animator?) {
+                            originTargetView?.inVisible()
+                        }
+                    })
             }
             val currentStateView = multiState.onCreateMultiStateView(context, this)
             multiState.onMultiStateViewCreate(currentStateView)
@@ -116,10 +121,16 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
                 }
             }
             super.addView(currentStateView)
-            if (enableAnimation) currentStateView.startAnimation()
+            if (enableAnimation) {
+                val showAnimation = multiState.showAnimation()
+                if (showAnimation != null) {
+                    currentStateView.startAnimation(showAnimation)
+                }
+            }
         }
         //记录上次展示的state
         lastState = multiState
+        onStateChangeListener?.invoke(multiState)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -141,13 +152,6 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
             statePool[clazz] = state
             state
         }
-    }
-
-    private fun View.startAnimation() {
-        val animation = StatePage.config.animation ?: AlphaAnimation(0f, 1f).apply {
-            duration = context.resourcesInteger(android.R.integer.config_mediumAnimTime).toLong()
-        }
-        startAnimation(animation)
     }
 
     fun setOnRetryEventListener(block: (MultiState) -> Unit) {

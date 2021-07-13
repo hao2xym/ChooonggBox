@@ -5,44 +5,39 @@ import android.os.Bundle
 import androidx.constraintlayout.motion.widget.MotionLayout
 import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.core.ext.setDefaultNavigation
+import chooongg.box.core.statePage.state.*
+import chooongg.box.ext.showToast
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityStatePageBinding
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
 
-//    private data class Item(val name: String) : BindingItem<ItemMainBinding>() {
-//        override val type: Int get() = 0
-//        override fun bindView(binding: ItemMainBinding, payloads: List<Any>) {
-//            binding.tvName.text = name
-//        }
-//    }
+    private val datas = arrayListOf(
+        "Loading",
+        "LoadingHorizontal",
+        "Error",
+        "Empty",
+        "Network",
+        "Loading",
+        "LoadingHorizontal",
+        "Error",
+        "Empty",
+        "Network",
+        "Loading",
+        "LoadingHorizontal",
+        "Error",
+        "Empty",
+        "Network",
+        "Loading",
+        "LoadingHorizontal",
+        "Error",
+        "Empty",
+        "Network"
+    )
 
-//    private val datas = arrayListOf(
-//        Item("Loading"),
-//        Item("LoadingHorizontal"),
-//        Item("Error"),
-//        Item("Empty"),
-//        Item("Network"),
-//        Item("Loading"),
-//        Item("LoadingHorizontal"),
-//        Item("Error"),
-//        Item("Empty"),
-//        Item("Network"),
-//        Item("Loading"),
-//        Item("LoadingHorizontal"),
-//        Item("Error"),
-//        Item("Empty"),
-//        Item("Network"),
-//        Item("Loading"),
-//        Item("LoadingHorizontal"),
-//        Item("Error"),
-//        Item("Empty"),
-//        Item("Network")
-//    )
-
-//    private val itemAdapter = ItemAdapter<ClipData.Item>()
-//
-//    private val adapter = FastAdapter.with(itemAdapter)
+    private val adapter = Adapter()
 
     override fun isShowActionBar() = false
 
@@ -53,16 +48,18 @@ class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
             binding.statePageLayout.showSuccess()
             false
         }
-//        binding.recyclerView.adapter = adapter
-//        itemAdapter.setNewList(datas)
-//        adapter.onClickListener = { _: View?, _: IAdapter<ClipData.Item>, item: ClipData.Item, _: Int ->
-//            when (item.name) {
-//                "Loading" -> binding.statePageLayout.show(LoadingState::class)
-//                "LoadingHorizontal" -> binding.statePageLayout.show(LoadingHorizontalState::class)
-//                else -> showToast("未实现")
-//            }
-//            false
-//        }
+        binding.recyclerView.adapter = adapter
+        adapter.setNewInstance(datas)
+        adapter.setOnItemClickListener { _, _, position ->
+            when (datas[position]) {
+                "Loading" -> binding.statePageLayout.show(LoadingState::class)
+                "LoadingHorizontal" -> binding.statePageLayout.show(LoadingHorizontalState::class)
+                "Error" -> binding.statePageLayout.show(ErrorState::class)
+                "Empty" -> binding.statePageLayout.show(EmptyState::class)
+                "Network" -> binding.statePageLayout.show(NetworkState::class)
+                else -> showToast("未实现")
+            }
+        }
         binding.motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) = Unit
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) =
@@ -86,5 +83,11 @@ class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
     }
 
     override fun initContent(savedInstanceState: Bundle?) {
+    }
+
+    private class Adapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_main) {
+        override fun convert(holder: BaseViewHolder, item: String) {
+            holder.setText(R.id.tv_name, item)
+        }
     }
 }

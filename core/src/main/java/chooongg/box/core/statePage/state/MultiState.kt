@@ -2,9 +2,19 @@ package chooongg.box.core.statePage.state
 
 import android.content.Context
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.ScaleAnimation
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
+import chooongg.box.core.R
 import chooongg.box.core.statePage.StatePageLayout
+import chooongg.box.ext.APP
+import chooongg.box.ext.resourcesInteger
 
 abstract class MultiState {
+
+    private lateinit var view: View
 
     /**
      * 创建stateView
@@ -45,6 +55,20 @@ abstract class MultiState {
      * 默认null为整个state view
      */
     open fun bindRetryView(): View? = null
+
+    open fun showAnimation(): Animation? = AnimationSet(true).apply {
+        duration = APP.resourcesInteger(R.integer.material_motion_duration_medium_1).toLong()
+        interpolator = LinearOutSlowInInterpolator()
+        addAnimation(AlphaAnimation(0f, 1f))
+        addAnimation(
+            ScaleAnimation(
+                0.8f, 1f,
+                0.8f, 1f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f
+            )
+        )
+    }
 
     abstract fun setText(text: CharSequence)
     abstract fun getText(): CharSequence

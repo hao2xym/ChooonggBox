@@ -33,4 +33,8 @@
     <string name="common_permission_window">悬浮窗权限</string>
     <string name="common_permission_setting">系统设置权限</string>
 
+    <string name="state_reload">重新加载</string>
+    <string name="state_quit">退出</string>
+    <string name="state_network_setting">网络设置</string>
+
 </resources>
