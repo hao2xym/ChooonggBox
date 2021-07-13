@@ -40,12 +40,11 @@ class FilePickerSelectMediaActivity :
 
     private val needCamera = FilePickerSelectOptions.needCamera
 
-    private val adapter =
-        Adapter(
-            needCamera,
-            FilePickerSelectOptions.isSingle,
-            FilePickerSelectOptions.isNumberSelect
-        )
+    private val adapter = Adapter(
+        needCamera,
+        FilePickerSelectOptions.isSingle,
+        FilePickerSelectOptions.isNumberSelect
+    )
 
     override fun isShowActionBar() = false
 

@@ -11,6 +11,7 @@
         android:layout_width="@dimen/d56"
         android:layout_height="@dimen/d56"
         android:layout_marginStart="@dimen/contentMiddle"
+        android:elevation="@dimen/d2"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
