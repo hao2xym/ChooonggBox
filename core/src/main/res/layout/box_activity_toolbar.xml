@@ -5,6 +5,7 @@
     style="?attr/toolbarStyle"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
+    android:elevation="@dimen/toolbarElevation"
     app:defaultNavigation="false"
     app:loadActivityLabel="false"
     tools:viewBindingIgnore="true" />
