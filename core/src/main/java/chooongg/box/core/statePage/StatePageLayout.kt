@@ -30,14 +30,14 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
     private var enableAnimation = StatePage.config.enableAnimation
 
     var verticalPercentage = 0.5f
-        internal set(value) {
+        set(value) {
             if (field != value) {
                 field = value
                 lastState?.setVerticalPercentage(value)
             }
         }
     var horizontalPercentage = 0.5f
-        internal set(value) {
+        set(value) {
             if (field != value) {
                 field = value
                 lastState?.setHorizontalPercentage(value)

@@ -41,4 +41,11 @@
         <attr name="color_unchecked_stroke" format="color" />
     </declare-styleable>
 
+    <!--自动更改文本内容-->
+    <declare-styleable name="FadingTextView">
+        <attr name="texts" format="reference" />
+        <attr name="timeout" format="integer" />
+        <attr name="shuffle" format="boolean" />
+    </declare-styleable>
+
 </resources>

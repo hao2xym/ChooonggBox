@@ -68,7 +68,17 @@ abstract class BoxFragment : Fragment, BoxInit {
         isLoaded = false
     }
 
-    fun getTitle() = if (javaClass.isAnnotationPresent(Title::class.java)) {
-        javaClass.getAnnotation(Title::class.java)!!.value
-    } else "未命名"
+    private var title: CharSequence? = null
+
+    fun setTitle(title: CharSequence?) = apply {
+        this.title = title
+    }
+
+    fun getTitle() = when {
+        title != null -> title
+        javaClass.isAnnotationPresent(Title::class.java) -> {
+            javaClass.getAnnotation(Title::class.java)!!.value
+        }
+        else -> "未命名"
+    }
 }
