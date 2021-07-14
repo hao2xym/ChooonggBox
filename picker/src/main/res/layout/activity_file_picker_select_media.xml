@@ -30,9 +30,8 @@
 
             <chooongg.box.core.widget.autofit.AutofitTextView
                 android:id="@+id/tv_folder"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:singleLine="true"
                 android:textAppearance="?textAppearanceHeadline6"

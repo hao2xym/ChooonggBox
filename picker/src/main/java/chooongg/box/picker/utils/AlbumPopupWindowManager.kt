@@ -44,7 +44,6 @@ class AlbumPopupWindowManager(
                 selectBucketId = data[position].id
                 textView.text = data[position].name
                 dismiss()
-                setSelection(position)
                 onItemClickListener(selectBucketId)
             }
         }
@@ -130,9 +129,5 @@ class AlbumPopupWindowManager(
         }
 
         private inner class ViewHolder(val binding: ItemPickerAlbumBinding)
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick()
     }
 }

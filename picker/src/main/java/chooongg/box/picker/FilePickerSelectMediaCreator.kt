@@ -66,7 +66,6 @@ class FilePickerSelectMediaCreator(
                 FilePickerSelectOptions.onSelectMediaListener = listener
                 filePicker.getFragment()?.startActivity(FilePickerSelectMediaActivity::class)
                     ?: filePicker.getActivity()?.startActivity(FilePickerSelectMediaActivity::class)
-
             }
     }
 
