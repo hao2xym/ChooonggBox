@@ -125,7 +125,7 @@ class AlbumPopupWindowManager(
             }
             holder.binding.tvAlbumName.text = data[position].name
             holder.binding.tvMediaCount.text = data[position].count.toString()
-            holder.binding.ivCover.load(data[position].coverPath)
+            holder.binding.ivCover.load(data[position].coverUri)
             return view
         }
 

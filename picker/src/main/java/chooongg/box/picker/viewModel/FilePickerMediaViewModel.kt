@@ -14,7 +14,6 @@ import chooongg.box.picker.FilePickerSelectOptions
 import chooongg.box.picker.R
 import chooongg.box.picker.model.AlbumDirector
 import chooongg.box.picker.model.MediaItem
-import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
 class FilePickerMediaViewModel : ViewModel() {
@@ -46,8 +45,7 @@ class FilePickerMediaViewModel : ViewModel() {
                 MediaStore.Files.FileColumns._ID,
                 MediaStore.Files.FileColumns.MEDIA_TYPE,
                 "bucket_id",
-                "bucket_display_name",
-                MediaStore.Files.FileColumns.DATA
+                "bucket_display_name"
             )
 
             var cursor: Cursor? = null
@@ -68,8 +66,8 @@ class FilePickerMediaViewModel : ViewModel() {
                             cursor.getString(cursor.getColumnIndexOrThrow("bucket_display_name"))
                         val mediaType =
                             cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
-                        val data =
-                            cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA))
+                        val id =
+                            cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID))
                         if (albums.isEmpty()) {
                             albums.add(
                                 AlbumDirector(
@@ -82,7 +80,10 @@ class FilePickerMediaViewModel : ViewModel() {
                                         }
                                     ),
                                     cursor.count,
-                                    File(data),
+                                    Uri.withAppendedPath(
+                                        MediaStore.Files.getContentUri("external"),
+                                        id
+                                    ),
                                     mediaType
                                 )
                             )
@@ -97,7 +98,10 @@ class FilePickerMediaViewModel : ViewModel() {
                                     getSelectionArgs(),
                                     bucketId
                                 ),
-                                File(data),
+                                Uri.withAppendedPath(
+                                    MediaStore.Files.getContentUri("external"),
+                                    id
+                                ),
                                 mediaType
                             )
                         )
@@ -119,7 +123,7 @@ class FilePickerMediaViewModel : ViewModel() {
                             }
                         ),
                         0,
-                        File(""),
+                        Uri.EMPTY,
                         MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
                     )
                 )
@@ -137,8 +141,7 @@ class FilePickerMediaViewModel : ViewModel() {
             val projection = arrayOf(
                 MediaStore.Files.FileColumns._ID,
                 MediaStore.Files.FileColumns.MEDIA_TYPE,
-                MediaStore.Files.FileColumns.MIME_TYPE,
-                MediaStore.Files.FileColumns.DATA
+                MediaStore.Files.FileColumns.MIME_TYPE
             )
             var cursor: Cursor? = null
             try {
@@ -161,14 +164,24 @@ class FilePickerMediaViewModel : ViewModel() {
                         cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
                     val mimeType =
                         cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE))
-                    val data =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA))
                     if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
                         mediaData.add(
-                            MediaItem(id, data, null, null, true, getVideoDuration(contentUri, id))
+                            MediaItem(
+                                id, Uri.withAppendedPath(
+                                    MediaStore.Files.getContentUri("external"),
+                                    id.toString()
+                                ), null, null, true, getVideoDuration(contentUri, id)
+                            )
                         )
                     } else {
-                        mediaData.add(MediaItem(id, data, null, null, false, 0))
+                        mediaData.add(
+                            MediaItem(
+                                id, Uri.withAppendedPath(
+                                    MediaStore.Files.getContentUri("external"),
+                                    id.toString()
+                                ), null, null, false, 0
+                            )
+                        )
                     }
                 }
                 withMain { onMediaListener?.onMediaLoaded(mediaData) }
@@ -185,12 +198,7 @@ class FilePickerMediaViewModel : ViewModel() {
         viewModelScope.launchIO {
             val mediaData = ArrayList<MediaItem>()
             val contentUri = MediaStore.Files.getContentUri("external")
-            val projection = arrayOf(
-                MediaStore.Files.FileColumns._ID,
-                MediaStore.Files.FileColumns.MEDIA_TYPE,
-                MediaStore.Files.FileColumns.MIME_TYPE,
-                MediaStore.Files.FileColumns.DATA
-            )
+            val projection = arrayOf(MediaStore.Files.FileColumns._ID)
             var cursor: Cursor? = null
             try {
                 cursor = APP.contentResolver.query(
@@ -198,24 +206,12 @@ class FilePickerMediaViewModel : ViewModel() {
                     projection,
                     getSelection(),
                     getSelectionArgs(),
-                    "datetaken DESC"
+                    null
                 )
                 while (cursor!!.moveToNext()) {
                     val id =
                         cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID))
-                    val mediaType =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
-                    val mimeType =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE))
-                    val data =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA))
-                    if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                        mediaData.add(
-                            MediaItem(id, data, null, null, true, getVideoDuration(contentUri, id))
-                        )
-                    } else {
-                        mediaData.add(MediaItem(id, data, null, null, false, 0))
-                    }
+                    mediaData.add(MediaItem(id, null, null, null, false, 0))
                 }
                 withMain {
                     for (i in FilePickerSelectOptions.selectedMedia.size - 1..0) {

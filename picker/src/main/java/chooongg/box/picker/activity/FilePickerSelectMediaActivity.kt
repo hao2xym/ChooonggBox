@@ -12,10 +12,7 @@ import chooongg.box.core.ext.load
 import chooongg.box.core.statePage.state.EmptyState
 import chooongg.box.core.statePage.state.ErrorState
 import chooongg.box.core.statePage.state.LoadingState
-import chooongg.box.ext.dp2px
-import chooongg.box.ext.enableElevationOverlay
-import chooongg.box.ext.gone
-import chooongg.box.ext.visible
+import chooongg.box.ext.*
 import chooongg.box.picker.FilePickerSelectOptions
 import chooongg.box.picker.R
 import chooongg.box.picker.databinding.ActivityFilePickerSelectMediaBinding
@@ -80,6 +77,15 @@ class FilePickerSelectMediaActivity :
                         anchorView = binding.layoutBottom
                     }.show()
                 }
+            }
+            if (FilePickerSelectOptions.selectedMedia.isEmpty()) {
+                binding.btnDone.text = resourcesString(R.string.picker_done)
+            } else {
+                binding.btnDone.text = resourcesString(
+                    R.string.picker_done_multiple,
+                    FilePickerSelectOptions.selectedMedia.size,
+                    FilePickerSelectOptions.maxCount
+                )
             }
         }
         takePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
@@ -157,7 +163,7 @@ class FilePickerSelectMediaActivity :
                 holder.binding.ivPlay.gone()
                 holder.binding.btnCheckbox.gone()
             } else {
-                holder.binding.ivPhoto.load(item.media.path)
+                holder.binding.ivPhoto.load(item.media.uri)
                 holder.binding.ivPlay.visibility =
                     if (item.media.isVideo) View.VISIBLE else View.GONE
                 holder.binding.viewMaskVideo.visibility =
@@ -169,13 +175,16 @@ class FilePickerSelectMediaActivity :
                     if (!FilePickerSelectOptions.selectedMedia.contains(item.media)) {
                         holder.binding.checkbox.text = null
                         holder.binding.checkbox.setBackgroundResource(R.drawable.shape_picker_check)
+                        holder.binding.viewMask.animate().alpha(0f)
                     } else if (isNumberSelected) {
                         val index = FilePickerSelectOptions.selectedMedia.indexOf(item.media)
                         holder.binding.checkbox.text = (index + 1).toString()
                         holder.binding.checkbox.setBackgroundResource(R.drawable.shape_picker_check_number)
+                        holder.binding.viewMask.animate().alpha(1f)
                     } else {
                         holder.binding.checkbox.text = null
                         holder.binding.checkbox.setBackgroundResource(R.drawable.layer_picker_check_checked)
+                        holder.binding.viewMask.animate().alpha(1f)
                     }
                 }
             }

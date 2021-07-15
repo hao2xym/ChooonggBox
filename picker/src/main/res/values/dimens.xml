@@ -2,6 +2,6 @@
 <resources>
     <dimen name="file_icon_width">40dp</dimen>
     <dimen name="file_icon_height">40dp</dimen>
-    <dimen name="file_name_textSize">16sp</dimen>
-    <dimen name="file_item_checkbox_size">24dp</dimen>
+
+    <integer name="picker_media_span_count">3</integer>
 </resources>

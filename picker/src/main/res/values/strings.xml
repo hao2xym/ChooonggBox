@@ -2,4 +2,8 @@
     <string name="picker_media_all_image">全部图片</string>
     <string name="picker_media_all_video">全部视频</string>
     <string name="picker_media_all_image_video">图片和视频</string>
+
+    <string name="picker_preview">预览</string>
+    <string name="picker_done">完成</string>
+    <string name="picker_done_multiple">完成(%d/%d)</string>
 </resources>

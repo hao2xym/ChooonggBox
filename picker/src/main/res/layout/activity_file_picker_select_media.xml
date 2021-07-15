@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3"
+            app:spanCount="@integer/picker_media_span_count"
             tools:listitem="@layout/item_picker_media" />
 
     </chooongg.box.core.statePage.StatePageLayout>
@@ -78,7 +78,17 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_complete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/contentMiddle"
+            android:layout_marginTop="@dimen/contentSmall"
+            android:layout_marginEnd="@dimen/contentSmall"
+            android:layout_marginBottom="@dimen/contentSmall"
+            android:text="@string/picker_preview" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -86,7 +96,7 @@
             android:layout_marginTop="@dimen/contentSmall"
             android:layout_marginEnd="@dimen/contentMiddle"
             android:layout_marginBottom="@dimen/contentSmall"
-            android:text="完成" />
+            android:text="@string/picker_done" />
 
     </FrameLayout>
 

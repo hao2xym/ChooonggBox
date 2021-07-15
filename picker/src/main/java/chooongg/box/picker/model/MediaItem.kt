@@ -1,12 +1,13 @@
 package chooongg.box.picker.model
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MediaItem(
     val id: Long,
-    val path: String?,
+    val uri: Uri?,
     var compressPath: String?,
     var httpPath: String?,
     val isVideo: Boolean,
@@ -23,7 +24,7 @@ data class MediaItem(
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + (path?.hashCode() ?: 0)
+        result = 31 * result + (uri?.hashCode() ?: 0)
         result = 31 * result + (compressPath?.hashCode() ?: 0)
         result = 31 * result + (httpPath?.hashCode() ?: 0)
         result = 31 * result + isVideo.hashCode()
