@@ -34,6 +34,7 @@ class AlbumPopupWindowManager(
             isModal = true
             anchorView = btnView
             setDropDownGravity(Gravity.END)
+            verticalOffset = -context.attrDimensionPixelSize(R.attr.actionBarSize, dp2px(48f))
             setContentWidth(context.getScreenWidth() / 2)
             setAdapter(adapter)
             setOnDismissListener {

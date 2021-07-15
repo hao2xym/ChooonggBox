@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
 import chooongg.box.core.activity.BoxBindingModelActivity
+import chooongg.box.core.adapter.BindingAdapter
+import chooongg.box.core.adapter.BindingHolder
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
@@ -19,13 +21,12 @@ import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
 import chooongg.box.simple.databinding.ActivityMainBinding
+import chooongg.box.simple.databinding.ItemMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.loadState.StatePageActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import chooongg.box.simple.modules.permission.RequestPermissionActivity
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.coroutines.Job
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
@@ -117,9 +118,9 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
 
     }
 
-    class Adapter : BaseQuickAdapter<MainItemEntity, BaseViewHolder>(R.layout.item_main) {
-        override fun convert(holder: BaseViewHolder, item: MainItemEntity) {
-            holder.setText(R.id.tv_name, item.name)
+    class Adapter : BindingAdapter<MainItemEntity, ItemMainBinding>() {
+        override fun convert(holder: BindingHolder<ItemMainBinding>, item: MainItemEntity) {
+            holder.binding.tvName.text = item.name
         }
     }
 

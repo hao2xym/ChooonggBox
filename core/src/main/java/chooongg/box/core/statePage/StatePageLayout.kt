@@ -1,6 +1,5 @@
 package chooongg.box.core.statePage
 
-import android.animation.Animator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -86,26 +85,23 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
         if (childCount > 1) {
             removeViewAt(1)
         }
+        val showAnimation = multiState.showAnimation()
         if (multiState is SuccessState) {
             //如果上次展示的是SuccessState则跳过
             if (lastState != SuccessState::class) {
                 originTargetView?.visible()
-                originTargetView?.animate()?.alpha(1f)?.scaleX(1f)?.scaleY(1f)?.setListener(null)
+                if (enableAnimation && showAnimation != null) {
+                    originTargetView?.startAnimation(showAnimation)
+                }
             }
         } else {
             if (multiState.isShowSuccessView()) {
                 originTargetView?.visible()
-                originTargetView?.animate()?.alpha(1f)?.scaleX(1f)?.scaleY(1f)?.setListener(null)
+                if (enableAnimation && showAnimation != null) {
+                    originTargetView?.startAnimation(showAnimation)
+                }
             } else {
-                originTargetView?.animate()?.alpha(0f)?.scaleX(0.8f)?.scaleY(0.8f)
-                    ?.setListener(object : Animator.AnimatorListener {
-                        override fun onAnimationStart(animation: Animator?) = Unit
-                        override fun onAnimationRepeat(animation: Animator?) = Unit
-                        override fun onAnimationCancel(animation: Animator?) = Unit
-                        override fun onAnimationEnd(animation: Animator?) {
-                            originTargetView?.inVisible()
-                        }
-                    })
+                originTargetView?.inVisible()
             }
             val currentStateView = multiState.onCreateMultiStateView(context, this)
             multiState.onMultiStateViewCreate(currentStateView)
@@ -121,11 +117,8 @@ class StatePageLayout : FrameLayout, NestedScrollingChild2 {
                 }
             }
             super.addView(currentStateView)
-            if (enableAnimation) {
-                val showAnimation = multiState.showAnimation()
-                if (showAnimation != null) {
-                    currentStateView.startAnimation(showAnimation)
-                }
+            if (enableAnimation && showAnimation != null) {
+                currentStateView.startAnimation(showAnimation)
             }
         }
         //记录上次展示的state

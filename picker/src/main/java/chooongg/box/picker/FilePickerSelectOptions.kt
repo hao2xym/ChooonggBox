@@ -5,6 +5,7 @@ import androidx.annotation.StyleRes
 import chooongg.box.picker.model.CommonlyDirectory
 import chooongg.box.picker.model.FilePickerSortType
 import chooongg.box.picker.model.MediaItem
+import java.io.File
 
 object FilePickerSelectOptions {
 
@@ -16,6 +17,7 @@ object FilePickerSelectOptions {
     val isSingle get() = maxCount == 1
 
 
+    var selectedFile = ArrayList<File>()
     var onSelectFileListener: (() -> Unit)? = null
     var fileTypes: Array<out String> = arrayOf()
     var sortType = FilePickerSortType.NAME_ASC
@@ -32,6 +34,7 @@ object FilePickerSelectOptions {
         }
 
 
+    val selectedMedia = ArrayList<MediaItem>()
     var onSelectMediaListener: ((ArrayList<MediaItem>) -> Unit)? = null
     var isNumberSelect = true
     var needPreview = true

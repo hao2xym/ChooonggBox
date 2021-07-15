@@ -11,4 +11,23 @@ data class MediaItem(
     var httpPath: String?,
     val isVideo: Boolean,
     val videoDuration: Long
-) : Parcelable
+) : Parcelable {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other is MediaItem) {
+            if (this.id == other.id) return true
+        }
+        return false
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + (path?.hashCode() ?: 0)
+        result = 31 * result + (compressPath?.hashCode() ?: 0)
+        result = 31 * result + (httpPath?.hashCode() ?: 0)
+        result = 31 * result + isVideo.hashCode()
+        result = 31 * result + videoDuration.hashCode()
+        return result
+    }
+}

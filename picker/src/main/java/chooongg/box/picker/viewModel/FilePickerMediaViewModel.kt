@@ -1,5 +1,6 @@
 package chooongg.box.picker.viewModel
 
+import android.database.ContentObserver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
@@ -20,8 +21,20 @@ class FilePickerMediaViewModel : ViewModel() {
 
     private var onMediaListener: OnMediaListener? = null
 
+    private var contentObserver = object : ContentObserver(null) {
+        override fun onChange(selfChange: Boolean) {
+            getMediaCheckSelected()
+        }
+    }
+
     fun setOnGetAlbumListener(onMediaListener: OnMediaListener) {
         this.onMediaListener = onMediaListener
+    }
+
+    fun registerContentObserver() {
+        APP.contentResolver.registerContentObserver(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, true, contentObserver
+        )
     }
 
     fun getAlbum() {
@@ -168,6 +181,58 @@ class FilePickerMediaViewModel : ViewModel() {
         }
     }
 
+    fun getMediaCheckSelected() {
+        viewModelScope.launchIO {
+            val mediaData = ArrayList<MediaItem>()
+            val contentUri = MediaStore.Files.getContentUri("external")
+            val projection = arrayOf(
+                MediaStore.Files.FileColumns._ID,
+                MediaStore.Files.FileColumns.MEDIA_TYPE,
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATA
+            )
+            var cursor: Cursor? = null
+            try {
+                cursor = APP.contentResolver.query(
+                    contentUri,
+                    projection,
+                    getSelection(),
+                    getSelectionArgs(),
+                    "datetaken DESC"
+                )
+                while (cursor!!.moveToNext()) {
+                    val id =
+                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID))
+                    val mediaType =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MEDIA_TYPE))
+                    val mimeType =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE))
+                    val data =
+                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA))
+                    if (mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                        mediaData.add(
+                            MediaItem(id, data, null, null, true, getVideoDuration(contentUri, id))
+                        )
+                    } else {
+                        mediaData.add(MediaItem(id, data, null, null, false, 0))
+                    }
+                }
+                withMain {
+                    for (i in FilePickerSelectOptions.selectedMedia.size - 1..0) {
+                        if (!mediaData.contains(FilePickerSelectOptions.selectedMedia[i])) {
+                            FilePickerSelectOptions.selectedMedia.removeAt(i)
+                        }
+                    }
+                    getAlbum()
+                }
+            } catch (e: Exception) {
+                if (e is CancellationException) return@launchIO
+            } finally {
+                cursor?.close()
+            }
+        }
+    }
+
     private fun getVideoDuration(
         contentUri: Uri,
         id: Long
@@ -250,6 +315,11 @@ class FilePickerMediaViewModel : ViewModel() {
             MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO.toString(),
             "image/gif"
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        APP.contentResolver.unregisterContentObserver(contentObserver)
     }
 
     interface OnMediaListener {
