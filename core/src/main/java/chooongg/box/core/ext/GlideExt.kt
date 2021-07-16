@@ -17,10 +17,9 @@ fun ImageView.loadAny(
 ) {
     val requestBuilder = Glide.with(this).load(any)
         .useAnimationPool(true)
-        .fallback(R.drawable.layer_placeholder_image_error)
-        .optionalCenterCrop()
-        .placeholder(R.drawable.layer_placeholder_image_loading)
-        .error(R.drawable.layer_placeholder_image_error)
+        .fallback(R.color.color_divider)
+        .placeholder(R.color.color_divider)
+        .error(R.color.color_divider)
     builder(requestBuilder)
     requestBuilder.into(this)
 }

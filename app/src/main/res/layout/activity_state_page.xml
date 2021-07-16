@@ -64,10 +64,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
 
-        <me.dkzwm.widget.srl.SmoothRefreshLayout
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            app:sr_enableLoadMore="true"
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -80,7 +79,7 @@
                 app:layout_constraintTop_toBottomOf="@id/box_toolbar"
                 tools:listitem="@layout/item_main" />
 
-        </me.dkzwm.widget.srl.SmoothRefreshLayout>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     </chooongg.box.core.statePage.StatePageLayout>
 

@@ -50,8 +50,8 @@ dependencies {
     api 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     api 'com.github.getActivity:XXPermissions:11.6'
 
-    api 'com.github.dkzwm:srl-core:1.7.2.1' //刷新布局
-    api 'com.github.dkzwm:srl-ext-classics:1.7.2.1' //经典刷新头
+    api 'com.scwang.smart:refresh-layout-kernel:2.0.3' //刷新布局
+    api 'com.scwang.smart:refresh-header-classics:2.0.3' //经典刷新头
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     api 'com.github.fondesa:recycler-view-divider:3.5.0'
 
