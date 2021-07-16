@@ -8,6 +8,6 @@
     <item>
         <inset
             android:drawable="@drawable/ic_placeholder_image_loading"
-            android:inset="@dimen/d56" />
+            android:inset="@dimen/d72" />
     </item>
 </layer-list>

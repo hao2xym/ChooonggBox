@@ -23,22 +23,22 @@ class BoxAppBarLayout @JvmOverloads constructor(
 
     private var state: State = State.EXPANDED
 
-    fun addOnStateChangedListener(block: (appBarLayout: AppBarLayout, verticalOffset: Int, state: State) -> Unit) {
+    fun addOnStateChangedListener(block: (appBarLayout: AppBarLayout, state: State) -> Unit) {
         addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
                 if (state != State.EXPANDED) {
                     state = State.EXPANDED
-                    block(appBarLayout, verticalOffset, state)
+                    block(appBarLayout, state)
                 }
             } else if (abs(verticalOffset) >= totalScrollRange) {
                 if (state != State.COLLAPSED) {
                     state = State.COLLAPSED
-                    block(appBarLayout, verticalOffset, state)
+                    block(appBarLayout, state)
                 }
             } else {
                 if (state != State.INTERMEDIATE) {
                     state = State.INTERMEDIATE
-                    block(appBarLayout, verticalOffset, state)
+                    block(appBarLayout, state)
                 }
             }
         })

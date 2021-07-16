@@ -68,6 +68,14 @@ abstract class BoxFragment : Fragment, BoxInit {
         isLoaded = false
     }
 
+    fun showTipLoading(message: CharSequence? = null, isClickable: Boolean = false) {
+        boxActivity?.showTipLoading(message, isClickable)
+    }
+
+    fun hideTipLoading() {
+        boxActivity?.hideTipLoading()
+    }
+
     private var title: CharSequence? = null
 
     fun setTitle(title: CharSequence?) = apply {

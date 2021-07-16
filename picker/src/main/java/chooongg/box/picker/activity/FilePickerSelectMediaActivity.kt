@@ -2,6 +2,7 @@ package chooongg.box.picker.activity
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,7 +16,6 @@ import chooongg.box.core.statePage.state.EmptyState
 import chooongg.box.core.statePage.state.ErrorState
 import chooongg.box.core.statePage.state.LoadingHorizontalState
 import chooongg.box.core.statePage.state.LoadingState
-import chooongg.box.ext.dp2px
 import chooongg.box.ext.gone
 import chooongg.box.ext.resourcesString
 import chooongg.box.ext.visible
@@ -27,8 +27,8 @@ import chooongg.box.picker.model.AlbumDirector
 import chooongg.box.picker.model.MediaItem
 import chooongg.box.picker.utils.AlbumPopupWindowManager
 import chooongg.box.picker.viewModel.FilePickerMediaViewModel
+import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.snackbar.Snackbar
-import me.simple.itemdecor.GridItemDecor
 
 class FilePickerSelectMediaActivity :
     BoxBindingModelActivity<ActivityFilePickerSelectMediaBinding, FilePickerMediaViewModel>(),
@@ -61,7 +61,8 @@ class FilePickerSelectMediaActivity :
         model.setOnGetAlbumListener(this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
-        binding.recyclerView.addItemDecoration(GridItemDecor().apply { margin = dp2px(4f) })
+        dividerBuilder().asSpace().size(8, TypedValue.COMPLEX_UNIT_DIP)
+            .build().addTo(binding.recyclerView)
         adapter.setOnItemChildClickListener { _, _, position ->
             if (FilePickerSelectOptions.selectedMedia.contains(adapter.data[position].media)) {
                 FilePickerSelectOptions.selectedMedia.remove(adapter.data[position].media)

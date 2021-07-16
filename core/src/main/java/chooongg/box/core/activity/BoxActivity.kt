@@ -1,5 +1,6 @@
 package chooongg.box.core.activity
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -10,16 +11,23 @@ import android.transition.TransitionSet
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.Window
+import android.widget.FrameLayout
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ContentFrameLayout
 import androidx.appcompat.widget.FitWindowsLinearLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.R
+import chooongg.box.core.databinding.BoxActivityLoadingTipBinding
 import chooongg.box.core.interfaces.BoxInit
 import chooongg.box.core.manager.HideKeyboardManager
 import chooongg.box.core.widget.BoxToolBar
+import chooongg.box.ext.decorView
+import chooongg.box.ext.gone
+import chooongg.box.ext.launchMain
+import chooongg.box.ext.visible
 import chooongg.box.log.BoxLog
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,13 +35,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
     AppCompatActivity(), BoxInit {
 
-    val Activity.contentView: ContentFrameLayout by lazy { findViewById(Window.ID_ANDROID_CONTENT) }
+    val contentView: ContentFrameLayout by lazy { findViewById(Window.ID_ANDROID_CONTENT) }
 
     inline val context: Context get() = this
 
     inline val activity: Activity get() = this
 
     protected open fun isAutoHideKeyBoard() = true
+
+    private var loadingTipBinding: BoxActivityLoadingTipBinding? = null
 
     protected var toolbar: Toolbar? = null
 
@@ -160,5 +170,51 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showTipLoading(message: CharSequence? = null, isClickable: Boolean = false) {
+        lifecycleScope.launchMain {
+            if (loadingTipBinding != null) {
+                if (message.isNullOrEmpty()) {
+                    loadingTipBinding!!.tvMessage.gone()
+                } else {
+                    loadingTipBinding!!.tvMessage.text = message
+                    loadingTipBinding!!.tvMessage.visible()
+                }
+                return@launchMain
+            }
+            loadingTipBinding = BoxActivityLoadingTipBinding.inflate(layoutInflater)
+            loadingTipBinding!!.root.layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            if (message.isNullOrEmpty()) {
+                loadingTipBinding!!.tvMessage.gone()
+            } else {
+                loadingTipBinding!!.tvMessage.text = message
+                loadingTipBinding!!.tvMessage.visible()
+            }
+            if (!isClickable) loadingTipBinding!!.root.setOnClickListener { }
+            decorView.addView(loadingTipBinding!!.root)
+            loadingTipBinding!!.root.animate().alpha(1f).setListener(null)
+        }
+    }
+
+    fun hideTipLoading() {
+        if (!isDestroyed) {
+            lifecycleScope.launchMain {
+                if (loadingTipBinding == null) return@launchMain
+                loadingTipBinding!!.root.animate().alpha(0f)
+                    .setListener(object : Animator.AnimatorListener {
+                        override fun onAnimationStart(animation: Animator?) = Unit
+                        override fun onAnimationRepeat(animation: Animator?) = Unit
+                        override fun onAnimationCancel(animation: Animator?) = Unit
+                        override fun onAnimationEnd(animation: Animator?) {
+                            decorView.removeView(loadingTipBinding!!.root)
+                            loadingTipBinding = null
+                        }
+                    })
+            }
+        }
     }
 }
