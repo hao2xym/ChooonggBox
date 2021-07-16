@@ -188,6 +188,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
+            loadingTipBinding!!.progressView.show()
             if (message.isNullOrEmpty()) {
                 loadingTipBinding!!.tvMessage.gone()
             } else {
@@ -196,7 +197,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             }
             if (!isClickable) loadingTipBinding!!.root.setOnClickListener { }
             decorView.addView(loadingTipBinding!!.root)
-            loadingTipBinding!!.root.animate().alpha(1f).setListener(null)
+            loadingTipBinding!!.root.animate().alpha(1f).scaleX(1f).scaleY(1f).setListener(null)
         }
     }
 
@@ -204,7 +205,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         if (!isDestroyed) {
             lifecycleScope.launchMain {
                 if (loadingTipBinding == null) return@launchMain
-                loadingTipBinding!!.root.animate().alpha(0f)
+                loadingTipBinding!!.root.animate().alpha(0f).scaleX(0.8f).scaleY(0.8f)
                     .setListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator?) = Unit
                         override fun onAnimationRepeat(animation: Animator?) = Unit

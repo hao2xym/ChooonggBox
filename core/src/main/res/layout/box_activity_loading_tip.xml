@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0.0">
+    android:alpha="0.0"
+    android:scaleX="0.8"
+    android:scaleY="0.8">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/contentMiddle">
+        android:layout_margin="@dimen/contentMiddle"
+        app:cardCornerRadius="@dimen/d4"
+        app:cardElevation="@dimen/d16">
 
         <LinearLayout
             android:id="@+id/ll_content"
@@ -22,10 +26,12 @@
             android:padding="@dimen/contentMiddle">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/view_lottie"
+                android:id="@+id/progress_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:indicatorSize="@dimen/d56" />
+                android:indeterminate="true"
+                app:indicatorColor="?colorOnSurface"
+                app:trackCornerRadius="@dimen/d16" />
 
             <TextView
                 android:id="@+id/tv_message"
@@ -33,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/d12"
                 android:gravity="center_horizontal"
-                android:textColor="@android:color/white" />
+                android:textColor="?colorOnSurface" />
 
         </LinearLayout>
 

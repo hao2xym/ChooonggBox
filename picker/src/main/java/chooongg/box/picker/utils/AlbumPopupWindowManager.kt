@@ -8,7 +8,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
-import androidx.core.view.updateLayoutParams
 import chooongg.box.core.ext.load
 import chooongg.box.ext.*
 import chooongg.box.picker.R
@@ -33,9 +32,9 @@ class AlbumPopupWindowManager(
         ListPopupWindow(context, null, R.attr.listPopupWindowStyle).apply {
             isModal = true
             anchorView = btnView
-            setDropDownGravity(Gravity.END)
+            setDropDownGravity(Gravity.START)
             verticalOffset = -context.attrDimensionPixelSize(R.attr.actionBarSize, dp2px(48f))
-            setContentWidth(context.getScreenWidth() / 2)
+            setContentWidth(context.getScreenWidth())
             setAdapter(adapter)
             setOnDismissListener {
                 arrowImage.animate().rotation(0f)
@@ -86,9 +85,6 @@ class AlbumPopupWindowManager(
     }
 
     init {
-        btnView.updateLayoutParams<ViewGroup.LayoutParams> {
-            width = context.getScreenWidth() / 2
-        }
         btnView.doOnClick {
             arrowImage.animate().rotation(180f)
             val itemHeight = dp2px(72f)

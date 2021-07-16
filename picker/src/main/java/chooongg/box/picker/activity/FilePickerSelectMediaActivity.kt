@@ -14,7 +14,6 @@ import chooongg.box.core.adapter.BindingHolder
 import chooongg.box.core.ext.load
 import chooongg.box.core.statePage.state.EmptyState
 import chooongg.box.core.statePage.state.ErrorState
-import chooongg.box.core.statePage.state.LoadingHorizontalState
 import chooongg.box.core.statePage.state.LoadingState
 import chooongg.box.ext.gone
 import chooongg.box.ext.resourcesString
@@ -29,6 +28,8 @@ import chooongg.box.picker.utils.AlbumPopupWindowManager
 import chooongg.box.picker.viewModel.FilePickerMediaViewModel
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FilePickerSelectMediaActivity :
     BoxBindingModelActivity<ActivityFilePickerSelectMediaBinding, FilePickerMediaViewModel>(),
@@ -117,6 +118,13 @@ class FilePickerSelectMediaActivity :
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if (FilePickerSelectOptions.isSingle) return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.picker_media, menu)
+        doneMenu = menu.findItem(R.id.done)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.done) {
             return if (FilePickerSelectOptions.selectedMedia.isEmpty()) {
@@ -126,10 +134,16 @@ class FilePickerSelectMediaActivity :
                 false
             } else {
                 if (FilePickerSelectOptions.compressImage) {
-                    binding.statePageLayout.show(LoadingHorizontalState::class)
-                } else FilePickerSelectOptions.onSelectMediaListener?.invoke(FilePickerSelectOptions.selectedMedia)
-                onBackPressed()
-                true
+                    showTipLoading("压缩中")
+                    true
+                } else {
+                    val data = ArrayList<MediaItem>()
+                    Collections.copy(data, FilePickerSelectOptions.selectedMedia)
+                    FilePickerSelectOptions.onSelectMediaListener?.invoke(data)
+                    FilePickerSelectOptions.selectedMedia.clear()
+                    onBackPressed()
+                    true
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -138,13 +152,6 @@ class FilePickerSelectMediaActivity :
     override fun initContent(savedInstanceState: Bundle?) {
         model.getAlbum()
         model.registerContentObserver()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (FilePickerSelectOptions.isSingle) return super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.picker_media, menu)
-        doneMenu = menu.findItem(R.id.done)
-        return true
     }
 
     override fun onAlbumLoaded(albums: ArrayList<AlbumDirector>) {
@@ -158,7 +165,7 @@ class FilePickerSelectMediaActivity :
         mediaData.forEach { data.add(Item(false, it)) }
         if (needCamera) {
             if (albumPopupWindowManager.getSelectBucketId() == null && FilePickerSelectOptions.needCamera) {
-                data.add(0, Item(true, MediaItem(-1, null, null, null, false, 0)))
+                data.add(0, Item(true, MediaItem(-1, null, null, null, false, 0, null)))
             }
         }
         adapter.setNewInstance(data)
