@@ -23,6 +23,8 @@ class BoxAppBarLayout @JvmOverloads constructor(
 
     private var state: State = State.EXPANDED
 
+    private val behavior = Behavior()
+
     fun addOnStateChangedListener(block: (appBarLayout: AppBarLayout, state: State) -> Unit) {
         addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
             if (verticalOffset == 0) {
@@ -45,10 +47,12 @@ class BoxAppBarLayout @JvmOverloads constructor(
     }
 
     override fun getBehavior(): CoordinatorLayout.Behavior<AppBarLayout> {
-        return Behavior()
+        return behavior
     }
 
     class Behavior : AppBarLayout.Behavior {
+
+        private var overScroller: OverScroller? = null
 
         constructor() : super()
         constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -58,26 +62,26 @@ class BoxAppBarLayout @JvmOverloads constructor(
             child: AppBarLayout,
             ev: MotionEvent
         ): Boolean {
-            if (ev.action == MotionEvent.ACTION_DOWN) {
-                val scroller = getSuperSuperField(this, "mScroller")
-                if (scroller != null && scroller is OverScroller) {
-                    scroller.abortAnimation()
-                }
+            if (ev.action == MotionEvent.ACTION_UP) {
+                reflectOverScroller()
             }
             return super.onInterceptTouchEvent(parent, child, ev)
         }
 
-        private fun getSuperSuperField(paramClass: Any, paramString: String): Any? {
-            val field: Field?
-            var any: Any? = null
-            try {
-                field = paramClass.javaClass.superclass.superclass.getDeclaredField(paramString)
-                field.isAccessible = true
-                any = field.get(paramClass)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        fun stopFling() {
+            overScroller?.abortAnimation()
+        }
+
+        private fun reflectOverScroller() {
+            if (overScroller == null) {
+                try {
+                    val field: Field = javaClass.superclass.superclass.getDeclaredField("mScroller")
+                    field.isAccessible = true
+                    overScroller = field.get(this) as OverScroller
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
-            return any
         }
     }
 }
