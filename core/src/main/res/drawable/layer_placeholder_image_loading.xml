@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:bottom="@dimen/contentMiddle"
-        android:drawable="@drawable/ic_placeholder_image_loading"
-        android:left="@dimen/contentMiddle"
-        android:right="@dimen/contentMiddle"
-        android:top="@dimen/contentMiddle" />
-    <item android:drawable="@color/color_divider" />
+    <item>
+        <color android:color="@color/color_divider" />
+    </item>
+    <item>
+        <inset
+            android:drawable="@drawable/ic_placeholder_image_loading"
+            android:inset="@dimen/d56" />
+    </item>
 </layer-list>

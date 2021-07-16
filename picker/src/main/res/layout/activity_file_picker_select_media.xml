@@ -56,7 +56,7 @@
         android:id="@+id/state_page_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/box_toolbar">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -68,36 +68,5 @@
             tools:listitem="@layout/item_picker_media" />
 
     </chooongg.box.core.statePage.StatePageLayout>
-
-    <FrameLayout
-        android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorSurface"
-        android:elevation="@dimen/d4"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/contentMiddle"
-            android:layout_marginTop="@dimen/contentSmall"
-            android:layout_marginEnd="@dimen/contentSmall"
-            android:layout_marginBottom="@dimen/contentSmall"
-            android:text="@string/picker_preview" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginStart="@dimen/contentMiddle"
-            android:layout_marginTop="@dimen/contentSmall"
-            android:layout_marginEnd="@dimen/contentMiddle"
-            android:layout_marginBottom="@dimen/contentSmall"
-            android:text="@string/picker_done" />
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

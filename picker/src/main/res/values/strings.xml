@@ -6,4 +6,7 @@
     <string name="picker_preview">预览</string>
     <string name="picker_done">完成</string>
     <string name="picker_done_multiple">完成(%d/%d)</string>
+
+    <string name="picker_selected_overflow">"最多只能选择%d张"</string>
+    <string name="picker_selected_empty">您需要选择图片</string>
 </resources>

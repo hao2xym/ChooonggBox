@@ -27,10 +27,10 @@ class BoxToolBar @JvmOverloads constructor(
     init {
         val a =
             context.obtainStyledAttributes(attrs, R.styleable.BoxToolBar, defStyleAttr, defStyleRes)
-        if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, true)) {
+        if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
             setDefaultNavigation()
         }
-        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, true)) {
+        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
             val string = context.loadActivityLabel()
             title = string
         }

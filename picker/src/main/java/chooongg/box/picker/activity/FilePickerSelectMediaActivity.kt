@@ -2,6 +2,8 @@ package chooongg.box.picker.activity
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -11,8 +13,12 @@ import chooongg.box.core.adapter.BindingHolder
 import chooongg.box.core.ext.load
 import chooongg.box.core.statePage.state.EmptyState
 import chooongg.box.core.statePage.state.ErrorState
+import chooongg.box.core.statePage.state.LoadingHorizontalState
 import chooongg.box.core.statePage.state.LoadingState
-import chooongg.box.ext.*
+import chooongg.box.ext.dp2px
+import chooongg.box.ext.gone
+import chooongg.box.ext.resourcesString
+import chooongg.box.ext.visible
 import chooongg.box.picker.FilePickerSelectOptions
 import chooongg.box.picker.R
 import chooongg.box.picker.databinding.ActivityFilePickerSelectMediaBinding
@@ -45,13 +51,14 @@ class FilePickerSelectMediaActivity :
     private lateinit var takePicture: ActivityResultLauncher<Uri>
     private lateinit var takeVideo: ActivityResultLauncher<Uri>
 
+    private var doneMenu: MenuItem? = null
+
     override fun isShowActionBar() = false
 
     override fun initConfig(savedInstanceState: Bundle?) {
+        setSupportActionBar(binding.boxToolbar)
+        supportActionBar?.title = null
         model.setOnGetAlbumListener(this)
-        binding.layoutBottom.enableElevationOverlay()
-        binding.layoutBottom.visibility =
-            if (FilePickerSelectOptions.isSingle) View.GONE else View.VISIBLE
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
         binding.recyclerView.addItemDecoration(GridItemDecor().apply { margin = dp2px(4f) })
@@ -70,18 +77,17 @@ class FilePickerSelectMediaActivity :
                     adapter.notifyItemChanged(position + adapter.headerLayoutCount)
                 } else {
                     Snackbar.make(
-                        binding.statePageLayout,
-                        "最多只能选择${FilePickerSelectOptions.maxCount}张",
-                        Snackbar.LENGTH_SHORT
-                    ).apply {
-                        anchorView = binding.layoutBottom
-                    }.show()
+                        binding.statePageLayout, resourcesString(
+                            R.string.picker_selected_overflow,
+                            FilePickerSelectOptions.maxCount
+                        ), Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
-            if (FilePickerSelectOptions.selectedMedia.isEmpty()) {
-                binding.btnDone.text = resourcesString(R.string.picker_done)
+            doneMenu?.title = if (FilePickerSelectOptions.selectedMedia.isEmpty()) {
+                resourcesString(R.string.picker_done)
             } else {
-                binding.btnDone.text = resourcesString(
+                resourcesString(
                     R.string.picker_done_multiple,
                     FilePickerSelectOptions.selectedMedia.size,
                     FilePickerSelectOptions.maxCount
@@ -109,9 +115,34 @@ class FilePickerSelectMediaActivity :
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.done) {
+            return if (FilePickerSelectOptions.selectedMedia.isEmpty()) {
+                Snackbar.make(
+                    binding.statePageLayout, R.string.picker_selected_empty, Snackbar.LENGTH_SHORT
+                ).show()
+                false
+            } else {
+                if (FilePickerSelectOptions.compressImage) {
+                    binding.statePageLayout.show(LoadingHorizontalState::class)
+                } else FilePickerSelectOptions.onSelectMediaListener?.invoke(FilePickerSelectOptions.selectedMedia)
+                onBackPressed()
+                true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun initContent(savedInstanceState: Bundle?) {
         model.getAlbum()
         model.registerContentObserver()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        if (FilePickerSelectOptions.isSingle) return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.picker_media, menu)
+        doneMenu = menu.findItem(R.id.done)
+        return true
     }
 
     override fun onAlbumLoaded(albums: ArrayList<AlbumDirector>) {
@@ -138,6 +169,11 @@ class FilePickerSelectMediaActivity :
 
     override fun onMediaLoadError(e: Exception) {
         binding.statePageLayout.show(ErrorState::class, "无法查找图片")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroy() {

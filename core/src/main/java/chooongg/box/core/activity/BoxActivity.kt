@@ -47,7 +47,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     protected open fun initToolBar(toolbar: Toolbar) = Unit
 
-    protected open fun isAutoShowNavigationIcon() = true
+    open fun isAutoShowNavigationIcon() = true
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,10 +78,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         }
         parentLayout.addView(toolbar, 0)
         setSupportActionBar(toolbar)
-        if (isAutoShowNavigationIcon()) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_app_bar_back)
-        }
     }
 
     @CallSuper
@@ -150,8 +146,16 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         excludeTarget(Toolbar::class.java, true)
     }
 
+    override fun setSupportActionBar(toolbar: Toolbar?) {
+        super.setSupportActionBar(toolbar)
+        if (isAutoShowNavigationIcon()) {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_app_bar_back)
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (isShowActionBar() && item.itemId == android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             onBackPressed()
             return true
         }
