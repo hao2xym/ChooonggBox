@@ -44,4 +44,5 @@ android {
 dependencies {
     api project(path: ':box')
     api project(path: ':core')
+    api 'moe.feng:BreadcrumbsView:0.2.1'
 }

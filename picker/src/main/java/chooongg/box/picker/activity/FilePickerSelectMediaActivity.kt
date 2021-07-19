@@ -62,9 +62,9 @@ class FilePickerSelectMediaActivity :
         model.setOnGetAlbumListener(this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
-        dividerBuilder().size(8, TypedValue.COMPLEX_UNIT_DIP)
-            .asSpace().showSideDividers()
-            .build().addTo(binding.recyclerView)
+        dividerBuilder().size(8, TypedValue.COMPLEX_UNIT_DIP).asSpace()
+            .showSideDividers().showFirstDivider().showLastDivider().build()
+            .addTo(binding.recyclerView)
         adapter.setOnItemChildClickListener { _, _, position ->
             if (FilePickerSelectOptions.selectedMedia.contains(adapter.data[position].media)) {
                 FilePickerSelectOptions.selectedMedia.remove(adapter.data[position].media)
