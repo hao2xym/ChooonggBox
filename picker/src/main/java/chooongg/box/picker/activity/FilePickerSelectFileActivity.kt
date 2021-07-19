@@ -17,7 +17,6 @@ class FilePickerSelectFileActivity : BoxBindingActivity<ActivityFilePickerSelect
     }
 
     override fun initConfig(savedInstanceState: Bundle?) {
-
     }
 
     override fun initContent(savedInstanceState: Bundle?) {

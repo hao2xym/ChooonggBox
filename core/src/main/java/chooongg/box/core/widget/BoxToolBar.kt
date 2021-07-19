@@ -24,35 +24,39 @@ class BoxToolBar @JvmOverloads constructor(
     defStyleRes: Int = R.style.BoxWidget_Toolbar_PrimarySurface
 ) : MaterialToolbar(context, attrs, defStyleAttr) {
 
+    private val syncStatusBarColor: Boolean
+
     init {
         val a =
             context.obtainStyledAttributes(attrs, R.styleable.BoxToolBar, defStyleAttr, defStyleRes)
+        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
+            title = context.loadActivityLabel()
+        }
         if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
             setDefaultNavigation()
         }
-        if (a.getBoolean(R.styleable.BoxToolBar_loadActivityLabel, false)) {
-            val string = context.loadActivityLabel()
-            title = string
-        }
+        syncStatusBarColor = a.getBoolean(R.styleable.BoxToolBar_syncStatusBarColor, true)
         a.recycle()
     }
 
     override fun setBackground(background: Drawable?) {
         super.setBackground(background)
-        when (background) {
-            is MaterialShapeDrawable -> {
-                val elevationOverlayProvider = ElevationOverlayProvider(context)
-                val color = elevationOverlayProvider.compositeOverlayIfNeeded(
-                    background.fillColor?.defaultColor
-                        ?: elevationOverlayProvider.themeSurfaceColor, elevation
-                )
-                if (Color.alpha(color) == 255) {
-                    context.getActivity()?.window?.statusBarColor = color
+        if (syncStatusBarColor) {
+            when (background) {
+                is MaterialShapeDrawable -> {
+                    val elevationOverlayProvider = ElevationOverlayProvider(context)
+                    val color = elevationOverlayProvider.compositeOverlayIfNeeded(
+                        background.fillColor?.defaultColor
+                            ?: elevationOverlayProvider.themeSurfaceColor, elevation
+                    )
+                    if (Color.alpha(color) == 255) {
+                        context.getActivity()?.window?.statusBarColor = color
+                    }
                 }
-            }
-            is ColorDrawable -> {
-                if (Color.alpha(background.color) == 255) {
-                    context.getActivity()?.window?.statusBarColor = background.color
+                is ColorDrawable -> {
+                    if (Color.alpha(background.color) == 255) {
+                        context.getActivity()?.window?.statusBarColor = background.color
+                    }
                 }
             }
         }
