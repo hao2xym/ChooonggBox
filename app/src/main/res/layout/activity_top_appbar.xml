@@ -12,7 +12,7 @@
         android:layout_marginTop="@dimen/contentBig"
         app:defaultNavigation="true"
         app:subtitle="BoxWidget.Toolbar.Primary"
-        app:syncStatusBarColor="false"
+        app:autoSetActionBar="false"
         app:title="主题色" />
 
     <chooongg.box.core.widget.BoxToolBar
@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/contentBig"
         app:defaultNavigation="true"
         app:subtitle="BoxWidget.Toolbar.PrimarySurface"
-        app:syncStatusBarColor="false"
+        app:autoSetActionBar="false"
         app:title="夜间 表面色 日间 主题色" />
 
     <chooongg.box.core.widget.BoxToolBar
@@ -32,7 +32,7 @@
         android:layout_marginTop="@dimen/contentBig"
         app:defaultNavigation="true"
         app:subtitle="BoxWidget.Toolbar.Surface"
-        app:syncStatusBarColor="false"
+        app:autoSetActionBar="false"
         app:title="表面色" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
