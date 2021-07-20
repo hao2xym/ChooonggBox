@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.DimenRes
+import androidx.appcompat.app.AppCompatActivity
 import chooongg.box.core.R
 import chooongg.box.core.ext.setDefaultNavigation
 import chooongg.box.ext.getActivity
@@ -24,7 +25,7 @@ class BoxToolBar @JvmOverloads constructor(
     defStyleRes: Int = R.style.BoxWidget_Toolbar_PrimarySurface
 ) : MaterialToolbar(context, attrs, defStyleAttr) {
 
-    private val syncStatusBarColor: Boolean
+    private val autoSetActionBar: Boolean
 
     init {
         val a =
@@ -35,13 +36,23 @@ class BoxToolBar @JvmOverloads constructor(
         if (a.getBoolean(R.styleable.BoxToolBar_defaultNavigation, false)) {
             setDefaultNavigation()
         }
-        syncStatusBarColor = a.getBoolean(R.styleable.BoxToolBar_syncStatusBarColor, true)
+        autoSetActionBar = a.getBoolean(R.styleable.BoxToolBar_autoSetActionBar, true)
         a.recycle()
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+        if (autoSetActionBar) {
+            val activity = context.getActivity()
+            if (activity is AppCompatActivity) {
+                activity.setSupportActionBar(this)
+            }
+        }
     }
 
     override fun setBackground(background: Drawable?) {
         super.setBackground(background)
-        if (syncStatusBarColor) {
+        if (autoSetActionBar) {
             when (background) {
                 is MaterialShapeDrawable -> {
                     val elevationOverlayProvider = ElevationOverlayProvider(context)

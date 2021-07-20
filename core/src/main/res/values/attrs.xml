@@ -5,7 +5,7 @@
     <declare-styleable name="BoxToolBar">
         <attr name="loadActivityLabel" format="boolean" />
         <attr name="defaultNavigation" format="boolean" />
-        <attr name="syncStatusBarColor" format="boolean" />
+        <attr name="autoSetActionBar" format="boolean" />
     </declare-styleable>
 
     <!--自动文字大小调整-->
