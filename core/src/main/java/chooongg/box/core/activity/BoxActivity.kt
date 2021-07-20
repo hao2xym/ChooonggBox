@@ -79,6 +79,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         }
         onCreateToInitConfig(savedInstanceState)
         if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
+        if (toolbar != null) setSupportActionBar(toolbar)
     }
 
     protected open fun configActionBar() {
@@ -87,7 +88,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             id = R.id.activity_box_toolbar
         }
         parentLayout.addView(toolbar, 0)
-        setSupportActionBar(toolbar)
     }
 
     @CallSuper
@@ -159,6 +159,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         if (isAutoShowNavigationIcon()) {
+            supportActionBar?.setHomeButtonEnabled(true)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_app_bar_back)
         }

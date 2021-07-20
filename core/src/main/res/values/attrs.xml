@@ -49,9 +49,4 @@
         <attr name="shuffle" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="DropDownMenuView">
-
-
-    </declare-styleable>
-
 </resources>

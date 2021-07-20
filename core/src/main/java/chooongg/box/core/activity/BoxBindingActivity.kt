@@ -30,9 +30,9 @@ abstract class BoxBindingActivity<VB : ViewBinding> : BoxActivity() {
                 setContentView(binding.root)
             } catch (e: Exception) {
                 BoxLog.e(
-                    LogEntity(javaClass.simpleName, "ViewBinding initialization failed"),
-                    false
+                    LogEntity(javaClass.simpleName, "ViewBinding initialization failed", false)
                 )
+                e.printStackTrace()
             }
         }
     }

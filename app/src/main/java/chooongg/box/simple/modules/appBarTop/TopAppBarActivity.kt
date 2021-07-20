@@ -28,6 +28,7 @@ class TopAppBarActivity : BoxBindingActivity<ActivityTopAppbarBinding>() {
             R.id.light -> setNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             R.id.night -> setNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             R.id.system -> setNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            else -> return super.onOptionsItemSelected(item)
         }
         return false
     }
