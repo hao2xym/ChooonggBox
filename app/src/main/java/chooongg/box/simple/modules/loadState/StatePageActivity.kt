@@ -2,6 +2,7 @@ package chooongg.box.simple.modules.loadState
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.core.ext.setDefaultNavigation
@@ -40,6 +41,10 @@ class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
     private val adapter = Adapter()
 
     override fun isShowActionBar() = false
+
+    override fun initToolBar(toolbar: Toolbar) {
+        toolbar.subtitle = "测试自动调用初始化"
+    }
 
     override fun initConfig(savedInstanceState: Bundle?) {
         binding.boxToolbar.setDefaultNavigation()

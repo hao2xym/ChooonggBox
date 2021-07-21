@@ -55,7 +55,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         false
     ) as BoxToolBar
 
-    protected open fun initToolBar(toolbar: Toolbar) = Unit
+    open fun initToolBar(toolbar: Toolbar) = Unit
 
     open fun isAutoShowNavigationIcon() = true
 
@@ -73,13 +73,15 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         window.sharedElementReturnTransition = initReturnTransition()
         window.sharedElementReenterTransition = initReenterTransition()
         if (isShowActionBar()) configActionBar()
-        if (toolbar != null) initToolBar(toolbar!!)
+        if (toolbar != null) {
+            setSupportActionBar(toolbar)
+            initToolBar(toolbar!!)
+        }
         if (contentLayoutId != null) {
             setContentView(contentLayoutId)
         }
         onCreateToInitConfig(savedInstanceState)
         if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
-        if (toolbar != null) setSupportActionBar(toolbar)
     }
 
     protected open fun configActionBar() {
@@ -156,6 +158,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         excludeTarget(Toolbar::class.java, true)
     }
 
+    @Deprecated("请让框架自行调用")
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         if (isAutoShowNavigationIcon()) {
