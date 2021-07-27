@@ -1,13 +1,12 @@
 package chooongg.box.http
 
 import chooongg.box.http.logInterceptor.HttpLogConfig
-import com.alibaba.fastjson.parser.Feature
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.fastjson.FastJsonConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 
@@ -47,9 +46,7 @@ open class HttpConfig {
      */
     val converterFactories = arrayListOf<Converter.Factory>(
         ScalarsConverterFactory.create(),
-        FastJsonConverterFactory.create().apply {
-            parserFeatures = arrayOf(Feature.IgnoreNotMatch)
-        }
+        GsonConverterFactory.create()
     )
 
     /**

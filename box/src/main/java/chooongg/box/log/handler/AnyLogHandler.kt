@@ -3,8 +3,7 @@ package chooongg.box.log.handler
 import chooongg.box.ext.removeLinefeed
 import chooongg.box.log.LogConfig
 import chooongg.box.log.LogConstant
-import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.serializer.SerializerFeature
+import com.google.gson.GsonBuilder
 import java.util.regex.Pattern
 
 object AnyLogHandler : LogHandler {
@@ -14,9 +13,10 @@ object AnyLogHandler : LogHandler {
     override fun handler(config: LogConfig, any: Any, columns: Int): List<String> {
         var string = if (any is String) {
             any
-        } else JSON.toJSONString(
-            any, SerializerFeature.PrettyFormat, SerializerFeature.DisableCircularReferenceDetect
-        )
+        } else GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create().toJson(any)
         string.replace("\t", LogConstant.FORMAT_STEP)
             .removeLinefeed(config.formatter.separator())
         if (columns <= 0) {

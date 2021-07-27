@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.core.adapter.BindingAdapter
 import chooongg.box.core.adapter.BindingHolder
@@ -20,6 +21,7 @@ import chooongg.box.log.BoxLog
 import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
 import chooongg.box.simple.R
+import chooongg.box.simple.api.WanAndroidAPI
 import chooongg.box.simple.databinding.ActivityMainBinding
 import chooongg.box.simple.databinding.ItemMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
@@ -28,6 +30,7 @@ import chooongg.box.simple.modules.main.entity.MainItemEntity
 import chooongg.box.simple.modules.main.entity.MainViewModel
 import chooongg.box.simple.modules.permission.RequestPermissionActivity
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -41,6 +44,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         MainItemEntity("Media Picker All"),
         MainItemEntity("Media Picker Image"),
         MainItemEntity("Media Picker Video"),
+        MainItemEntity("Request Http")
     )
 
     override fun isAutoShowNavigationIcon() = false
@@ -104,6 +108,11 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                 "Media Picker Video" -> FilePicker.from(this).chooseMedia()
                     .onlyShowVideos()
                     .start { }
+                "Request Http" -> lifecycleScope.launch {
+                    request<ArrayList<String>> {
+                        api { WanAndroidAPI.get().allPackage() }
+                    }
+                }
                 else -> showToast("未实现功能")
             }
         }
