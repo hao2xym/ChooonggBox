@@ -5,7 +5,7 @@ import chooongg.box.ext.withMain
 import chooongg.box.http.throws.HttpException
 
 interface ResponseData<DATA> {
-    suspend fun checkData(): DATA
+    suspend fun checkData(): DATA?
 }
 
 @Suppress("DEPRECATION")
@@ -25,14 +25,14 @@ suspend fun <RESPONSE> requestDefault(block: RetrofitCoroutinesDefaultDsl<RESPON
 open class RetrofitCoroutinesSimpleDsl<RESPONSE : ResponseData<DATA>, DATA> :
     RetrofitCoroutinesDefaultDsl<RESPONSE>() {
 
-    private var onSuccess: (suspend (DATA) -> Unit)? = null
+    protected var onSuccess: (suspend (DATA) -> Unit)? = null
 
     fun onSuccess(block: suspend (data: DATA) -> Unit) {
         this.onSuccess = block
     }
 
     override suspend fun processData(response: RESPONSE) {
-        val data = response.checkData()
+        val data = response.checkData() ?: throw HttpException(HttpException.Type.EMPTY)
         withMain { onSuccess?.invoke(data) }
     }
 }
@@ -69,7 +69,7 @@ open class RetrofitCoroutinesDefaultDsl<RESPONSE> {
         this.onEnd = block
     }
 
-    internal open suspend fun processData(response: RESPONSE) = Unit
+    protected open suspend fun processData(response: RESPONSE) = Unit
 
     @Suppress("ThrowableNotThrown")
     @Deprecated("Calling this method will result in repeated calls, but you can call it when encapsulating the tool method")
