@@ -41,7 +41,7 @@ object RetrofitManager {
             cookieJar(CookieManager)
             config.interceptor.forEach { addInterceptor(it) }
             config.networkInterceptor.forEach { addNetworkInterceptor(it) }
-            addNetworkInterceptor(BoxLogInterceptor(config.httpLogConfig))
+            addInterceptor(BoxLogInterceptor(config.httpLogConfig))
             config.okHttpClientBuilder?.invoke(this)
         }
 }
