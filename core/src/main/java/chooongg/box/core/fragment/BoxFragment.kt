@@ -20,6 +20,7 @@ abstract class BoxFragment : Fragment, BoxInit {
     protected val boxActivity get() = if (activity is BoxActivity) activity as BoxActivity else null
 
     private var isLoaded = false
+        get
 
     @CallSuper
     override fun onCreateView(

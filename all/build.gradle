@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.github.dcendents.android-maven'
 }
+
 group = 'com.github.Chooongg.Box'
 
 android {
