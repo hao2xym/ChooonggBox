@@ -12,7 +12,6 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.Window
 import android.widget.FrameLayout
-import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.ContentFrameLayout
@@ -32,8 +31,12 @@ import chooongg.box.log.BoxLog
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) :
-    AppCompatActivity(), BoxInit {
+abstract class BoxActivity :
+    AppCompatActivity, BoxInit {
+
+    internal constructor() : super()
+
+    constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     val contentView: ContentFrameLayout by lazy { findViewById(Window.ID_ANDROID_CONTENT) }
 
@@ -59,7 +62,7 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
 
     open fun isAutoShowNavigationIcon() = true
 
-    @CallSuper
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         configThemeForAnnotation()
         super.onCreate(savedInstanceState)
@@ -77,9 +80,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
             setSupportActionBar(toolbar)
             initToolBar(toolbar!!)
         }
-        if (contentLayoutId != null) {
-            setContentView(contentLayoutId)
-        }
         onCreateToInitConfig(savedInstanceState)
         if (isAutoHideKeyBoard()) HideKeyboardManager.init(activity)
     }
@@ -92,7 +92,6 @@ abstract class BoxActivity(@LayoutRes private val contentLayoutId: Int? = null) 
         parentLayout.addView(toolbar, 0)
     }
 
-    @CallSuper
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         onPostCreateToInitContent(savedInstanceState)

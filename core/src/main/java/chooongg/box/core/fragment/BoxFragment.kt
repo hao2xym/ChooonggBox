@@ -22,7 +22,6 @@ abstract class BoxFragment : Fragment, BoxInit {
     private var isLoaded = false
         get
 
-    @CallSuper
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +44,6 @@ abstract class BoxFragment : Fragment, BoxInit {
         initConfig(savedInstanceState)
     }
 
-    @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initContent(savedInstanceState)
     }

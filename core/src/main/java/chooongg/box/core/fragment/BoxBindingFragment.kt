@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
-abstract class BoxBindingFragment<VB : ViewBinding> : BoxFragment() {
+abstract class BoxBindingFragment<VB : ViewBinding> : BoxFragment {
 
     protected lateinit var binding: VB
+
+    constructor() : super()
+    internal constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
     override fun boxCreateView(
         inflater: LayoutInflater,
