@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import chooongg.box.core.activity.BoxBindingModelActivity
 import chooongg.box.core.adapter.BindingAdapter
 import chooongg.box.core.adapter.BindingHolder
-import chooongg.box.core.ext.load
 import chooongg.box.core.statePage.state.EmptyState
 import chooongg.box.core.statePage.state.ErrorState
 import chooongg.box.core.statePage.state.LoadingState
@@ -26,6 +25,7 @@ import chooongg.box.picker.model.AlbumDirector
 import chooongg.box.picker.model.MediaItem
 import chooongg.box.picker.utils.AlbumPopupWindowManager
 import chooongg.box.picker.viewModel.FilePickerMediaViewModel
+import coil.load
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -57,7 +57,6 @@ class FilePickerSelectMediaActivity :
     override fun isShowActionBar() = false
 
     override fun initConfig(savedInstanceState: Bundle?) {
-        setSupportActionBar(binding.boxToolbar)
         supportActionBar?.title = null
         model.setOnGetAlbumListener(this)
         binding.recyclerView.adapter = adapter

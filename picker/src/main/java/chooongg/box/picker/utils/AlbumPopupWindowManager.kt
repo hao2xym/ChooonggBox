@@ -8,11 +8,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
-import chooongg.box.core.ext.load
 import chooongg.box.ext.*
 import chooongg.box.picker.R
 import chooongg.box.picker.databinding.ItemPickerAlbumBinding
 import chooongg.box.picker.model.AlbumDirector
+import coil.load
 
 class AlbumPopupWindowManager(
     private val context: Activity,

@@ -6,7 +6,15 @@ import androidx.annotation.Keep
 import chooongg.box.Box
 import chooongg.box.core.permission.PermissionInterceptor
 import chooongg.box.ext.isAppDebug
+import coil.Coil
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.VideoFrameDecoder
+import coil.fetch.VideoFrameFileFetcher
+import coil.fetch.VideoFrameUriFetcher
+import coil.util.CoilUtils
 import com.hjq.permissions.XXPermissions
+import okhttp3.OkHttpClient
 
 @Keep
 object BoxCore {
@@ -19,5 +27,19 @@ object BoxCore {
         XXPermissions.setScopedStorage(true)
         XXPermissions.setDebugMode(isAppDebug())
         XXPermissions.setInterceptor(PermissionInterceptor())
+        Coil.setImageLoader(
+            ImageLoader.Builder(application).crossfade(true)
+                .error(R.color.color_divider)
+                .fallback(R.color.color_divider)
+                .placeholder(R.color.color_divider)
+                .componentRegistry {
+                    add(GifDecoder())
+                    add(VideoFrameDecoder(application))
+                    add(VideoFrameUriFetcher(application))
+                    add(VideoFrameFileFetcher(application))
+                }.okHttpClient(
+                    OkHttpClient.Builder().cache(CoilUtils.createDefaultCache(application)).build()
+                ).build()
+        )
     }
 }
