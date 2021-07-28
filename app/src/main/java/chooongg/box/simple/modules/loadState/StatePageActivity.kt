@@ -2,6 +2,8 @@ package chooongg.box.simple.modules.loadState
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.motion.widget.MotionLayout
 import chooongg.box.core.activity.BoxBindingActivity
@@ -85,6 +87,19 @@ class StatePageActivity : BoxBindingActivity<ActivityStatePageBinding>() {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.state_success, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.success_state) {
+            binding.statePageLayout.showSuccess()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun initContent(savedInstanceState: Bundle?) {

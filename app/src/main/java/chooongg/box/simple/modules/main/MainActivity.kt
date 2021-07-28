@@ -1,22 +1,20 @@
 package chooongg.box.simple.modules.main
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
-import chooongg.box.core.activity.BoxBindingModelActivity
+import chooongg.box.core.activity.BoxBindingActivity
 import chooongg.box.core.adapter.BindingAdapter
 import chooongg.box.core.adapter.BindingHolder
 import chooongg.box.ext.isNightMode
 import chooongg.box.ext.setNightMode
 import chooongg.box.ext.showToast
 import chooongg.box.ext.startActivity
-import chooongg.box.http.ext.ResponseData
-import chooongg.box.http.ext.RetrofitCoroutinesSimpleDsl
-import chooongg.box.http.throws.HttpException
+import chooongg.box.http.ext.requestDefault
 import chooongg.box.log.BoxLog
 import chooongg.box.picker.FilePicker
 import chooongg.box.simple.BuildConfig
@@ -27,12 +25,11 @@ import chooongg.box.simple.databinding.ItemMainBinding
 import chooongg.box.simple.modules.appBarTop.TopAppBarActivity
 import chooongg.box.simple.modules.loadState.StatePageActivity
 import chooongg.box.simple.modules.main.entity.MainItemEntity
-import chooongg.box.simple.modules.main.entity.MainViewModel
 import chooongg.box.simple.modules.permission.RequestPermissionActivity
-import kotlinx.coroutines.Job
+import com.fondesa.recyclerviewdivider.dividerBuilder
 import kotlinx.coroutines.launch
 
-class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BoxBindingActivity<ActivityMainBinding>() {
 
     private val modules = arrayListOf(
         MainItemEntity("App Bar: Top"),
@@ -47,44 +44,17 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
         MainItemEntity("Request Http")
     )
 
+    override fun isShowActionBar() = false
+
     override fun isAutoShowNavigationIcon() = false
 
     private val adapter = Adapter()
 
-    @Keep
-    data class WanAndroidAPIResponse<DATA>(
-        val errorCode: Int,
-        val errorMsg: String?,
-        val data: DATA?
-    ) : ResponseData<DATA> {
-        override suspend fun checkData(): DATA {
-            if (errorCode == 0) {
-                if (data == null) throw HttpException(HttpException.Type.EMPTY)
-                return data
-            } else {
-                throw HttpException(
-                    errorCode.toString(),
-                    errorMsg ?: HttpException.Converter.convert(HttpException.Type.UN_KNOWN)
-                )
-            }
-        }
-    }
-
-    class RetrofitCoroutinesDsl<DATA> :
-        RetrofitCoroutinesSimpleDsl<WanAndroidAPIResponse<DATA>, DATA>()
-
-    @Suppress("DEPRECATION")
-    suspend fun <DATA> request(block: RetrofitCoroutinesDsl<DATA>.() -> Unit) {
-        val dsl = RetrofitCoroutinesDsl<DATA>()
-        block.invoke(dsl)
-        dsl.executeRequest()
-    }
-
-    private var job: Job? = null
-
     override fun initConfig(savedInstanceState: Bundle?) {
-        BoxLog.e("isNightMode=${isNightMode()}")
         supportActionBar?.subtitle = BuildConfig.VERSION_NAME
+        dividerBuilder().asSpace().showFirstDivider().showLastDivider()
+            .size(16, TypedValue.COMPLEX_UNIT_DIP)
+            .build().addTo(binding.recyclerView)
         binding.recyclerView.adapter = adapter
         adapter.setNewInstance(modules)
         adapter.setOnItemClickListener { _, view, position ->
@@ -109,7 +79,7 @@ class MainActivity : BoxBindingModelActivity<ActivityMainBinding, MainViewModel>
                     .onlyShowVideos()
                     .start { }
                 "Request Http" -> lifecycleScope.launch {
-                    request<ArrayList<String>> {
+                    requestDefault<ArrayList<Any>> {
                         api { WanAndroidAPI.get().allPackage() }
                     }
                 }

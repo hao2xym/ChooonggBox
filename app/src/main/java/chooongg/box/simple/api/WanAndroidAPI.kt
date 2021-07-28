@@ -16,7 +16,7 @@ interface WanAndroidAPI {
      * 获取所有包名
      */
     @GET("package/json")
-    suspend fun allPackage(): MainActivity.WanAndroidAPIResponse<ArrayList<String>>
+    suspend fun allPackage(): ArrayList<Any>
 
     /**
      * 根据Key搜索包名信息
