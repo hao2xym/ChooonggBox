@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':all')
     // 友盟

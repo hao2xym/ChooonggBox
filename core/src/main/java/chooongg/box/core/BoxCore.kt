@@ -13,6 +13,7 @@ import coil.decode.VideoFrameDecoder
 import coil.fetch.VideoFrameFileFetcher
 import coil.fetch.VideoFrameUriFetcher
 import coil.util.CoilUtils
+import com.facebook.stetho.Stetho
 import com.hjq.permissions.XXPermissions
 import okhttp3.OkHttpClient
 
@@ -27,6 +28,7 @@ object BoxCore {
         XXPermissions.setScopedStorage(true)
         XXPermissions.setDebugMode(isAppDebug())
         XXPermissions.setInterceptor(PermissionInterceptor())
+        Stetho.initializeWithDefaults(application)
         Coil.setImageLoader(
             ImageLoader.Builder(application).crossfade(true)
                 .error(R.color.color_divider)
