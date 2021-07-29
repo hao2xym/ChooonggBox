@@ -31,9 +31,6 @@ object BoxCore {
         Stetho.initializeWithDefaults(application)
         Coil.setImageLoader(
             ImageLoader.Builder(application).crossfade(true)
-                .error(R.color.color_divider)
-                .fallback(R.color.color_divider)
-                .placeholder(R.color.color_divider)
                 .componentRegistry {
                     add(GifDecoder())
                     add(VideoFrameDecoder(application))
