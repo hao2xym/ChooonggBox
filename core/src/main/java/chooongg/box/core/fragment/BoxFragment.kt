@@ -1,9 +1,7 @@
 package chooongg.box.core.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
@@ -22,29 +20,12 @@ abstract class BoxFragment : Fragment, BoxInit {
     var isLoaded = false
         private set
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = boxCreateView(inflater, container, savedInstanceState)
-        onCreateViewToInitConfig(savedInstanceState)
-        return view
-    }
-
-    open fun boxCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     protected open fun onCreateViewToInitConfig(savedInstanceState: Bundle?) {
         initConfig(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        onCreateViewToInitConfig(savedInstanceState)
         initContent(savedInstanceState)
     }
 

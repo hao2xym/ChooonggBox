@@ -15,7 +15,7 @@ abstract class BoxBindingFragment<VB : ViewBinding> : BoxFragment {
     constructor() : super()
     internal constructor(@LayoutRes contentLayoutId: Int) : super(contentLayoutId)
 
-    override fun boxCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
