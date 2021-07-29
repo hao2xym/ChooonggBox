@@ -19,8 +19,8 @@ abstract class BoxFragment : Fragment, BoxInit {
 
     protected val boxActivity get() = if (activity is BoxActivity) activity as BoxActivity else null
 
-    private var isLoaded = false
-        get
+    var isLoaded = false
+        private set
 
     override fun onCreateView(
         inflater: LayoutInflater,
